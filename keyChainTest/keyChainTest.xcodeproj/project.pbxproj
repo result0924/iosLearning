@@ -24,6 +24,7 @@
 		D07B083A21019E690083FB04 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D07B083C21019E690083FB04 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D07B084221019F640083FB04 /* KeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
+		D07B08442101C5A90083FB04 /* keyChainTest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = keyChainTest.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +57,7 @@
 		D07B082F21019E690083FB04 /* keyChainTest */ = {
 			isa = PBXGroup;
 			children = (
+				D07B08442101C5A90083FB04 /* keyChainTest.entitlements */,
 				D07B083021019E690083FB04 /* AppDelegate.swift */,
 				D07B083221019E690083FB04 /* ViewController.swift */,
 				D07B083421019E690083FB04 /* Main.storyboard */,
@@ -99,6 +101,11 @@
 				TargetAttributes = {
 					D07B082C21019E680083FB04 = {
 						CreatedOnToolsVersion = 9.4.1;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -284,6 +291,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = keyChainTest/keyChainTest.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9TNVAWA2VV;
 				INFOPLIST_FILE = keyChainTest/Info.plist;
@@ -302,6 +310,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = keyChainTest/keyChainTest.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9TNVAWA2VV;
 				INFOPLIST_FILE = keyChainTest/Info.plist;
