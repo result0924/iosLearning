@@ -6,95 +6,175 @@
 //  Copyright © 2018 justin. All rights reserved.
 //
 
-// Refer https://stackoverflow.com/questions/37539997/save-and-load-from-keychain-swift
+// Refer:https://www.raywenderlich.com/185370/basic-ios-security-keychain-hashing
 
 import Foundation
-import Security
 
-// see https://stackoverflow.com/a/37539998/1694526
-// Arguments for the keychain queries
-let kSecClassValue = NSString(format: kSecClass)
-let kSecAttrAccountValue = NSString(format: kSecAttrAccount)
-let kSecValueDataValue = NSString(format: kSecValueData)
-let kSecClassGenericPasswordValue = NSString(format: kSecClassGenericPassword)
-let kSecAttrServiceValue = NSString(format: kSecAttrService)
-let kSecMatchLimitValue = NSString(format: kSecMatchLimit)
-let kSecReturnDataValue = NSString(format: kSecReturnData)
-let kSecMatchLimitOneValue = NSString(format: kSecMatchLimitOne)
-
-public class KeychainService: NSObject {
+struct KeychainService {
+    // MARK: Types
     
-    class func updatePassword(service: String, account:String, data: String) {
-        if let dataFromString: Data = data.data(using: String.Encoding.utf8, allowLossyConversion: false) {
+    enum KeychainError: Error {
+        case noPassword
+        case unexpectedPasswordData
+        case unexpectedItemData
+        case unhandledError(status: OSStatus)
+    }
+    
+    // MARK: Properties
+    
+    let service: String
+    
+    private(set) var account: String
+    
+    let accessGroup: String?
+    
+    // MARK: Intialization
+    
+    init(service: String, account: String, accessGroup: String? = nil) {
+        self.service = service
+        self.account = account
+        self.accessGroup = accessGroup
+    }
+    
+    // MARK: Keychain access
+    
+    func readPassword() throws -> String  {
+        /*
+         Build a query to find the item that matches the service, account and
+         access group.
+         */
+        var query = KeychainService.keychainQuery(withService: service, account: account, accessGroup: accessGroup)
+        query[kSecMatchLimit as String] = kSecMatchLimitOne
+        query[kSecReturnAttributes as String] = kCFBooleanTrue
+        query[kSecReturnData as String] = kCFBooleanTrue
+        
+        // Try to fetch the existing keychain item that matches the query.
+        var queryResult: AnyObject?
+        let status = withUnsafeMutablePointer(to: &queryResult) {
+            SecItemCopyMatching(query as CFDictionary, UnsafeMutablePointer($0))
+        }
+        
+        // Check the return status and throw an error if appropriate.
+        guard status != errSecItemNotFound else { throw KeychainError.noPassword }
+        guard status == noErr else { throw KeychainError.unhandledError(status: status) }
+        
+        // Parse the password string from the query result.
+        guard let existingItem = queryResult as? [String : AnyObject],
+            let passwordData = existingItem[kSecValueData as String] as? Data,
+            let password = String(data: passwordData, encoding: String.Encoding.utf8)
+            else {
+                throw KeychainError.unexpectedPasswordData
+        }
+        
+        return password
+    }
+    
+    func savePassword(_ password: String) throws {
+        // Encode the password into an Data object.
+        let encodedPassword = password.data(using: String.Encoding.utf8)!
+        
+        do {
+            // Check for an existing item in the keychain.
+            try _ = readPassword()
             
-            // Instantiate a new default keychain query
-            let keychainQuery: NSMutableDictionary = NSMutableDictionary(objects: [kSecClassGenericPasswordValue, service, account, kCFBooleanTrue, kSecMatchLimitOneValue], forKeys: [kSecClassValue, kSecAttrServiceValue, kSecAttrAccountValue, kSecReturnDataValue, kSecMatchLimitValue])
+            // Update the existing item with the new password.
+            var attributesToUpdate = [String : AnyObject]()
+            attributesToUpdate[kSecValueData as String] = encodedPassword as AnyObject?
             
-            let status = SecItemUpdate(keychainQuery as CFDictionary, [kSecValueDataValue:dataFromString] as CFDictionary)
+            let query = KeychainService.keychainQuery(withService: service, account: account, accessGroup: accessGroup)
+            let status = SecItemUpdate(query as CFDictionary, attributesToUpdate as CFDictionary)
             
-            if (status != errSecSuccess) {
-                if let err = SecCopyErrorMessageString(status, nil) {
-                    print("Read failed: \(err)")
-                }
-            }
+            // Throw an error if an unexpected status was returned.
+            guard status == noErr else { throw KeychainError.unhandledError(status: status) }
+        }
+        catch KeychainError.noPassword {
+            /*
+             No password was found in the keychain. Create a dictionary to save
+             as a new keychain item.
+             */
+            var newItem = KeychainService.keychainQuery(withService: service, account: account, accessGroup: accessGroup)
+            newItem[kSecValueData as String] = encodedPassword as AnyObject?
+            
+            // Add a the new item to the keychain.
+            let status = SecItemAdd(newItem as CFDictionary, nil)
+            
+            // Throw an error if an unexpected status was returned.
+            guard status == noErr else { throw KeychainError.unhandledError(status: status) }
         }
     }
     
-    
-    class func removePassword(service: String, account:String) {
+    mutating func renameAccount(_ newAccountName: String) throws {
+        // Try to update an existing item with the new account name.
+        var attributesToUpdate = [String : AnyObject]()
+        attributesToUpdate[kSecAttrAccount as String] = newAccountName as AnyObject?
         
-        // Instantiate a new default keychain query
-        let keychainQuery: NSMutableDictionary = NSMutableDictionary(objects: [kSecClassGenericPasswordValue, service, account, kCFBooleanTrue, kSecMatchLimitOneValue], forKeys: [kSecClassValue, kSecAttrServiceValue, kSecAttrAccountValue, kSecReturnDataValue, kSecMatchLimitValue])
+        let query = KeychainService.keychainQuery(withService: service, account: self.account, accessGroup: accessGroup)
+        let status = SecItemUpdate(query as CFDictionary, attributesToUpdate as CFDictionary)
         
-        // Delete any existing items
-        let status = SecItemDelete(keychainQuery as CFDictionary)
-        if (status != errSecSuccess) {
-            if let err = SecCopyErrorMessageString(status, nil) {
-                print("Remove failed: \(err)")
-            }
-        }
+        // Throw an error if an unexpected status was returned.
+        guard status == noErr || status == errSecItemNotFound else { throw KeychainError.unhandledError(status: status) }
         
+        self.account = newAccountName
     }
     
-    
-    class func savePassword(service: String, account:String, data: String) {
-        if let dataFromString = data.data(using: String.Encoding.utf8, allowLossyConversion: false) {
-            
-            // Instantiate a new default keychain query
-            let keychainQuery: NSMutableDictionary = NSMutableDictionary(objects: [kSecClassGenericPasswordValue, service, account, dataFromString], forKeys: [kSecClassValue, kSecAttrServiceValue, kSecAttrAccountValue, kSecValueDataValue])
-            
-            // Add the new keychain item
-            let status = SecItemAdd(keychainQuery as CFDictionary, nil)
-            
-            if (status != errSecSuccess) {    // Always check the status
-                if let err = SecCopyErrorMessageString(status, nil) {
-                    print("Write failed: \(err)")
-                }
-            }
-        }
+    func deleteItem() throws {
+        // Delete the existing item from the keychain.
+        let query = KeychainService.keychainQuery(withService: service, account: account, accessGroup: accessGroup)
+        let status = SecItemDelete(query as CFDictionary)
+        
+        // Throw an error if an unexpected status was returned.
+        guard status == noErr || status == errSecItemNotFound else { throw KeychainError.unhandledError(status: status) }
     }
     
-    class func loadPassword(service: String, account:String) -> String? {
-        // Instantiate a new default keychain query
-        // Tell the query to return a result
-        // Limit our results to one item
-        let keychainQuery: NSMutableDictionary = NSMutableDictionary(objects: [kSecClassGenericPasswordValue, service, account, kCFBooleanTrue, kSecMatchLimitOneValue], forKeys: [kSecClassValue, kSecAttrServiceValue, kSecAttrAccountValue, kSecReturnDataValue, kSecMatchLimitValue])
+    static func passwordItems(forService service: String, accessGroup: String? = nil) throws -> [KeychainService] {
+        // Build a query for all items that match the service and access group.
+        var query = KeychainService.keychainQuery(withService: service, accessGroup: accessGroup)
+        query[kSecMatchLimit as String] = kSecMatchLimitAll
+        query[kSecReturnAttributes as String] = kCFBooleanTrue
+        query[kSecReturnData as String] = kCFBooleanFalse
         
-        var dataTypeRef :AnyObject?
-        
-        // Search for the keychain items
-        let status: OSStatus = SecItemCopyMatching(keychainQuery, &dataTypeRef)
-        var contentsOfKeychain: String?
-        
-        if status == errSecSuccess {
-            if let retrievedData = dataTypeRef as? Data {
-                contentsOfKeychain = String(data: retrievedData, encoding: String.Encoding.utf8)
-            }
-        } else {
-            print("Nothing was retrieved from the keychain. Status code \(status)")
+        // Fetch matching items from the keychain.
+        var queryResult: AnyObject?
+        let status = withUnsafeMutablePointer(to: &queryResult) {
+            SecItemCopyMatching(query as CFDictionary, UnsafeMutablePointer($0))
         }
         
-        return contentsOfKeychain
+        // If no items were found, return an empty array.
+        guard status != errSecItemNotFound else { return [] }
+        
+        // Throw an error if an unexpected status was returned.
+        guard status == noErr else { throw KeychainError.unhandledError(status: status) }
+        
+        // Cast the query result to an array of dictionaries.
+        guard let resultData = queryResult as? [[String : AnyObject]] else { throw KeychainError.unexpectedItemData }
+        
+        // Create a `KeychainPasswordItem` for each dictionary in the query result.
+        var passwordItems = [KeychainService]()
+        for result in resultData {
+            guard let account  = result[kSecAttrAccount as String] as? String else { throw KeychainError.unexpectedItemData }
+            
+            let passwordItem = KeychainService(service: service, account: account, accessGroup: accessGroup)
+            passwordItems.append(passwordItem)
+        }
+        
+        return passwordItems
     }
     
+    // MARK: Convenience
+    
+    private static func keychainQuery(withService service: String, account: String? = nil, accessGroup: String? = nil) -> [String : AnyObject] {
+        var query = [String : AnyObject]()
+        query[kSecClass as String] = kSecClassGenericPassword
+        query[kSecAttrService as String] = service as AnyObject?
+        
+        if let account = account {
+            query[kSecAttrAccount as String] = account as AnyObject?
+        }
+        
+        if let accessGroup = accessGroup {
+            query[kSecAttrAccessGroup as String] = accessGroup as AnyObject?
+        }
+        
+        return query
+    }
 }

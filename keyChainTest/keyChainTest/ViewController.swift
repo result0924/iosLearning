@@ -8,6 +8,11 @@
 
 import UIKit
 
+struct KeychainConfiguration {
+    static let serviceName = "TestKeyChain"
+    static let accessGroup: String? = nil
+}
+
 class ViewController: UIViewController {
     
     let service = "myService"
@@ -15,11 +20,69 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        KeychainService.savePassword(service: service, account: account, data: "7533967")
         
-        if let password = KeychainService.loadPassword(service: service, account: account) {
-            print(password)
+        do {
+            let password = try KeychainService(service: KeychainConfiguration.serviceName, account: "justin", accessGroup: KeychainConfiguration.accessGroup).readPassword()
+            print("password:\(password)")
+        } catch {
+            print(error)
+        }
+        
+        do {
+            // This is a new account, create a new keychain item with the account name.
+            let passwordItem = KeychainService(service: KeychainConfiguration.serviceName,
+                                                    account: "justin",
+                                                    accessGroup: KeychainConfiguration.accessGroup)
+            
+            // Save the password for the new item.
+            try passwordItem.savePassword("123456")
+        } catch {
+            fatalError("Error updating keychain - \(error)")
+        }
+        
+        do {
+            let password = try KeychainService(service: KeychainConfiguration.serviceName, account: "justin", accessGroup: KeychainConfiguration.accessGroup).readPassword()
+            print("password:\(password)")
+        } catch {
+            print(error)
+        }
+        
+        do {
+            // This is a new account, create a new keychain item with the account name.
+            let passwordItem = KeychainService(service: KeychainConfiguration.serviceName,
+                                               account: "justin",
+                                               accessGroup: KeychainConfiguration.accessGroup)
+            
+            // Save the password for the new item.
+            try passwordItem.savePassword("7533967")
+        } catch {
+            fatalError("Error updating keychain - \(error)")
+        }
+        
+        do {
+            let password = try KeychainService(service: KeychainConfiguration.serviceName, account: "justin", accessGroup: KeychainConfiguration.accessGroup).readPassword()
+            print("password:\(password)")
+        } catch {
+            print(error)
+        }
+        
+        do {
+            // This is a new account, create a new keychain item with the account name.
+            let passwordItem = KeychainService(service: KeychainConfiguration.serviceName,
+                                               account: "justin",
+                                               accessGroup: KeychainConfiguration.accessGroup)
+            
+            // Save the password for the new item.
+            try passwordItem.deleteItem()
+        } catch {
+            fatalError("Error updating keychain - \(error)")
+        }
+        
+        do {
+            let password = try KeychainService(service: KeychainConfiguration.serviceName, account: "justin", accessGroup: KeychainConfiguration.accessGroup).readPassword()
+            print("password:\(password)")
+        } catch {
+            print(error)
         }
     }
 
