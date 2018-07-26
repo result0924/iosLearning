@@ -15,8 +15,8 @@
 
 1. Target -> Capabilities -> Keychain Sharing 加入之前在App Groups加入的app grop
 
-2. Info.plist加入一組key-value
-Key: AppIdentifierPrefix
-Value: $(AppIdentifierPrefix)
+2. Info.plist加入一組key-value <br/>
+Key: AppIdentifierPrefix <br/>
+Value: $(AppIdentifierPrefix) <br/>
 
 3. 到時二個app就會用相同的`$(AppIdentifierPrefix)com.share.group`來分享keychain了
