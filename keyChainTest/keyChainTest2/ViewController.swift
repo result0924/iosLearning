@@ -8,11 +8,31 @@
 
 import UIKit
 
+struct KeychainConfiguration {
+    static let serviceName = "TestKeyChain"
+    static var serviceGroup: String?
+    
+    init(serviceGroup: String) {
+        if let appIdentifierPrefix = Bundle.main.infoDictionary?["AppIdentifierPrefix"] as? String {
+            self.init(serviceGroup: appIdentifierPrefix + "group.h2.keyChainTest")
+        } else {
+            self.init(serviceGroup: "")
+        }
+    }
+}
+
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        do {
+            let password = try KeychainService(service: KeychainConfiguration.serviceName, account: "justin", accessGroup: KeychainConfiguration.serviceGroup).readToken()
+            print("password:\(password)")
+        } catch {
+            print(error)
+        }
     }
 
     override func didReceiveMemoryWarning() {

@@ -10,7 +10,15 @@ import UIKit
 
 struct KeychainConfiguration {
     static let serviceName = "TestKeyChain"
-    static let accessGroup: String? = nil
+    static var serviceGroup: String?
+    
+    init(serviceGroup: String) {
+        if let appIdentifierPrefix = Bundle.main.infoDictionary?["AppIdentifierPrefix"] as? String {
+            self.init(serviceGroup: appIdentifierPrefix + "group.h2.keyChainTest")
+        } else {
+            self.init(serviceGroup: "")
+        }
+    }
 }
 
 class ViewController: UIViewController {
@@ -19,8 +27,10 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         do {
-            let password = try KeychainService(service: KeychainConfiguration.serviceName, account: "justin", accessGroup: KeychainConfiguration.accessGroup).readToken()
-            print("password:\(password)")
+            let token = try KeychainService(service: KeychainConfiguration.serviceName,
+                                            account: "justin",
+                                            accessGroup: KeychainConfiguration.serviceGroup).readToken()
+            print("token:\(token)")
         } catch {
             print(error)
         }
@@ -29,7 +39,7 @@ class ViewController: UIViewController {
             // This is a new account, create a new keychain item with the account name.
             let tokenItem = KeychainService(service: KeychainConfiguration.serviceName,
                                                     account: "justin",
-                                                    accessGroup: KeychainConfiguration.accessGroup)
+                                                    accessGroup: KeychainConfiguration.serviceGroup)
             
             // Save the password for the new item.
             try tokenItem.saveToken("123456")
@@ -40,7 +50,7 @@ class ViewController: UIViewController {
         do {
             let token = try KeychainService(service: KeychainConfiguration.serviceName,
                                             account: "justin",
-                                            accessGroup: KeychainConfiguration.accessGroup).readToken()
+                                            accessGroup: KeychainConfiguration.serviceGroup).readToken()
             print("token:\(token)")
         } catch {
             print(error)
@@ -50,10 +60,10 @@ class ViewController: UIViewController {
             // This is a new account, create a new keychain item with the account name.
             let tokenItem = KeychainService(service: KeychainConfiguration.serviceName,
                                                account: "justin",
-                                               accessGroup: KeychainConfiguration.accessGroup)
+                                               accessGroup: KeychainConfiguration.serviceGroup)
             
             // Save the password for the new item.
-            try tokenItem.saveToken("7533967")
+            try tokenItem.saveToken("7533968")
         } catch {
             fatalError("Error updating keychain - \(error)")
         }
@@ -61,33 +71,12 @@ class ViewController: UIViewController {
         do {
             let token = try KeychainService(service: KeychainConfiguration.serviceName,
                                             account: "justin",
-                                            accessGroup: KeychainConfiguration.accessGroup).readToken()
+                                            accessGroup: KeychainConfiguration.serviceGroup).readToken()
             print("token:\(token)")
         } catch {
             print(error)
         }
         
-        do {
-            // This is a new account, create a new keychain item with the account name.
-            let tokenItem = KeychainService(service: KeychainConfiguration.serviceName,
-                                            account: "justin",
-                                            accessGroup: KeychainConfiguration.accessGroup)
-            
-            // Save the password for the new item.
-            try tokenItem.deleteItem()
-        } catch {
-            fatalError("Error updating keychain - \(error)")
-        }
-        
-        do {
-            let token = try KeychainService(service: KeychainConfiguration.serviceName,
-                                            account: "justin",
-                                            accessGroup: KeychainConfiguration.accessGroup).readToken()
-            print("token:\(token)")
-            
-        } catch {
-            print(error)
-        }
     }
 
     override func didReceiveMemoryWarning() {

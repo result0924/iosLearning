@@ -4,7 +4,7 @@
 <dict>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>$(AppIdentifierPrefix)h2.keyChainTest</string>
+		<string>$(AppIdentifierPrefix)group.h2.keyChainTest</string>
 	</array>
 </dict>
 </plist>
