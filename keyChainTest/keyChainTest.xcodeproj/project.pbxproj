@@ -7,21 +7,29 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3FBF64B2A9AF860AE4BB5EA4 /* Pods_keyChainTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06D095AFC891057D10C2D5FD /* Pods_keyChainTest.framework */; };
 		D07B083121019E690083FB04 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07B083021019E690083FB04 /* AppDelegate.swift */; };
 		D07B083321019E690083FB04 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07B083221019E690083FB04 /* ViewController.swift */; };
 		D07B083621019E690083FB04 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D07B083421019E690083FB04 /* Main.storyboard */; };
 		D07B083821019E690083FB04 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D07B083721019E690083FB04 /* Assets.xcassets */; };
 		D07B083B21019E690083FB04 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D07B083921019E690083FB04 /* LaunchScreen.storyboard */; };
 		D07B084321019F640083FB04 /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07B084221019F640083FB04 /* KeychainService.swift */; };
+		D0AB52CB22686DBF00F53A5F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D0AB52CA22686DBF00F53A5F /* GoogleService-Info.plist */; };
 		D0F464E621072DBE0038B9CF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0F464E521072DBE0038B9CF /* AppDelegate.swift */; };
 		D0F464E821072DBE0038B9CF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0F464E721072DBE0038B9CF /* ViewController.swift */; };
 		D0F464EB21072DBE0038B9CF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0F464E921072DBE0038B9CF /* Main.storyboard */; };
 		D0F464ED21072DBF0038B9CF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0F464EC21072DBF0038B9CF /* Assets.xcassets */; };
 		D0F464F021072DBF0038B9CF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0F464EE21072DBF0038B9CF /* LaunchScreen.storyboard */; };
 		D0F464F7210730790038B9CF /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0F464F6210730790038B9CF /* KeychainService.swift */; };
+		E7F477D09009F5422F7F5664 /* Pods_keyChainTest2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 266AA5291AE8A2B103EBCBBB /* Pods_keyChainTest2.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		02B5415A41600DA26A442C4E /* Pods-keyChainTest2.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keyChainTest2.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keyChainTest2/Pods-keyChainTest2.debug.xcconfig"; sourceTree = "<group>"; };
+		06D095AFC891057D10C2D5FD /* Pods_keyChainTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_keyChainTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		12F6C90781CF993E45BD5CC2 /* Pods-keyChainTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keyChainTest.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keyChainTest/Pods-keyChainTest.debug.xcconfig"; sourceTree = "<group>"; };
+		266AA5291AE8A2B103EBCBBB /* Pods_keyChainTest2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_keyChainTest2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE75C5B38F05D5A7911F6C12 /* Pods-keyChainTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keyChainTest.release.xcconfig"; path = "Pods/Target Support Files/Pods-keyChainTest/Pods-keyChainTest.release.xcconfig"; sourceTree = "<group>"; };
 		D07B082D21019E680083FB04 /* keyChainTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = keyChainTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D07B083021019E690083FB04 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D07B083221019E690083FB04 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -31,6 +39,7 @@
 		D07B083C21019E690083FB04 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D07B084221019F640083FB04 /* KeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
 		D07B08442101C5A90083FB04 /* keyChainTest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = keyChainTest.entitlements; sourceTree = "<group>"; };
+		D0AB52CA22686DBF00F53A5F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D0F464E321072DBE0038B9CF /* keyChainTest2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = keyChainTest2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0F464E521072DBE0038B9CF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D0F464E721072DBE0038B9CF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -40,6 +49,7 @@
 		D0F464F121072DBF0038B9CF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D0F464F521072E4D0038B9CF /* keyChainTest2.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = keyChainTest2.entitlements; sourceTree = "<group>"; };
 		D0F464F6210730790038B9CF /* KeychainService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
+		D716324C68B633ED2847EABC /* Pods-keyChainTest2.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keyChainTest2.release.xcconfig"; path = "Pods/Target Support Files/Pods-keyChainTest2/Pods-keyChainTest2.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FBF64B2A9AF860AE4BB5EA4 /* Pods_keyChainTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -54,18 +65,41 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E7F477D09009F5422F7F5664 /* Pods_keyChainTest2.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9BD61D55F459E64E34B7D58A /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				12F6C90781CF993E45BD5CC2 /* Pods-keyChainTest.debug.xcconfig */,
+				BE75C5B38F05D5A7911F6C12 /* Pods-keyChainTest.release.xcconfig */,
+				02B5415A41600DA26A442C4E /* Pods-keyChainTest2.debug.xcconfig */,
+				D716324C68B633ED2847EABC /* Pods-keyChainTest2.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		A9BAB29F589761D39D421071 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				06D095AFC891057D10C2D5FD /* Pods_keyChainTest.framework */,
+				266AA5291AE8A2B103EBCBBB /* Pods_keyChainTest2.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		D07B082421019E680083FB04 = {
 			isa = PBXGroup;
 			children = (
 				D07B082F21019E690083FB04 /* keyChainTest */,
 				D0F464E421072DBE0038B9CF /* keyChainTest2 */,
 				D07B082E21019E680083FB04 /* Products */,
+				9BD61D55F459E64E34B7D58A /* Pods */,
+				A9BAB29F589761D39D421071 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -104,6 +138,7 @@
 				D0F464EE21072DBF0038B9CF /* LaunchScreen.storyboard */,
 				D0F464F121072DBF0038B9CF /* Info.plist */,
 				D0F464F6210730790038B9CF /* KeychainService.swift */,
+				D0AB52CA22686DBF00F53A5F /* GoogleService-Info.plist */,
 			);
 			path = keyChainTest2;
 			sourceTree = "<group>";
@@ -115,6 +150,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D07B083F21019E690083FB04 /* Build configuration list for PBXNativeTarget "keyChainTest" */;
 			buildPhases = (
+				EB9A7B8DE0F48554A2704BB6 /* [CP] Check Pods Manifest.lock */,
 				D07B082921019E680083FB04 /* Sources */,
 				D07B082A21019E680083FB04 /* Frameworks */,
 				D07B082B21019E680083FB04 /* Resources */,
@@ -132,9 +168,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D0F464F421072DBF0038B9CF /* Build configuration list for PBXNativeTarget "keyChainTest2" */;
 			buildPhases = (
+				A70E40B380A533346FADBA82 /* [CP] Check Pods Manifest.lock */,
 				D0F464DF21072DBE0038B9CF /* Sources */,
 				D0F464E021072DBE0038B9CF /* Frameworks */,
 				D0F464E121072DBE0038B9CF /* Resources */,
+				80147807EA84F8AC4A605EED /* [CP] Embed Pods Frameworks */,
+				D0AB52CE2268818900F53A5F /* Crashlytics */,
 			);
 			buildRules = (
 			);
@@ -166,6 +205,9 @@
 					D0F464E221072DBE0038B9CF = {
 						CreatedOnToolsVersion = 9.4.1;
 						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
 							com.apple.Keychain = {
 								enabled = 1;
 							};
@@ -208,12 +250,102 @@
 			buildActionMask = 2147483647;
 			files = (
 				D0F464F021072DBF0038B9CF /* LaunchScreen.storyboard in Resources */,
+				D0AB52CB22686DBF00F53A5F /* GoogleService-Info.plist in Resources */,
 				D0F464ED21072DBF0038B9CF /* Assets.xcassets in Resources */,
 				D0F464EB21072DBE0038B9CF /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		80147807EA84F8AC4A605EED /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-keyChainTest2/Pods-keyChainTest2-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-keyChainTest2/Pods-keyChainTest2-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A70E40B380A533346FADBA82 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-keyChainTest2-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D0AB52CE2268818900F53A5F /* Crashlytics */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = Crashlytics;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\"\n";
+		};
+		EB9A7B8DE0F48554A2704BB6 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-keyChainTest-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D07B082921019E680083FB04 /* Sources */ = {
@@ -390,6 +522,7 @@
 		};
 		D07B084021019E690083FB04 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 12F6C90781CF993E45BD5CC2 /* Pods-keyChainTest.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = keyChainTest/keyChainTest.entitlements;
@@ -409,6 +542,7 @@
 		};
 		D07B084121019E690083FB04 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BE75C5B38F05D5A7911F6C12 /* Pods-keyChainTest.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = keyChainTest/keyChainTest.entitlements;
@@ -428,11 +562,14 @@
 		};
 		D0F464F221072DBF0038B9CF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 02B5415A41600DA26A442C4E /* Pods-keyChainTest2.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = keyChainTest2/keyChainTest2.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 9TNVAWA2VV;
+				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = keyChainTest2/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -447,11 +584,13 @@
 		};
 		D0F464F321072DBF0038B9CF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D716324C68B633ED2847EABC /* Pods-keyChainTest2.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = keyChainTest2/keyChainTest2.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9TNVAWA2VV;
+				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = keyChainTest2/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

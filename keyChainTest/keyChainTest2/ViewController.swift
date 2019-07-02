@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Crashlytics
 
 struct KeychainConfiguration {
     static let serviceName = "TestKeyChain"
@@ -33,6 +34,12 @@ class ViewController: UIViewController {
         } catch {
             print(error)
         }
+        
+        let button = UIButton(type: .roundedRect)
+        button.frame = CGRect(x: UIScreen.main.bounds.size.width / 2 - 50, y: 200, width: 100, height: 44)
+        button.setTitle("Test Crash", for: [])
+        button.addTarget(self, action: #selector(self.crashButtonTapped(_:)), for: .touchUpInside)
+        view.addSubview(button)
     }
 
     override func didReceiveMemoryWarning() {
@@ -40,6 +47,11 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-
+    @IBAction func crashButtonTapped(_ sender: AnyObject) {
+//        let error = NSError(domain: "test non-fatal issue", code: -1, userInfo: nil)
+//        Crashlytics.sharedInstance().recordError(error)
+        assert(false)
+    }
+    
 }
 

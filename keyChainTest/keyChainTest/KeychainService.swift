@@ -79,6 +79,7 @@ struct KeychainService {
             // Update the existing item with the new token.
             var attributesToUpdate = [String : AnyObject]()
             attributesToUpdate[kSecValueData as String] = encodedToken as AnyObject?
+            attributesToUpdate[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlock
             
             let query = KeychainService.keychainQuery(withService: service, account: account, accessGroup: accessGroup)
             let status = SecItemUpdate(query as CFDictionary, attributesToUpdate as CFDictionary)
@@ -93,6 +94,7 @@ struct KeychainService {
              */
             var newItem = KeychainService.keychainQuery(withService: service, account: account, accessGroup: accessGroup)
             newItem[kSecValueData as String] = encodedToken as AnyObject?
+            newItem[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlock
             
             // Add a the new item to the keychain.
             let status = SecItemAdd(newItem as CFDictionary, nil)
