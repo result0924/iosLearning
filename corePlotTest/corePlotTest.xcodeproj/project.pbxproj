@@ -13,6 +13,7 @@
 		D09CB5222269D62400C62350 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D09CB5212269D62400C62350 /* Assets.xcassets */; };
 		D09CB5252269D62400C62350 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D09CB5232269D62400C62350 /* LaunchScreen.storyboard */; };
 		D09CB52F2269D82D00C62350 /* CorePlot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D09CB52E2269D82D00C62350 /* CorePlot.framework */; };
+		D0B9ACA022D8982600E80DA4 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B9AC9F22D8982600E80DA4 /* TestViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		D09CB5242269D62400C62350 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D09CB5262269D62400C62350 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D09CB52E2269D82D00C62350 /* CorePlot.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CorePlot.framework; path = Carthage/Build/iOS/CorePlot.framework; sourceTree = "<group>"; };
+		D0B9AC9F22D8982600E80DA4 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +66,7 @@
 				D09CB5212269D62400C62350 /* Assets.xcassets */,
 				D09CB5232269D62400C62350 /* LaunchScreen.storyboard */,
 				D09CB5262269D62400C62350 /* Info.plist */,
+				D0B9AC9F22D8982600E80DA4 /* TestViewController.swift */,
 			);
 			path = corePlotTest;
 			sourceTree = "<group>";
@@ -109,6 +112,7 @@
 				TargetAttributes = {
 					D09CB5162269D62200C62350 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 					};
 				};
 			};
@@ -172,6 +176,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D09CB51D2269D62200C62350 /* ViewController.swift in Sources */,
+				D0B9ACA022D8982600E80DA4 /* TestViewController.swift in Sources */,
 				D09CB51B2269D62200C62350 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -331,7 +336,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.health2pass.corePlotTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -353,7 +358,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.health2pass.corePlotTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
