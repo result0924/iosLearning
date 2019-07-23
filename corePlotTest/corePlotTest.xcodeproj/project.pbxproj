@@ -62,11 +62,11 @@
 			children = (
 				D09CB51A2269D62200C62350 /* AppDelegate.swift */,
 				D09CB51C2269D62200C62350 /* ViewController.swift */,
+				D0B9AC9F22D8982600E80DA4 /* TestViewController.swift */,
 				D09CB51E2269D62200C62350 /* Main.storyboard */,
 				D09CB5212269D62400C62350 /* Assets.xcassets */,
 				D09CB5232269D62400C62350 /* LaunchScreen.storyboard */,
 				D09CB5262269D62400C62350 /* Info.plist */,
-				D0B9AC9F22D8982600E80DA4 /* TestViewController.swift */,
 			);
 			path = corePlotTest;
 			sourceTree = "<group>";
@@ -330,6 +330,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = corePlotTest/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -352,6 +353,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = corePlotTest/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
