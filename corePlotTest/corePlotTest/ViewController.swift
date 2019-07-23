@@ -69,11 +69,11 @@ class ViewController: UIViewController, CPTAxisDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         // user1 glucose_ac
-        let data1 = dataModle(value: 142, date: "2010-07-17")
-        let data2 = dataModle(value: 191, date: "2011-08-24")
-        let data3 = dataModle(value: 143, date: "2013-03-27")
-        let data4 = dataModle(value: 80, date: "2016-06-12")
-        let data5 = dataModle(value: 126, date: "2019-07-22")
+        let data1 = dataModle(value: 142, date: "2017-01-01")
+        let data2 = dataModle(value: 191, date: "2017-12-31")
+        let data3 = dataModle(value: 143, date: "2018-01-01")
+        let data4 = dataModle(value: 80, date: "2018-12-31")
+        let data5 = dataModle(value: 126, date: "2019-01-01")
         
         dataArray = [data1, data2, data3, data4, data5]
         titleLabel.text = "user1 glucose_ac"
@@ -293,17 +293,25 @@ class ViewController: UIViewController, CPTAxisDelegate {
             case .year:
                 var xLabels = Set<CPTAxisLabel>()
                 
+                let firstDayString = String(fromYear) + "-01-01"
+                let endDayString = String(toYear) + "-12-31"
+                
+                guard let fromDate = firstDayString.date, let endDate = endDayString.date else {
+                    return
+                }
+                
+                let components = calendar.dateComponents([.day], from: fromDate, to: endDate)
+                let widthPoint = hostView.bounds.size.width * (fetchYearCount() / chartRange) / CGFloat(components.day ?? 0)
+                
                 for index in 0..<Int(fetchYearCount()) {
-                    let i = CGFloat(index)
-                    let location = kLengthDistanceFromYAxis + i * (hostView.bounds.size.width / chartRange)
+                    let i = CGFloat(index) * 365
+                    let location = kLengthDistanceFromYAxis + i * widthPoint
                     
-                    if space.xRange.minLimit.floatValue < Float(location) && Float(location) + Float(kLengthDistanceToYAxis) < space.xRange.maxLimit.floatValue {
-                        let label = CPTAxisLabel(text: String(index + fromYear), textStyle: textStyle)
-                        label.tickLocation = NSNumber(value: Float(location))
-                        label.alignment = .center
-                        label.offset = 5
-                        xLabels.insert(label)
-                    }
+                    let label = CPTAxisLabel(text: String(index + fromYear), textStyle: textStyle)
+                    label.tickLocation = NSNumber(value: Float(location))
+                    label.alignment = .center
+                    label.offset = 5
+                    xLabels.insert(label)
                 }
                 xAxis.axisLabels = xLabels
             default:
@@ -327,7 +335,10 @@ class ViewController: UIViewController, CPTAxisDelegate {
                     if month % 12 == 1 {
                         text = text + "\n" + String(showYear)
                         showYear += 1
-                        rightYear += 1
+                        
+                        if 0 != index {
+                            rightYear += 1
+                        }
                     }
                     
                     let dateComponents = DateComponents(year: rightYear, month: Int(text) ?? 1)
@@ -337,14 +348,12 @@ class ViewController: UIViewController, CPTAxisDelegate {
                     }
                     let monthFromFirstMonthDay = calendar.dateComponents([.day], from: fromDate, to: monthDate).day
                     let location = kLengthDistanceFromYAxis + CGFloat(monthFromFirstMonthDay ?? 0) * widthPoint
-                    
-                    if space.xRange.minLimit.floatValue < Float(location) && Float(location) < space.xRange.maxLimit.floatValue {
-                        let label = CPTAxisLabel(text: text, textStyle: textStyle)
-                        label.tickLocation = NSNumber(value: Float(location))
-                        label.alignment = .center
-                        label.offset = 5
-                        xLabels.insert(label)
-                    }
+
+                    let label = CPTAxisLabel(text: text, textStyle: textStyle)
+                    label.tickLocation = NSNumber(value: Float(location))
+                    label.alignment = .center
+                    label.offset = 5
+                    xLabels.insert(label)
                 }
                 xAxis.axisLabels = xLabels
             }
@@ -433,11 +442,11 @@ class ViewController: UIViewController, CPTAxisDelegate {
     @IBAction func tapDataChange(_ sender: UISegmentedControl) {
         if 0 == sender.selectedSegmentIndex {
             // user1 glucose_ac
-            let data1 = dataModle(value: 142, date: "2010-07-17")
-            let data2 = dataModle(value: 191, date: "2011-08-24")
-            let data3 = dataModle(value: 143, date: "2013-03-27")
-            let data4 = dataModle(value: 80, date: "2016-07-09")
-            let data5 = dataModle(value: 126, date: "2018-11-20")
+            let data1 = dataModle(value: 142, date: "2017-01-01")
+            let data2 = dataModle(value: 191, date: "2017-12-31")
+            let data3 = dataModle(value: 143, date: "2018-01-01")
+            let data4 = dataModle(value: 80, date: "2018-12-31")
+            let data5 = dataModle(value: 126, date: "2019-01-01")
             
             dataArray = [data1, data2, data3, data4, data5]
             titleLabel.text = "user1 glucose_ac"
