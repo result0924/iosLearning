@@ -27,9 +27,7 @@ class ViewController: UIViewController, CPTAxisDelegate {
     @IBOutlet weak var titleLabel: UILabel!
     var hostView: CPTGraphHostingView!
     var dataArray: [dataModle] = []
-    var symbolTextAnnotation:CPTPlotSpaceAnnotation?
-    var canDrag: Bool = true
-    var valuePointArray: [NSNumber] = []
+    var symbolTextAnnotation: CPTPlotSpaceAnnotation?
     var fromYear: Int = 0
     var toYear: Int = 0
     var fromMonth: Int = 0
@@ -43,7 +41,7 @@ class ViewController: UIViewController, CPTAxisDelegate {
     var maxValue: Float = 0
     var xLocationArray: [Float] = []
     var upBound: Float = 0
-    var stepSize: Float = 0
+    var selectIdx: UInt = 0
     
     var textStyle: CPTMutableTextStyle {
         let textStyle = CPTMutableTextStyle()
@@ -382,7 +380,7 @@ class ViewController: UIViewController, CPTAxisDelegate {
             let mag = floor(log10(rawStep))
             let magPow = pow(10, mag)
             let magMsd = Int(rawStep / magPow + 0.5)
-            stepSize = Float(magMsd) * magPow
+            let stepSize = Float(magMsd) * magPow
             
             var lowBound = stepSize * floor(yMin / stepSize)
             upBound = stepSize * floor(yMax / stepSize + 1)
@@ -594,8 +592,7 @@ extension ViewController: CPTPlotDataSource {
     }
     
     func plotSpace(_ space: CPTPlotSpace, shouldHandlePointingDeviceDownEvent event: UIEvent, at point: CGPoint) -> Bool {
-        dismissCrossHairAndAnnotation()
-        
+ 
         return true
     }
 
@@ -607,13 +604,15 @@ extension ViewController: CPTPlotDataSource {
         if yPoint < minValue {
             return false
         }
+        
+//        let anchorPoint = space.plotPoint(for: event)?.first?.floatValue ?? 0
+//        print("anchorPoint:\(anchorPoint)")
 
         return true
     }
 
     func plotSpace(_ space: CPTPlotSpace, shouldHandlePointingDeviceUp event: UIEvent, at point: CGPoint) -> Bool {
-        dismissCrossHairAndAnnotation()
-        
+
         return true
     }
     
@@ -648,13 +647,13 @@ extension ViewController: CPTPlotSpaceDelegate {
 extension ViewController: CPTScatterPlotDataSource {
     func symbol(for plot: CPTScatterPlot, record idx: UInt) -> CPTPlotSymbol? {
         let symbolLineStyle = CPTMutableLineStyle()
-        symbolLineStyle.lineWidth = 2
-        symbolLineStyle.lineColor = .white()
+        symbolLineStyle.lineWidth = idx == selectIdx ? 10 : 2
+        symbolLineStyle.lineColor = idx == selectIdx ? .chartRed(alpha: 0.3) : .white()
         
         let symbol = CPTPlotSymbol.ellipse()
-        symbol.fill = CPTFill(color: .chartBlue(alpha: 1))
+        symbol.fill = idx == selectIdx ? CPTFill(color: .chartRed(alpha: 1)) : CPTFill(color: .chartBlue(alpha: 1))
         symbol.lineStyle = symbolLineStyle
-        symbol.size = CGSize(width: 16, height: 16)
+        symbol.size = CGSize(width: 10, height: 10)
         
         return symbol
     }
@@ -690,6 +689,8 @@ extension ViewController: CPTScatterPlotDelegate {
             return
         }
         
+        selectIdx = idx
+        
         // Now add the annotation to the plot area
         let textLayer = CPTTextLayer.init(text: "")
         textLayer.isOpaque = false
@@ -722,12 +723,10 @@ extension ViewController: CPTScatterPlotDelegate {
         var yMajorLocations = Set<NSNumber>()
         yMajorLocations.insert(CPTDecimalFromFloat(anchorPoint) as NSNumber)
         crossHair.majorTickLocations = yMajorLocations
-        let crossHairLineStyle = CPTMutableLineStyle()
-        crossHairLineStyle.lineWidth = 0
-        crossHairLineStyle.lineColor = .clear()
-        crossHair.majorTickLineStyle = crossHairLineStyle
+        crossHair.majorTickLength = 0
     
         crossHair.isHidden = false
+        self.hostView.hostedGraph?.reloadData()
     }
 }
 
@@ -755,10 +754,18 @@ extension UIColor {
     static func cBlue(alpha: CGFloat) -> UIColor {
         return UIColor.init(red: 0.16, green: 0.53, blue: 0.87, alpha: alpha)
     }
+    
+    static func cRed(alpha: CGFloat) -> UIColor {
+        return UIColor.init(red: 1, green: 0.51, blue: 0.41, alpha: alpha)
+    }
 }
 
 extension CPTColor {
     static func chartBlue(alpha: CGFloat) -> CPTColor {
         return CPTColor(cgColor: UIColor.cBlue(alpha: alpha).cgColor)
+    }
+    
+    static func chartRed(alpha: CGFloat) -> CPTColor {
+        return CPTColor(cgColor: UIColor.cRed(alpha: alpha).cgColor)
     }
 }
