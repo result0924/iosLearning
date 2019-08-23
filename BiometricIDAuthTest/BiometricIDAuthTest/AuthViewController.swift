@@ -37,11 +37,20 @@ class AuthViewController: UIViewController {
                 let alertView = UIAlertController(title: "Error",
                                                   message: message,
                                                   preferredStyle: .alert)
-                let okAction = UIAlertAction(title: "Darn!", style: .default)
+                let okAction = UIAlertAction(title: "OK", style: .default)
                 alertView.addAction(okAction)
                 self?.present(alertView, animated: true)
             } else {
-                self?.dismiss(animated: true, completion: nil)
+                // if the completion is not nil show an alert
+                let alertView = UIAlertController(title: "Identify Success!!!",
+                                                  message: nil,
+                                                  preferredStyle: .alert)
+                let okAction = UIAlertAction(title: "OK", style: .default, handler: { (action: UIAlertAction!) -> Void in
+                    self?.dismiss(animated: true, completion: nil)
+                })
+                
+                alertView.addAction(okAction)
+                self?.present(alertView, animated: true)
             }
         }
     }

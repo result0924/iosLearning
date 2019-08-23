@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -22,7 +22,7 @@
                                 <rect key="frame" x="16" y="202" width="343" height="41"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                 <state key="normal" title="Try again!">
-                                    <color key="titleColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleColor" red="1" green="0.1857388616" blue="0.57339501380000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="tryAgain" destination="BYZ-38-t0r" eventType="touchUpInside" id="lH5-Zb-MWu"/>
@@ -64,9 +64,8 @@
                                     <action selector="touchIDAction" destination="Wwv-vy-1oE" eventType="touchUpInside" id="KgK-5A-E3r"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u5A-J0-qkH">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u5A-J0-qkH">
                                 <rect key="frame" x="298" y="44" width="39" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Close"/>
                                 <connections>
                                     <action selector="close" destination="Wwv-vy-1oE" eventType="touchUpInside" id="YE2-AU-wsD"/>
@@ -77,6 +76,8 @@
                         <constraints>
                             <constraint firstItem="aim-Xu-XVN" firstAttribute="centerX" secondItem="PXa-Om-cP7" secondAttribute="centerX" id="37o-af-6Pt"/>
                             <constraint firstItem="aim-Xu-XVN" firstAttribute="centerY" secondItem="PXa-Om-cP7" secondAttribute="centerY" multiplier="2:3" id="NMN-rY-y1q"/>
+                            <constraint firstItem="Yuh-th-r2h" firstAttribute="trailing" secondItem="u5A-J0-qkH" secondAttribute="trailing" constant="38" id="XnL-YG-NLa"/>
+                            <constraint firstItem="u5A-J0-qkH" firstAttribute="top" secondItem="Yuh-th-r2h" secondAttribute="top" constant="24" id="jc9-0Z-Rlj"/>
                             <constraint firstItem="aim-Xu-XVN" firstAttribute="leading" secondItem="Yuh-th-r2h" secondAttribute="leading" constant="16" id="msv-PX-uAi"/>
                             <constraint firstItem="Yuh-th-r2h" firstAttribute="trailing" secondItem="aim-Xu-XVN" secondAttribute="trailing" constant="16" id="ofu-ke-Hud"/>
                         </constraints>

@@ -17,7 +17,7 @@ enum BiometricType {
 
 class BiometricIDAuth {
     let context = LAContext()
-    var loginReason = "Logging in with Touch ID"
+    var loginReason = "Test with Touch ID"
     
     func biometricType() -> BiometricType {
         let _ = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
