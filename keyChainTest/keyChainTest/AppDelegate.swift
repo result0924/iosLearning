@@ -14,7 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         UIApplication.shared.setMinimumBackgroundFetchInterval(3600)
 
@@ -44,8 +44,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        if let viewController = window?.rootViewController as? ViewController {
-            viewController.updateLabel()
+        
+        if let value = UserDefaults.standard.object(forKey: "backgroundFetchTest") as? String, value.contains("token") {
+            return
+        }
+        
+        do {
+            let token = try KeychainService(service: KeychainConfiguration.serviceName,
+                                            account: "justin",
+                                            accessGroup: KeychainConfiguration.serviceGroup).readToken()
+            
+            if token.isEmpty {
+                UserDefaults.standard.set("token is clear", forKey: "backgroundFetchTest")
+            } else {
+                let formatter = DateFormatter()
+                formatter.timeStyle = .short
+                
+                let currentTime = Date()
+                let value = formatter.string(from: currentTime)
+                UserDefaults.standard.set(value, forKey: "backgroundFetchTest")
+            }
+        } catch {
+            UserDefaults.standard.set("token is clear error: \(error)", forKey: "backgroundFetchTest")
         }
     }
 

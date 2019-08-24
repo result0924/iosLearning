@@ -79,35 +79,15 @@ class ViewController: UIViewController {
 //        }
         
     }
-    
-    func updateLabel() {
+
+    @IBAction func reloadLabel(_ sender: Any) {
         if keychainValueLabel.text?.contains("token") ?? false {
             return
         }
         
-        do {
-            let token = try KeychainService(service: KeychainConfiguration.serviceName,
-                                            account: "justin",
-                                            accessGroup: KeychainConfiguration.serviceGroup).readToken()
-            
-            if token.isEmpty {
-                keychainValueLabel.text = "token is clear"
-            } else {
-                let formatter = DateFormatter()
-                formatter.timeStyle = .short
-                
-                let currentTime = Date()
-                keychainValueLabel.text = formatter.string(from: currentTime)
-            }
-        } catch {
-            keychainValueLabel.text = "token is clear error: \(error)"
+        if let value = UserDefaults.standard.object(forKey: "backgroundFetchTest") as? String {
+            keychainValueLabel.text = value
         }
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
 }
 

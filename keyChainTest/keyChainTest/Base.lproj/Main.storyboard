@@ -19,17 +19,28 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your keychain value" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X9J-v3-bXH">
-                                <rect key="frame" x="15" y="344" width="384" height="29"/>
+                                <rect key="frame" x="15" y="194" width="384" height="29"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                 <color key="textColor" red="0.0048598507420000003" green="0.096086271109999996" blue="0.57499289509999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PJ3-SS-UfE">
+                                <rect key="frame" x="15" y="629" width="384" height="33"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="Reload Label"/>
+                                <connections>
+                                    <action selector="reloadLabel:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Wyv-pI-Lzu"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="X9J-v3-bXH" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="15" id="864-Xd-JJJ"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="PJ3-SS-UfE" secondAttribute="trailing" constant="15" id="Hcn-DM-yKG"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="PJ3-SS-UfE" secondAttribute="bottom" constant="200" id="TdD-Gh-EB7"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="X9J-v3-bXH" secondAttribute="trailing" constant="15" id="nsh-VC-Qht"/>
-                            <constraint firstItem="X9J-v3-bXH" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="300" id="rHF-y5-VZC"/>
+                            <constraint firstItem="X9J-v3-bXH" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="150" id="rHF-y5-VZC"/>
+                            <constraint firstItem="PJ3-SS-UfE" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="15" id="wyk-U2-eOd"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
