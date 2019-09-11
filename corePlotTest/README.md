@@ -1,0 +1,1 @@
+Refer cross hair: https://github.com/core-plot/core-plot/issues/322
