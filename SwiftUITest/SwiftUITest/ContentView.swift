@@ -10,7 +10,23 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        Text("Hello World")
+        TabView {
+            Text("Plus one second")
+                .tabItem {
+                    Image(systemName: "1.circle")
+                    Text("First")
+                }.tag(0)
+            Text("Dark mode test")
+                .tabItem {
+                    Image(systemName: "2.circle")
+                    Text("Second")
+                }.tag(1)
+            Text("Color mixer")
+                .tabItem {
+                    Image(systemName: "3.circle")
+                    Text("Third")
+            }.tag(2)
+        }
     }
 }
 
