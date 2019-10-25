@@ -11,27 +11,30 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         TabView {
-            Text("Plus one second")
+            PlusOneSecondView()
                 .tabItem {
                     Image(systemName: "1.circle")
                     Text("First")
                 }.tag(0)
-            Text("Dark mode test")
+            DartModeView()
                 .tabItem {
                     Image(systemName: "2.circle")
                     Text("Second")
                 }.tag(1)
-            Text("Color mixer")
+            ColorMixerView(colorR: 0.5, colorG: 0.5, colorB: 0.5)
                 .tabItem {
                     Image(systemName: "3.circle")
                     Text("Third")
             }.tag(2)
-        }
+        }.edgesIgnoringSafeArea(.top)
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        Group {
+            ContentView().previewDevice(PreviewDevice(rawValue: "iPhone X"))
+            ContentView().previewDevice(PreviewDevice(rawValue: "iPhone SE"))
+        }
     }
 }

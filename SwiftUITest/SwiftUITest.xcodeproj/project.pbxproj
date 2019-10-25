@@ -13,6 +13,9 @@
 		D091AB852359BAD500D3A1EF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D091AB842359BAD500D3A1EF /* Assets.xcassets */; };
 		D091AB882359BAD500D3A1EF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D091AB872359BAD500D3A1EF /* Preview Assets.xcassets */; };
 		D091AB8B2359BAD500D3A1EF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D091AB892359BAD500D3A1EF /* LaunchScreen.storyboard */; };
+		D0A8424B2360128300CBA57E /* PlusOneSecondView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A8424A2360128300CBA57E /* PlusOneSecondView.swift */; };
+		D0A8424F2361BDE900CBA57E /* DartModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A8424E2361BDE900CBA57E /* DartModeView.swift */; };
+		D0A842512361BFA400CBA57E /* ColorMixerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A842502361BFA400CBA57E /* ColorMixerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +27,9 @@
 		D091AB872359BAD500D3A1EF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		D091AB8A2359BAD500D3A1EF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D091AB8C2359BAD500D3A1EF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D0A8424A2360128300CBA57E /* PlusOneSecondView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlusOneSecondView.swift; sourceTree = "<group>"; };
+		D0A8424E2361BDE900CBA57E /* DartModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DartModeView.swift; sourceTree = "<group>"; };
+		D0A842502361BFA400CBA57E /* ColorMixerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorMixerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +65,9 @@
 				D091AB7E2359BAD300D3A1EF /* AppDelegate.swift */,
 				D091AB802359BAD300D3A1EF /* SceneDelegate.swift */,
 				D091AB822359BAD300D3A1EF /* ContentView.swift */,
+				D0A8424A2360128300CBA57E /* PlusOneSecondView.swift */,
+				D0A8424E2361BDE900CBA57E /* DartModeView.swift */,
+				D0A842502361BFA400CBA57E /* ColorMixerView.swift */,
 				D091AB842359BAD500D3A1EF /* Assets.xcassets */,
 				D091AB892359BAD500D3A1EF /* LaunchScreen.storyboard */,
 				D091AB8C2359BAD500D3A1EF /* Info.plist */,
@@ -146,9 +155,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0A8424F2361BDE900CBA57E /* DartModeView.swift in Sources */,
 				D091AB7F2359BAD300D3A1EF /* AppDelegate.swift in Sources */,
 				D091AB812359BAD300D3A1EF /* SceneDelegate.swift in Sources */,
 				D091AB832359BAD300D3A1EF /* ContentView.swift in Sources */,
+				D0A842512361BFA400CBA57E /* ColorMixerView.swift in Sources */,
+				D0A8424B2360128300CBA57E /* PlusOneSecondView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
