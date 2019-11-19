@@ -10,15 +10,15 @@ import UIKit
 
 struct KeychainConfiguration {
     static let serviceName = "TestKeyChain"
-    static var serviceGroup: String?
-    
-    init(serviceGroup: String) {
+    static var serviceGroup: String = {
+        var serviceGroup = ""
+        
         if let appIdentifierPrefix = Bundle.main.infoDictionary?["AppIdentifierPrefix"] as? String {
-            self.init(serviceGroup: appIdentifierPrefix + "group.h2.keyChainTest")
-        } else {
-            self.init(serviceGroup: "")
+            serviceGroup = appIdentifierPrefix + "group.h2.keyChainTest"
         }
-    }
+        
+        return serviceGroup
+    }()
 }
 
 class ViewController: UIViewController {
