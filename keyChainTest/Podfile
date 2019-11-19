@@ -1,21 +1,17 @@
 # Uncomment the next line to define a global platform for your project
 platform :ios, '9.0'
+# ignore all warnings from all pods
+inhibit_all_warnings!
+# in the Podfile means that we want the listed frameworks to be dynamically installed instead as static frameworks.
+use_frameworks!
 
 target 'keyChainTest' do
-  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
-  use_frameworks!
-
   # Pods for keyChainTest
 
 end
 
 target 'keyChainTest2' do
-  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
-  use_frameworks!
-  pod 'Firebase/Core'
-  pod 'Fabric'
-  pod 'Crashlytics'
-
   # Pods for keyChainTest2
-
+  pod 'Firebase/Core'
+  pod 'Crashlytics'
 end
