@@ -8,12 +8,13 @@
 
 import UIKit
 
-class ViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
+let kScreenWidth = UIScreen.main.bounds.size.width
+let kScreenHeight = UIScreen.main.bounds.size.height
+
+class ViewController: UIViewController {
     var collectionView: UICollectionView? = nil
     let collectionViewCellReuseID = "itemCell"
     let collectionArray:[String] = ["1", "2", "3", "4", "5", "6"]
-    let kScreenWidth = UIScreen.main.bounds.size.width
-    let kScreenHeight = UIScreen.main.bounds.size.height
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,7 +30,6 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         layout.scrollDirection = .horizontal
         
         collectionView = UICollectionView.init(frame: CGRect(x: 0, y: 64, width: kScreenWidth, height: kScreenHeight), collectionViewLayout: layout)
-        collectionView?.delegate = self
         collectionView?.dataSource = self
         collectionView?.isPagingEnabled = true
         
@@ -39,9 +39,10 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         }
         
     }
+   
+}
 
-    // MARK - UICollectionViewDataSource
-    
+extension ViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return collectionArray.count
     }
@@ -53,11 +54,12 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         
         return cell
     }
+    
 }
 
 class customCollectionViewCell: UICollectionViewCell {
     var label: UILabel = {
-        let label = UILabel.init(frame: CGRect(x: 15, y: 90, width: 100, height: 44))
+        let label = UILabel.init(frame: CGRect(x: 15, y: 90, width: kScreenWidth - 30, height: 44))
         label.textColor = .black
         label.backgroundColor = .white
         label.textAlignment = .center
@@ -86,9 +88,9 @@ extension CGFloat {
 
 extension UIColor {
     static func random() -> UIColor {
-        return UIColor(red:   .random(),
+        return UIColor(red: .random(),
                        green: .random(),
-                       blue:  .random(),
+                       blue: .random(),
                        alpha: 1.0)
     }
 }
