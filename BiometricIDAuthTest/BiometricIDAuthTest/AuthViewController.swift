@@ -20,14 +20,15 @@ class AuthViewController: UIViewController {
         
         switch biometricIDAuth.biometricType() {
         case .faceID:
-            authString = "點擊按鈕後使用臉部辨識解鎖"
+            authString = "Use face recognition to unlock"
         case .touchID:
-            authString = "點擊按鈕後使用指紋解鎖"
+            authString = "Use the fingerprint to unlock"
         default:
-            authString = "無法找到指紋或臉部辨識解鎖"
+            authString = "Unable to find fingerprint or face recognition to unlock"
         }
         
         authButton.setTitle(authString, for: .normal)
+        authButton.btnMultipleLines()
     }
     
     @IBAction func touchIDAction() {
@@ -59,4 +60,14 @@ class AuthViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
 
+}
+
+//UIButton extension
+extension UIButton {
+     //UIButton properties
+     func btnMultipleLines() {
+         titleLabel?.numberOfLines = 0
+         titleLabel?.lineBreakMode = .byWordWrapping
+         titleLabel?.textAlignment = .center
+     }
 }
