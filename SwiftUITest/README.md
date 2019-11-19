@@ -8,9 +8,10 @@
 - https://onevcat.com/2019/06/swift-ui-firstlook/
 
 ### Note
-- iOS 13以前的系統不支援
-- SwiftUI用Code寫View
-- XCode -> Edit -> Covas 預覽模式(option + command + enter)假如你沒有看到預覽畫面，請點擊預覽視窗中的`Resume`
+- Can't support before iOS13 version
+- SwiftUI write view use code
+- XCode -> Edit -> Covas 預覽模式(option + command + enter)
+假如你沒有看到預覽畫面，請點擊預覽視窗中的`Resume`
 - Preview layout in different devices
 - (Option + Command + P) 刷新 preview 
 ```
