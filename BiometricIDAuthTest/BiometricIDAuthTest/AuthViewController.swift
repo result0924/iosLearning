@@ -40,7 +40,9 @@ class AuthViewController: UIViewController {
                                                   preferredStyle: .alert)
                 let okAction = UIAlertAction(title: "OK", style: .default)
                 alertView.addAction(okAction)
-                self?.present(alertView, animated: true)
+                DispatchQueue.main.async {
+                    self?.present(alertView, animated: true)
+                }
             } else {
                 // if the completion is not nil show an alert
                 let alertView = UIAlertController(title: "Identify Success!!!",
@@ -57,7 +59,9 @@ class AuthViewController: UIViewController {
     }
     
     @IBAction func close() {
-        self.dismiss(animated: true, completion: nil)
+        DispatchQueue.main.async {
+            self.dismiss(animated: true, completion: nil)
+        }
     }
 
 }
