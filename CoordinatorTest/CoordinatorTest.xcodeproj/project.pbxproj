@@ -15,6 +15,7 @@
 		D0E5A5E223B6145B00211C9C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0E5A5E023B6145B00211C9C /* LaunchScreen.storyboard */; };
 		D0E5A5EC23B615E800211C9C /* Navigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E5A5EA23B615E800211C9C /* Navigator.swift */; };
 		D0E5A5ED23B615E800211C9C /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E5A5EB23B615E800211C9C /* Coordinator.swift */; };
+		D0E5A5EF23BD9ADE00211C9C /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E5A5EE23BD9ADE00211C9C /* MainTabBarController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		D0E5A5E323B6145B00211C9C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D0E5A5EA23B615E800211C9C /* Navigator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Navigator.swift; sourceTree = "<group>"; };
 		D0E5A5EB23B615E800211C9C /* Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		D0E5A5EE23BD9ADE00211C9C /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +66,7 @@
 				D0E5A5D523B6145700211C9C /* AppDelegate.swift */,
 				D0E5A5D723B6145700211C9C /* SceneDelegate.swift */,
 				D0E5A5D923B6145700211C9C /* ViewController.swift */,
+				D0E5A5EE23BD9ADE00211C9C /* MainTabBarController.swift */,
 				D0E5A5DB23B6145700211C9C /* Main.storyboard */,
 				D0E5A5DE23B6145B00211C9C /* Assets.xcassets */,
 				D0E5A5E023B6145B00211C9C /* LaunchScreen.storyboard */,
@@ -154,6 +157,7 @@
 			files = (
 				D0E5A5DA23B6145700211C9C /* ViewController.swift in Sources */,
 				D0E5A5EC23B615E800211C9C /* Navigator.swift in Sources */,
+				D0E5A5EF23BD9ADE00211C9C /* MainTabBarController.swift in Sources */,
 				D0E5A5ED23B615E800211C9C /* Coordinator.swift in Sources */,
 				D0E5A5D623B6145700211C9C /* AppDelegate.swift in Sources */,
 				D0E5A5D823B6145700211C9C /* SceneDelegate.swift in Sources */,
