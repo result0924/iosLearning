@@ -10,7 +10,7 @@
         <!--Main Tab Bar Controller-->
         <scene sceneID="ted-uT-G3Z">
             <objects>
-                <tabBarController id="uPW-A7-C9O" customClass="MainTabBarController" customModule="CoordinatorTest" customModuleProvider="target" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="mainTabBarController" id="uPW-A7-C9O" customClass="MainTabBarController" customModule="CoordinatorTest" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="njP-vz-8PC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
