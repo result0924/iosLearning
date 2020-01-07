@@ -15,8 +15,8 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        self.title = "Main"
     }
-
 
 }
 
@@ -36,5 +36,15 @@ extension MainViewController: UITableViewDataSource {
         return cell
     }
 
+}
+
+extension MainViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let aboutVC = storyboard.instantiateViewController(withIdentifier: "AboutViewController")
+        self.navigationController?.pushViewController(aboutVC, animated: true)
+    }
 }
 

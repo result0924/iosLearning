@@ -18,17 +18,18 @@
                     </tabBar>
                     <connections>
                         <segue destination="IlD-RG-Ujr" kind="relationship" relationship="viewControllers" id="Hvn-3e-cEU"/>
+                        <segue destination="yMi-ng-bJF" kind="relationship" relationship="viewControllers" id="aKS-CX-OEn"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fcN-ia-6sV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1578" y="-339"/>
+            <point key="canvasLocation" x="-1771" y="-24"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Main-->
         <scene sceneID="DFL-Ft-Tet">
             <objects>
                 <navigationController id="IlD-RG-Ujr" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" systemItem="recents" id="iBs-z2-FoT"/>
+                    <tabBarItem key="tabBarItem" title="Main" image="paperplane" catalog="system" id="iBs-z2-FoT"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="woL-8g-Ool">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -86,10 +87,43 @@
             </objects>
             <point key="canvasLocation" x="19" y="-338"/>
         </scene>
-        <!--View Controller-->
+        <!--Settings-->
+        <scene sceneID="y5A-Je-1Nq">
+            <objects>
+                <navigationController id="yMi-ng-bJF" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Settings" image="square.grid.2x2" catalog="system" id="XLA-Ny-rax"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="UIB-mW-4kg">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="lxd-va-Jze" kind="relationship" relationship="rootViewController" id="ynC-yw-akx"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fJw-Sy-rut" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-762" y="388"/>
+        </scene>
+        <!--Settings View Controller-->
+        <scene sceneID="Gpy-aZ-adj">
+            <objects>
+                <viewController id="lxd-va-Jze" customClass="SettingsViewController" customModule="CoordinatorTest" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="wia-eX-gxj">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <viewLayoutGuide key="safeArea" id="BCW-nI-9vV"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="qa4-tm-wI2"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3R1-1r-ZN8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="38" y="388"/>
+        </scene>
+        <!--About View Controller-->
         <scene sceneID="eOb-ta-KQt">
             <objects>
-                <viewController id="gDg-yh-Jgd" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AboutViewController" id="gDg-yh-Jgd" customClass="AboutViewController" customModule="CoordinatorTest" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tu7-LN-3J8">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -99,7 +133,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ldK-vH-46c" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4" y="316"/>
+            <point key="canvasLocation" x="835" y="-331"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="paperplane" catalog="system" width="64" height="60"/>
+        <image name="square.grid.2x2" catalog="system" width="64" height="56"/>
+    </resources>
 </document>

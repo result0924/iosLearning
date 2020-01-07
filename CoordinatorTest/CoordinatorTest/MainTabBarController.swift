@@ -12,7 +12,6 @@ class MainTabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tabBar.isHidden = true
     }
 
     override func didReceiveMemoryWarning() {
