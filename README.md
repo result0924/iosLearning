@@ -2,6 +2,8 @@
 
 ### Some Refer
 
+- [老司機週報](https://github.com/SwiftOldDriver/iOS-Weekly/releases)
+
 - Entry device's system page from app
 ```
 if let url = URL(string:UIApplicationOpenSettingsURLString) {
