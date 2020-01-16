@@ -8,9 +8,14 @@
 
 import UIKit
 
+protocol MainViewControllerDelegate: class {
+    func tapCellWithIndexPath(_ indexPath: IndexPath)
+}
+
 class MainViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
+    weak var delegate: MainViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,10 +46,7 @@ extension MainViewController: UITableViewDataSource {
 extension MainViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let aboutVC = storyboard.instantiateViewController(withIdentifier: "AboutViewController")
-        self.navigationController?.pushViewController(aboutVC, animated: true)
+        delegate?.tapCellWithIndexPath(indexPath)
     }
 }
 

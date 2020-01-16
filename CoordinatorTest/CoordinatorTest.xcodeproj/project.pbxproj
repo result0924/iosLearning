@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		D014960123BF50430084293A /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D014960023BF50430084293A /* AboutViewController.swift */; };
 		D093216323C42B430016A6FE /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093216223C42B420016A6FE /* SettingsViewController.swift */; };
+		D093216923C438590016A6FE /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093216823C438590016A6FE /* MainCoordinator.swift */; };
+		D093216B23C4386D0016A6FE /* SettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093216A23C4386D0016A6FE /* SettingsCoordinator.swift */; };
+		D093216D23C45F380016A6FE /* MainTabBarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093216C23C45F380016A6FE /* MainTabBarCoordinator.swift */; };
+		D0E51D0523CF267F004C7ECF /* AppDelegateCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E51D0423CF267F004C7ECF /* AppDelegateCoordinator.swift */; };
 		D0E5A5D623B6145700211C9C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E5A5D523B6145700211C9C /* AppDelegate.swift */; };
 		D0E5A5DA23B6145700211C9C /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E5A5D923B6145700211C9C /* MainViewController.swift */; };
 		D0E5A5DD23B6145700211C9C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0E5A5DB23B6145700211C9C /* Main.storyboard */; };
@@ -22,6 +26,10 @@
 /* Begin PBXFileReference section */
 		D014960023BF50430084293A /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		D093216223C42B420016A6FE /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		D093216823C438590016A6FE /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
+		D093216A23C4386D0016A6FE /* SettingsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCoordinator.swift; sourceTree = "<group>"; };
+		D093216C23C45F380016A6FE /* MainTabBarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarCoordinator.swift; sourceTree = "<group>"; };
+		D0E51D0423CF267F004C7ECF /* AppDelegateCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegateCoordinator.swift; sourceTree = "<group>"; };
 		D0E5A5D223B6145700211C9C /* CoordinatorTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoordinatorTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0E5A5D523B6145700211C9C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D0E5A5D923B6145700211C9C /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -76,6 +84,7 @@
 		D093216423C42B580016A6FE /* Coordinator */ = {
 			isa = PBXGroup;
 			children = (
+				D093216823C438590016A6FE /* MainCoordinator.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -83,6 +92,7 @@
 		D093216523C42B600016A6FE /* Coordinator */ = {
 			isa = PBXGroup;
 			children = (
+				D093216A23C4386D0016A6FE /* SettingsCoordinator.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -109,7 +119,9 @@
 				D093215F23C42B070016A6FE /* Sencario */,
 				D0E5A5E923B615B300211C9C /* Resources */,
 				D0E5A5D523B6145700211C9C /* AppDelegate.swift */,
+				D0E51D0423CF267F004C7ECF /* AppDelegateCoordinator.swift */,
 				D0E5A5EE23BD9ADE00211C9C /* MainTabBarController.swift */,
+				D093216C23C45F380016A6FE /* MainTabBarCoordinator.swift */,
 				D0E5A5DB23B6145700211C9C /* Main.storyboard */,
 				D0E5A5DE23B6145B00211C9C /* Assets.xcassets */,
 				D0E5A5E023B6145B00211C9C /* LaunchScreen.storyboard */,
@@ -201,9 +213,13 @@
 				D0E5A5DA23B6145700211C9C /* MainViewController.swift in Sources */,
 				D0E5A5EC23B615E800211C9C /* Navigator.swift in Sources */,
 				D093216323C42B430016A6FE /* SettingsViewController.swift in Sources */,
+				D0E51D0523CF267F004C7ECF /* AppDelegateCoordinator.swift in Sources */,
 				D0E5A5EF23BD9ADE00211C9C /* MainTabBarController.swift in Sources */,
+				D093216B23C4386D0016A6FE /* SettingsCoordinator.swift in Sources */,
+				D093216D23C45F380016A6FE /* MainTabBarCoordinator.swift in Sources */,
 				D014960123BF50430084293A /* AboutViewController.swift in Sources */,
 				D0E5A5ED23B615E800211C9C /* Coordinator.swift in Sources */,
+				D093216923C438590016A6FE /* MainCoordinator.swift in Sources */,
 				D0E5A5D623B6145700211C9C /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
