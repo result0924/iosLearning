@@ -73,14 +73,44 @@
                     <view key="view" contentMode="scaleToFill" id="wia-eX-gxj">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hLa-PN-LTo">
+                                <rect key="frame" x="20" y="144" width="374" height="608"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gGc-gj-VFU">
+                                <rect key="frame" x="20" y="802" width="374" height="30"/>
+                                <state key="normal" title="Remove image background"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AAH-A0-S8f">
+                                <rect key="frame" x="20" y="75" width="374" height="30"/>
+                                <state key="normal" title="Take picture"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="BCW-nI-9vV" firstAttribute="trailing" secondItem="AAH-A0-S8f" secondAttribute="trailing" constant="20" id="JeR-OH-c1l"/>
+                            <constraint firstItem="hLa-PN-LTo" firstAttribute="leading" secondItem="BCW-nI-9vV" secondAttribute="leading" constant="20" id="Tln-Vn-ZPU"/>
+                            <constraint firstItem="gGc-gj-VFU" firstAttribute="leading" secondItem="BCW-nI-9vV" secondAttribute="leading" constant="20" id="Xbs-BF-BT2"/>
+                            <constraint firstItem="hLa-PN-LTo" firstAttribute="top" secondItem="BCW-nI-9vV" secondAttribute="top" constant="100" id="Zuh-aq-zPz"/>
+                            <constraint firstItem="BCW-nI-9vV" firstAttribute="trailing" secondItem="gGc-gj-VFU" secondAttribute="trailing" constant="20" id="auE-nt-TfL"/>
+                            <constraint firstItem="hLa-PN-LTo" firstAttribute="top" secondItem="AAH-A0-S8f" secondAttribute="bottom" constant="39" id="hNo-9A-1B7"/>
+                            <constraint firstItem="BCW-nI-9vV" firstAttribute="bottom" secondItem="gGc-gj-VFU" secondAttribute="bottom" constant="30" id="mab-aT-vx1"/>
+                            <constraint firstItem="BCW-nI-9vV" firstAttribute="trailing" secondItem="hLa-PN-LTo" secondAttribute="trailing" constant="20" id="q7R-db-6i4"/>
+                            <constraint firstItem="gGc-gj-VFU" firstAttribute="top" secondItem="hLa-PN-LTo" secondAttribute="bottom" constant="50" id="tbq-b2-exd"/>
+                            <constraint firstItem="AAH-A0-S8f" firstAttribute="leading" secondItem="BCW-nI-9vV" secondAttribute="leading" constant="20" id="vQf-gx-mlA"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="BCW-nI-9vV"/>
                     </view>
                     <navigationItem key="navigationItem" id="qa4-tm-wI2"/>
+                    <connections>
+                        <outlet property="imageView" destination="hLa-PN-LTo" id="eOd-Pq-zt4"/>
+                        <outlet property="removeImageBGButton" destination="gGc-gj-VFU" id="JUR-0x-P4C"/>
+                        <outlet property="takePictureButton" destination="AAH-A0-S8f" id="6Fv-eU-MtH"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3R1-1r-ZN8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-649" y="362"/>
+            <point key="canvasLocation" x="-649.27536231884062" y="361.60714285714283"/>
         </scene>
         <!--About View Controller-->
         <scene sceneID="eOb-ta-KQt">

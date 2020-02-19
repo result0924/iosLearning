@@ -10,6 +10,7 @@
 		D014960123BF50430084293A /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D014960023BF50430084293A /* AboutViewController.swift */; };
 		D0506A3F23FD0E1E00FE0DDC /* Storyboard+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0506A3E23FD0E1E00FE0DDC /* Storyboard+Extension.swift */; };
 		D0506A4123FD0FF500FE0DDC /* AboutCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0506A4023FD0FF500FE0DDC /* AboutCoordinator.swift */; };
+		D0506A4523FD278D00FE0DDC /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0506A4423FD278D00FE0DDC /* Alamofire.framework */; };
 		D093216323C42B430016A6FE /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093216223C42B420016A6FE /* SettingsViewController.swift */; };
 		D093216923C438590016A6FE /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093216823C438590016A6FE /* MainCoordinator.swift */; };
 		D093216B23C4386D0016A6FE /* SettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093216A23C4386D0016A6FE /* SettingsCoordinator.swift */; };
@@ -29,6 +30,7 @@
 		D014960023BF50430084293A /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		D0506A3E23FD0E1E00FE0DDC /* Storyboard+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Storyboard+Extension.swift"; sourceTree = "<group>"; };
 		D0506A4023FD0FF500FE0DDC /* AboutCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutCoordinator.swift; sourceTree = "<group>"; };
+		D0506A4423FD278D00FE0DDC /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		D093216223C42B420016A6FE /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		D093216823C438590016A6FE /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
 		D093216A23C4386D0016A6FE /* SettingsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCoordinator.swift; sourceTree = "<group>"; };
@@ -51,6 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0506A4523FD278D00FE0DDC /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,6 +66,14 @@
 				D0506A3E23FD0E1E00FE0DDC /* Storyboard+Extension.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		D0506A4323FD278B00FE0DDC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D0506A4423FD278D00FE0DDC /* Alamofire.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		D093215F23C42B070016A6FE /* Sencario */ = {
@@ -115,6 +126,7 @@
 			children = (
 				D0E5A5D423B6145700211C9C /* CoordinatorTest */,
 				D0E5A5D323B6145700211C9C /* Products */,
+				D0506A4323FD278B00FE0DDC /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -163,6 +175,7 @@
 				D0E5A5CE23B6145700211C9C /* Sources */,
 				D0E5A5CF23B6145700211C9C /* Frameworks */,
 				D0E5A5D023B6145700211C9C /* Resources */,
+				D0506A4223FD26E600FE0DDC /* Carthage - Copy Frameworks */,
 			);
 			buildRules = (
 			);
@@ -218,6 +231,29 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		D0506A4223FD26E600FE0DDC /* Carthage - Copy Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
+			);
+			name = "Carthage - Copy Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Alamofire.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D0E5A5CE23B6145700211C9C /* Sources */ = {
@@ -382,6 +418,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9TNVAWA2VV;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = CoordinatorTest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -400,6 +440,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9TNVAWA2VV;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = CoordinatorTest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
