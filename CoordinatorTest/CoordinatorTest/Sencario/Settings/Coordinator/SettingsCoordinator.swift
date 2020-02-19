@@ -10,24 +10,20 @@ import UIKit
 
 // MARK: - Coordinator
 
-final class SettingsCoordinator: NSObject, CoordinatorNavigable  {
+final class SettingsCoordinator: CoordinatorNavigable  {
     
     var childCoordinators: [Coordinator] = []
     var navigationController: UINavigationController
     var navigator: NavigatorType
     var rootViewController: SettingsViewController
     
-    override init() {
+    init() {
         let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+        let vc = storyboard.instantiateViewController(withClass: SettingsViewController.self)
         
-        if let vc = storyboard.instantiateViewController(withIdentifier: "SettingsViewController") as? SettingsViewController {
-            navigationController = UINavigationController(rootViewController: vc)
-            navigator = Navigator(navigationController: navigationController)
-            rootViewController = vc
-
-        } else {
-            fatalError("can't find SettingsViewController")
-        }
+        navigationController = UINavigationController(rootViewController: vc)
+        navigator = Navigator(navigationController: navigationController)
+        rootViewController = vc
     }
     
     func start() {

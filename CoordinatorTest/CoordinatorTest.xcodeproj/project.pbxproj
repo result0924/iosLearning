@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		D014960123BF50430084293A /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D014960023BF50430084293A /* AboutViewController.swift */; };
+		D0506A3F23FD0E1E00FE0DDC /* Storyboard+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0506A3E23FD0E1E00FE0DDC /* Storyboard+Extension.swift */; };
+		D0506A4123FD0FF500FE0DDC /* AboutCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0506A4023FD0FF500FE0DDC /* AboutCoordinator.swift */; };
 		D093216323C42B430016A6FE /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093216223C42B420016A6FE /* SettingsViewController.swift */; };
 		D093216923C438590016A6FE /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093216823C438590016A6FE /* MainCoordinator.swift */; };
 		D093216B23C4386D0016A6FE /* SettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093216A23C4386D0016A6FE /* SettingsCoordinator.swift */; };
@@ -25,6 +27,8 @@
 
 /* Begin PBXFileReference section */
 		D014960023BF50430084293A /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
+		D0506A3E23FD0E1E00FE0DDC /* Storyboard+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Storyboard+Extension.swift"; sourceTree = "<group>"; };
+		D0506A4023FD0FF500FE0DDC /* AboutCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutCoordinator.swift; sourceTree = "<group>"; };
 		D093216223C42B420016A6FE /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		D093216823C438590016A6FE /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
 		D093216A23C4386D0016A6FE /* SettingsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCoordinator.swift; sourceTree = "<group>"; };
@@ -53,6 +57,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D0506A3D23FD0DED00FE0DDC /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				D0506A3E23FD0E1E00FE0DDC /* Storyboard+Extension.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
 		D093215F23C42B070016A6FE /* Sencario */ = {
 			isa = PBXGroup;
 			children = (
@@ -85,6 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				D093216823C438590016A6FE /* MainCoordinator.swift */,
+				D0506A4023FD0FF500FE0DDC /* AboutCoordinator.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -116,6 +129,7 @@
 		D0E5A5D423B6145700211C9C /* CoordinatorTest */ = {
 			isa = PBXGroup;
 			children = (
+				D0506A3D23FD0DED00FE0DDC /* Extension */,
 				D093215F23C42B070016A6FE /* Sencario */,
 				D0E5A5E923B615B300211C9C /* Resources */,
 				D0E5A5D523B6145700211C9C /* AppDelegate.swift */,
@@ -212,11 +226,13 @@
 			files = (
 				D0E5A5DA23B6145700211C9C /* MainViewController.swift in Sources */,
 				D0E5A5EC23B615E800211C9C /* Navigator.swift in Sources */,
+				D0506A3F23FD0E1E00FE0DDC /* Storyboard+Extension.swift in Sources */,
 				D093216323C42B430016A6FE /* SettingsViewController.swift in Sources */,
 				D0E51D0523CF267F004C7ECF /* AppDelegateCoordinator.swift in Sources */,
 				D0E5A5EF23BD9ADE00211C9C /* MainTabBarController.swift in Sources */,
 				D093216B23C4386D0016A6FE /* SettingsCoordinator.swift in Sources */,
 				D093216D23C45F380016A6FE /* MainTabBarCoordinator.swift in Sources */,
+				D0506A4123FD0FF500FE0DDC /* AboutCoordinator.swift in Sources */,
 				D014960123BF50430084293A /* AboutViewController.swift in Sources */,
 				D0E5A5ED23B615E800211C9C /* Coordinator.swift in Sources */,
 				D093216923C438590016A6FE /* MainCoordinator.swift in Sources */,

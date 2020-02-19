@@ -7,23 +7,19 @@
 //
 import UIKit
 
-final class MainCoordinator: NSObject, CoordinatorNavigable  {
+final class MainCoordinator: CoordinatorNavigable {
     
     var childCoordinators: [Coordinator] = []
     var navigationController: UINavigationController
     var navigator: NavigatorType
     var rootViewController: MainViewController
     
-    override init() {
+    init() {
         let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-        
-        if let vc = storyboard.instantiateViewController(withIdentifier: "MainViewController") as? MainViewController {
-            navigationController = UINavigationController(rootViewController: vc)
-            navigator = Navigator(navigationController: navigationController)
-            rootViewController = vc
-        } else {
-            fatalError("can't find MainViewController")
-        }
+        let vc = storyboard.instantiateViewController(withClass: MainViewController.self)
+        navigationController = UINavigationController(rootViewController: vc)
+        navigator = Navigator(navigationController: navigationController)
+        rootViewController = vc
     }
     
     func start() {
@@ -34,8 +30,21 @@ final class MainCoordinator: NSObject, CoordinatorNavigable  {
 
 extension MainCoordinator: MainViewControllerDelegate {
     func tapCellWithIndexPath(_ indexPath: IndexPath) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let aboutVC = storyboard.instantiateViewController(withIdentifier: "AboutViewController")
-        navigator.push(aboutVC, animated: true)
+        let aboutCoordinator = AboutCoordinator(navigator: navigator)
+        
+        if 0 == indexPath.row {
+            pushCoordinator(aboutCoordinator, animated: true)
+        } else {
+            aboutCoordinator.delegate = self
+            presentCoordinator(aboutCoordinator, animated: true, style: .fullScreen)
+        }
+        
     }
+}
+
+extension MainCoordinator: AboutCoordinatorDelegate {
+    func aboutCoordinatorDidTapClose(_ coordinator: AboutCoordinator) {
+        dismissCoordinator(coordinator, animated: true)
+    }
+    
 }

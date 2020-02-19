@@ -15,15 +15,11 @@ final class AppDelegateCoordinator: CoordinatorPresentable {
     
     init(window: UIWindow) {
         let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+        let vc = storyboard.instantiateViewController(withClass: MainTabBarController.self)
+        rootViewController = vc
         
-        if let vc = storyboard.instantiateViewController(withIdentifier: "MainTabBarController") as? MainTabBarController {
-            rootViewController = vc
-        
-            window.rootViewController = vc
-            window.makeKeyAndVisible()
-        } else {
-            fatalError("can't find MainTabBarController")
-        }
+        window.rootViewController = vc
+        window.makeKeyAndVisible()
     }
     
     func start() {
