@@ -24,6 +24,7 @@
 		D0506A90240375B200FE0DDC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D0506A93240375B200FE0DDC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D0506A95240375B200FE0DDC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D0506A9B240379AC00FE0DDC /* SignInWithAppleTest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SignInWithAppleTest.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +57,7 @@
 		D0506A86240375B100FE0DDC /* SignInWithAppleTest */ = {
 			isa = PBXGroup;
 			children = (
+				D0506A9B240379AC00FE0DDC /* SignInWithAppleTest.entitlements */,
 				D0506A87240375B100FE0DDC /* AppDelegate.swift */,
 				D0506A89240375B100FE0DDC /* SceneDelegate.swift */,
 				D0506A8B240375B100FE0DDC /* ViewController.swift */,
@@ -284,6 +286,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SignInWithAppleTest/SignInWithAppleTest.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9TNVAWA2VV;
 				INFOPLIST_FILE = SignInWithAppleTest/Info.plist;
@@ -302,6 +305,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SignInWithAppleTest/SignInWithAppleTest.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9TNVAWA2VV;
 				INFOPLIST_FILE = SignInWithAppleTest/Info.plist;
