@@ -7,14 +7,55 @@
 //
 
 import UIKit
+import Firebase
+import GoogleSignIn
 
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        // Initialize google sign-in
+        GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
+        GIDSignIn.sharedInstance().delegate = self
+        GIDSignIn.sharedInstance()?.presentingViewController = self
     }
 
+    @IBAction func tapGoogleSignIn(_ sender: Any) {
+        if GIDSignIn.sharedInstance()?.hasPreviousSignIn() ?? false {
+            GIDSignIn.sharedInstance()?.signOut()
+        }
 
+        GIDSignIn.sharedInstance()?.signIn()
+    }
+    
 }
+
+extension ViewController: GIDSignInDelegate {
+    // Present a view that prompts the user to sign in with Google
+    func sign(_ signIn: GIDSignIn!,
+              present viewController: UIViewController!) {
+        self.present(viewController, animated: true, completion: nil)
+    }
+    
+    // Dismiss the "Sign in with Google" view
+    func sign(_ signIn: GIDSignIn!, dismiss viewController: UIViewController!) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
+        if let error = error {
+//            Crashlytics.sharedInstance().recordError(error)
+            print("google login error\(error.localizedDescription)")
+        } else if let googleToken = user.authentication.idToken {
+            let firstName = user.profile.givenName ?? ""
+            let lastName = user.profile.familyName ?? ""
+            
+            print("google token:\(googleToken)")
+            print("firstName:\(firstName)")
+            print("lastName:\(lastName)")
+        }
+    }
+}
+
 

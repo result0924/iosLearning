@@ -13,7 +13,6 @@
 		6C8612BF24ED0DB800B91E41 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6C8612BD24ED0DB800B91E41 /* Main.storyboard */; };
 		6C8612C124ED0DBA00B91E41 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6C8612C024ED0DBA00B91E41 /* Assets.xcassets */; };
 		6C8612C424ED0DBA00B91E41 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6C8612C224ED0DBA00B91E41 /* LaunchScreen.storyboard */; };
-		6C8612CD24ED10F900B91E41 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6C8612CC24ED10F900B91E41 /* GoogleService-Info.plist */; };
 		6C86131024ED198C00B91E41 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C86130F24ED197F00B91E41 /* libc++.tbd */; };
 		6C86131224ED19BA00B91E41 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C86131124ED19AF00B91E41 /* libsqlite3.tbd */; };
 		6C86131424ED19DA00B91E41 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C86131324ED19DA00B91E41 /* StoreKit.framework */; };
@@ -38,6 +37,7 @@
 		6C86133024ED240E00B91E41 /* AppAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C86132D24ED240E00B91E41 /* AppAuth.framework */; };
 		6C86133124ED240E00B91E41 /* GTMAppAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C86132E24ED240E00B91E41 /* GTMAppAuth.framework */; };
 		6C86133424ED28F500B91E41 /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C86133324ED28F500B91E41 /* LocalAuthentication.framework */; };
+		6C86133624ED383A00B91E41 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6C86133524ED383A00B91E41 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -63,7 +63,6 @@
 		6C8612C024ED0DBA00B91E41 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6C8612C324ED0DBA00B91E41 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6C8612C524ED0DBA00B91E41 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		6C8612CC24ED10F900B91E41 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6C8612CF24ED173700B91E41 /* GoogleSignIn.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleSignIn.framework; path = Carthage/Build/iOS/GoogleSignIn.framework; sourceTree = "<group>"; };
 		6C8612D024ED173700B91E41 /* GoogleDataTransport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleDataTransport.framework; path = Carthage/Build/iOS/GoogleDataTransport.framework; sourceTree = "<group>"; };
 		6C8612D124ED173700B91E41 /* FirebaseCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseCore.framework; path = Carthage/Build/iOS/FirebaseCore.framework; sourceTree = "<group>"; };
@@ -87,6 +86,7 @@
 		6C86132D24ED240E00B91E41 /* AppAuth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppAuth.framework; path = Carthage/Build/iOS/AppAuth.framework; sourceTree = "<group>"; };
 		6C86132E24ED240E00B91E41 /* GTMAppAuth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GTMAppAuth.framework; path = Carthage/Build/iOS/GTMAppAuth.framework; sourceTree = "<group>"; };
 		6C86133324ED28F500B91E41 /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
+		6C86133524ED383A00B91E41 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,7 +146,7 @@
 				6C8612B724ED0DB800B91E41 /* AppDelegate.swift */,
 				6C8612B924ED0DB800B91E41 /* SceneDelegate.swift */,
 				6C8612BB24ED0DB800B91E41 /* ViewController.swift */,
-				6C8612CC24ED10F900B91E41 /* GoogleService-Info.plist */,
+				6C86133524ED383A00B91E41 /* GoogleService-Info.plist */,
 				6C8612BD24ED0DB800B91E41 /* Main.storyboard */,
 				6C8612C024ED0DBA00B91E41 /* Assets.xcassets */,
 				6C8612C224ED0DBA00B91E41 /* LaunchScreen.storyboard */,
@@ -246,7 +246,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6C8612C424ED0DBA00B91E41 /* LaunchScreen.storyboard in Resources */,
-				6C8612CD24ED10F900B91E41 /* GoogleService-Info.plist in Resources */,
+				6C86133624ED383A00B91E41 /* GoogleService-Info.plist in Resources */,
 				6C8612C124ED0DBA00B91E41 /* Assets.xcassets in Resources */,
 				6C8612BF24ED0DB800B91E41 /* Main.storyboard in Resources */,
 			);
