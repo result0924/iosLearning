@@ -22,12 +22,32 @@
                                     <action selector="tapGoogleSignIn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="SBy-Es-xPK"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pc1-7T-pJX">
+                                <rect key="frame" x="20" y="363" width="374" height="30"/>
+                                <state key="normal" title="Crash Button"/>
+                                <connections>
+                                    <action selector="crashButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="vHN-7C-7UL"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JoZ-Du-fWI" userLabel="Customize crash report">
+                                <rect key="frame" x="20" y="293" width="374" height="30"/>
+                                <state key="normal" title="Customize crash report"/>
+                                <connections>
+                                    <action selector="customizeCrashReport:" destination="BYZ-38-t0r" eventType="touchUpInside" id="KSH-vz-Zqz"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="JoZ-Du-fWI" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="50z-af-aSd"/>
                             <constraint firstItem="7T8-FY-ccf" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="G9Y-Wh-1ed"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="pc1-7T-pJX" secondAttribute="trailing" constant="20" id="KJd-Ru-Kn0"/>
                             <constraint firstItem="7T8-FY-ccf" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="Pt4-Me-vb3"/>
+                            <constraint firstItem="7T8-FY-ccf" firstAttribute="top" secondItem="pc1-7T-pJX" secondAttribute="bottom" constant="40" id="SPe-2D-VmR"/>
+                            <constraint firstItem="pc1-7T-pJX" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="WbV-pC-1Ok"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="7T8-FY-ccf" secondAttribute="trailing" constant="20" id="aNn-st-3eD"/>
+                            <constraint firstItem="pc1-7T-pJX" firstAttribute="top" secondItem="JoZ-Du-fWI" secondAttribute="bottom" constant="40" id="fRD-ye-VDh"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="JoZ-Du-fWI" secondAttribute="trailing" constant="20" id="lp8-sM-rQJ"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>

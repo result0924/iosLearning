@@ -29,6 +29,25 @@ class ViewController: UIViewController {
         GIDSignIn.sharedInstance()?.signIn()
     }
     
+    @IBAction func crashButtonTapped(_ sender: AnyObject) {
+        fatalError()
+    }
+    
+    @IBAction func customizeCrashReport(_ sender: Any) {
+        print("customizeCrashReport")
+        let userInfo = [
+          NSLocalizedDescriptionKey: NSLocalizedString("The request failed.", comment: ""),
+          NSLocalizedFailureReasonErrorKey: NSLocalizedString("The response returned a 404.", comment: ""),
+          NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString("Does this page exist?", comment: ""),
+          "ProductID": "123456",
+          "View": "MainView"
+        ]
+
+        let error = NSError.init(domain: NSCocoaErrorDomain,
+                                 code: -1001,
+                                 userInfo: userInfo)
+        Crashlytics.crashlytics().record(error: error)
+    }
 }
 
 extension ViewController: GIDSignInDelegate {
