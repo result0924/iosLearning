@@ -15,9 +15,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        clearCache()
         
-        loadURL(urlString: "https://10.0.1.86:8080/webview")
+        loadURL(urlString: "https://dev.health2sync.com/upload/clinic/interactive_article_image/6f4dca07-13a1-444a-8d12-92b970291446.png")
     }
     
     private func loadURL(urlString: String) {
@@ -26,24 +25,6 @@ class ViewController: UIViewController {
             let request = URLRequest(url: url)
             webView.navigationDelegate = self
             webView.load(request)
-        }
-    }
-    
-    func clearCache() {
-        if #available(iOS 9.0, *) {
-            let websiteDataTypes = NSSet(array: [WKWebsiteDataTypeDiskCache, WKWebsiteDataTypeMemoryCache])
-            let date = NSDate(timeIntervalSince1970: 0)
-            WKWebsiteDataStore.default().removeData(ofTypes: websiteDataTypes as! Set<String>, modifiedSince: date as Date, completionHandler:{ })
-        } else {
-            var libraryPath = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.libraryDirectory, FileManager.SearchPathDomainMask.userDomainMask, false).first!
-            libraryPath += "/Cookies"
-
-            do {
-                try FileManager.default.removeItem(atPath: libraryPath)
-            } catch {
-                print("error")
-            }
-            URLCache.shared.removeAllCachedResponses()
         }
     }
 
