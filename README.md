@@ -4,7 +4,9 @@
 
 - [老司機週報](https://github.com/SwiftOldDriver/iOS-Weekly/releases)
 - [13的開發者週報](https://ethanhuang13.substack.com/)
-- [Good Share](https://juejin.im/post/5ee6f0b1e51d4578762019af)
+
+- Unit test import project
+@testable import project
 
 - Entry device's system page from app
 ```
