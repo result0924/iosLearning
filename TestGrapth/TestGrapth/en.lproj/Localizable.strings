@@ -1,0 +1,35 @@
+/* 
+  Localizable.strings
+  TestGrapth
+
+  Created by jlai on 2020/10/23.
+  
+*/
+
+"section 1 title" = "血糖分佈範圍";
+
+"foot content 1" = "血糖範圍";
+
+"foot content 2" = "平均血糖";
+
+"time" = "時段";
+
+"title" = "血糖最低至最高";
+
+"scope" = "目標\n範圍內";
+
+"wakeup" = "晨起";
+
+"bedtime" = "就寢";
+
+"midnight" = "半夜";
+
+"other" = "其它";
+
+"breakfast" = "早餐";
+
+"lunch" = "午餐";
+
+"dinner" = "晚餐";
+
+"snacks" = "點心";
