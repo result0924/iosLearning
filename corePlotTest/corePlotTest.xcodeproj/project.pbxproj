@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6C9C859B254827260098CFE8 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9C859A254827260098CFE8 /* ListViewController.swift */; };
+		6C9C85A0254831170098CFE8 /* GraphViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9C859F254831160098CFE8 /* GraphViewController.swift */; };
 		D09CB51B2269D62200C62350 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09CB51A2269D62200C62350 /* AppDelegate.swift */; };
 		D09CB51D2269D62200C62350 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09CB51C2269D62200C62350 /* ViewController.swift */; };
 		D09CB5202269D62200C62350 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D09CB51E2269D62200C62350 /* Main.storyboard */; };
@@ -17,6 +19,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6C9C859A254827260098CFE8 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
+		6C9C859F254831160098CFE8 /* GraphViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphViewController.swift; sourceTree = "<group>"; };
 		D09CB5172269D62200C62350 /* corePlotTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = corePlotTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D09CB51A2269D62200C62350 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D09CB51C2269D62200C62350 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -61,8 +65,10 @@
 			isa = PBXGroup;
 			children = (
 				D09CB51A2269D62200C62350 /* AppDelegate.swift */,
-				D09CB51C2269D62200C62350 /* ViewController.swift */,
 				D0B9AC9F22D8982600E80DA4 /* TestViewController.swift */,
+				6C9C859A254827260098CFE8 /* ListViewController.swift */,
+				6C9C859F254831160098CFE8 /* GraphViewController.swift */,
+				D09CB51C2269D62200C62350 /* ViewController.swift */,
 				D09CB51E2269D62200C62350 /* Main.storyboard */,
 				D09CB5212269D62400C62350 /* Assets.xcassets */,
 				D09CB5232269D62400C62350 /* LaunchScreen.storyboard */,
@@ -176,7 +182,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				D09CB51D2269D62200C62350 /* ViewController.swift in Sources */,
+				6C9C85A0254831170098CFE8 /* GraphViewController.swift in Sources */,
 				D0B9ACA022D8982600E80DA4 /* TestViewController.swift in Sources */,
+				6C9C859B254827260098CFE8 /* ListViewController.swift in Sources */,
 				D09CB51B2269D62200C62350 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
