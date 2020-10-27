@@ -48,7 +48,7 @@ NSString *const PlotGalleryThemeNameKey               = @"PlotGalleryThemeNameKe
 
 -(instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    if ( (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) ) {
+    if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
         [self setupThemes];
     }
 
@@ -58,12 +58,12 @@ NSString *const PlotGalleryThemeNameKey               = @"PlotGalleryThemeNameKe
 #pragma mark -
 #pragma mark Table view data source
 
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+-(NSInteger)numberOfSectionsInTableView:(UITableView *__unused)tableView
 {
     return 1;
 }
 
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+-(NSInteger)tableView:(UITableView *__unused)tableView numberOfRowsInSection:(NSInteger __unused)section
 {
     return (NSInteger)self.themes.count;
 }
@@ -86,10 +86,10 @@ NSString *const PlotGalleryThemeNameKey               = @"PlotGalleryThemeNameKe
 #pragma mark -
 #pragma mark Table view delegate
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+-(void)tableView:(UITableView *__unused)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSDictionary<NSString *, NSString *> *themeInfo = @{
-                                                          PlotGalleryThemeNameKey: self.themes[(NSUInteger)indexPath.row]
+        PlotGalleryThemeNameKey: self.themes[(NSUInteger)indexPath.row]
     };
 
     [[NSNotificationCenter defaultCenter] postNotificationName:PlotGalleryThemeDidChangeNotification

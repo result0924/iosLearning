@@ -34,7 +34,7 @@ static NSString *const kSecond = @"Second Derivative";
 
 -(nonnull instancetype)init
 {
-    if ( (self = [super init]) ) {
+    if ((self = [super init])) {
         self.title   = @"Curved Scatter Plot";
         self.section = kLinePlots;
     }
@@ -94,7 +94,7 @@ static NSString *const kSecond = @"Second Derivative";
 
             [contentArray addObject:
              @{ @"x": @(xLoc),
-                @"y": @( (dy / dx) / 20.0 ) }
+                @"y": @((dy / dx) / 20.0) }
             ];
         }
 
@@ -121,7 +121,7 @@ static NSString *const kSecond = @"Second Derivative";
 
             [contentArray addObject:
              @{ @"x": @(xLoc),
-                @"y": @( (dy / dx) / 20.0 ) }
+                @"y": @((dy / dx) / 20.0) }
             ];
         }
 
@@ -129,7 +129,7 @@ static NSString *const kSecond = @"Second Derivative";
     }
 }
 
--(void)renderInGraphHostingView:(nonnull CPTGraphHostingView *)hostingView withTheme:(nullable CPTTheme *)theme animated:(BOOL)animated
+-(void)renderInGraphHostingView:(nonnull CPTGraphHostingView *)hostingView withTheme:(nullable CPTTheme *)theme animated:(BOOL __unused)animated
 {
 #if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
     CGRect bounds = hostingView.bounds;
@@ -169,7 +169,7 @@ static NSString *const kSecond = @"Second Derivative";
     redLineStyle.lineColor = [[CPTColor redColor] colorWithAlphaComponent:0.5];
 
     CPTLineCap *lineCap = [CPTLineCap sweptArrowPlotLineCap];
-    lineCap.size = CGSizeMake(self.titleSize * CPTFloat(0.625), self.titleSize * CPTFloat(0.625) );
+    lineCap.size = CGSizeMake(self.titleSize * CPTFloat(0.625), self.titleSize * CPTFloat(0.625));
 
     // Axes
     // Label x axis with a fixed interval policy
@@ -291,7 +291,7 @@ static NSString *const kSecond = @"Second Derivative";
     graph.legend.borderLineStyle = x.axisLineStyle;
     graph.legend.cornerRadius    = 5.0;
     graph.legendAnchor           = CPTRectAnchorBottom;
-    graph.legendDisplacement     = CGPointMake(0.0, self.titleSize * CPTFloat(2.0) );
+    graph.legendDisplacement     = CGPointMake(0.0, self.titleSize * CPTFloat(2.0));
 }
 
 #pragma mark -
@@ -365,7 +365,7 @@ static NSString *const kSecond = @"Second Derivative";
 #pragma mark -
 #pragma mark CPTScatterPlot delegate methods
 
--(void)scatterPlot:(nonnull CPTScatterPlot *)plot plotSymbolWasSelectedAtRecordIndex:(NSUInteger)index
+-(void)scatterPlot:(nonnull CPTScatterPlot *__unused)plot plotSymbolWasSelectedAtRecordIndex:(NSUInteger)index
 {
     CPTXYGraph *graph = (self.graphs)[0];
 
@@ -378,6 +378,7 @@ static NSString *const kSecond = @"Second Derivative";
 
     // Setup a style for the annotation
     CPTMutableTextStyle *hitAnnotationTextStyle = [CPTMutableTextStyle textStyle];
+
     hitAnnotationTextStyle.color    = [CPTColor whiteColor];
     hitAnnotationTextStyle.fontName = @"Helvetica-Bold";
 
@@ -392,12 +393,14 @@ static NSString *const kSecond = @"Second Derivative";
     // Add annotation
     // First make a string for the y value
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+
     formatter.maximumFractionDigits = 2;
     NSString *yString = [formatter stringFromNumber:y];
 
     // Now add the annotation to the plot area
     CPTTextLayer *textLayer = [[CPTTextLayer alloc] initWithText:yString style:hitAnnotationTextStyle];
     CPTImage *background    = [CPTImage imageNamed:@"BlueBackground"];
+
     background.edgeInsets   = CPTEdgeInsetsMake(8.0, 8.0, 8.0, 8.0);
     textLayer.fill          = [CPTFill fillWithImage:background];
     textLayer.paddingLeft   = 2.0;
@@ -406,6 +409,7 @@ static NSString *const kSecond = @"Second Derivative";
     textLayer.paddingBottom = 2.0;
 
     CPTPlotSpace *defaultSpace = graph.defaultPlotSpace;
+
     if ( defaultSpace ) {
         annotation                    = [[CPTPlotSpaceAnnotation alloc] initWithPlotSpace:defaultSpace anchorPlotPoint:anchorPoint];
         annotation.contentLayer       = textLayer;
@@ -435,7 +439,7 @@ static NSString *const kSecond = @"Second Derivative";
 #pragma mark -
 #pragma mark Plot area delegate method
 
--(void)plotAreaWasSelected:(nonnull CPTPlotArea *)plotArea
+-(void)plotAreaWasSelected:(nonnull CPTPlotArea *__unused)plotArea
 {
     // Remove the annotation
     CPTPlotSpaceAnnotation *annotation = self.symbolTextAnnotation;

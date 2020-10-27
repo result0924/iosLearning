@@ -29,17 +29,17 @@
     NSParameterAssert(myDataType.dataTypeFormat != CPTUndefinedDataType);
     NSParameterAssert(myDataType.byteOrder != CFByteOrderUnknown);
 
-    NSParameterAssert(CPTDataTypeIsSupported(newDataType) );
+    NSParameterAssert(CPTDataTypeIsSupported(newDataType));
     NSParameterAssert(newDataType.dataTypeFormat != CPTUndefinedDataType);
     NSParameterAssert(newDataType.byteOrder != CFByteOrderUnknown);
 
     NSData *newData           = nil;
     CFByteOrder hostByteOrder = CFByteOrderGetCurrent();
 
-    if ( CPTDataTypeEqualToDataType(myDataType, newDataType) ) {
+    if ( CPTDataTypeEqualToDataType(myDataType, newDataType)) {
         newData = self.data;
     }
-    else if ( (myDataType.sampleBytes == sizeof(int8_t) ) && (newDataType.sampleBytes == sizeof(int8_t) ) ) {
+    else if ((myDataType.sampleBytes == sizeof(int8_t)) && (newDataType.sampleBytes == sizeof(int8_t))) {
         newData = self.data;
     }
     else {
@@ -66,6 +66,7 @@
     CPTNumericData *result = [CPTNumericData numericDataWithData:newData
                                                         dataType:newDataType
                                                            shape:self.shape];
+
     return result;
 }
 
@@ -105,7 +106,7 @@
                             switch ( destDataType->sampleBytes ) {
                                 case sizeof(int8_t):
                                 { // int8_t -> int8_t
-                                    memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(int8_t) );
+                                    memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(int8_t));
                                 }
                                 break;
 
@@ -281,7 +282,7 @@
 
                                 case sizeof(int16_t):
                                 { // int16_t -> int16_t
-                                    memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(int16_t) );
+                                    memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(int16_t));
                                 }
                                 break;
 
@@ -457,7 +458,7 @@
 
                                 case sizeof(int32_t):
                                 { // int32_t -> int32_t
-                                    memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(int32_t) );
+                                    memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(int32_t));
                                 }
                                 break;
 
@@ -633,7 +634,7 @@
 
                                 case sizeof(int64_t):
                                 { // int64_t -> int64_t
-                                    memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(int64_t) );
+                                    memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(int64_t));
                                 }
                                 break;
                             }
@@ -817,7 +818,7 @@
                             switch ( destDataType->sampleBytes ) {
                                 case sizeof(uint8_t):
                                 { // uint8_t -> uint8_t
-                                    memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(uint8_t) );
+                                    memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(uint8_t));
                                 }
                                 break;
 
@@ -993,7 +994,7 @@
 
                                 case sizeof(uint16_t):
                                 { // uint16_t -> uint16_t
-                                    memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(uint16_t) );
+                                    memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(uint16_t));
                                 }
                                 break;
 
@@ -1169,7 +1170,7 @@
 
                                 case sizeof(uint32_t):
                                 { // uint32_t -> uint32_t
-                                    memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(uint32_t) );
+                                    memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(uint32_t));
                                 }
                                 break;
 
@@ -1345,7 +1346,7 @@
 
                                 case sizeof(uint64_t):
                                 { // uint64_t -> uint64_t
-                                    memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(uint64_t) );
+                                    memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(uint64_t));
                                 }
                                 break;
                             }
@@ -1529,7 +1530,7 @@
                             switch ( destDataType->sampleBytes ) {
                                 case sizeof(float):
                                 { // float -> float
-                                    memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(float) );
+                                    memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(float));
                                 }
                                 break;
 
@@ -1705,7 +1706,7 @@
 
                                 case sizeof(double):
                                 { // double -> double
-                                    memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(double) );
+                                    memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(double));
                                 }
                                 break;
                             }
@@ -1889,7 +1890,7 @@
                             switch ( destDataType->sampleBytes ) {
                                 case sizeof(float complex):
                                 { // float complex -> float complex
-                                    memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(float complex) );
+                                    memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(float complex));
                                 }
                                 break;
 
@@ -1914,7 +1915,7 @@
                                     const float complex *lastSample = fromBytes + sampleCount;
                                     NSDecimal *toBytes              = (NSDecimal *)destData.mutableBytes;
                                     while ( fromBytes < lastSample ) {
-                                        *toBytes++ = CPTDecimalFromFloat(crealf(*fromBytes++) );
+                                        *toBytes++ = CPTDecimalFromFloat(crealf(*fromBytes++));
                                     }
                                 }
                                 break;
@@ -2065,7 +2066,7 @@
 
                                 case sizeof(double complex):
                                 { // double complex -> double complex
-                                    memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(double complex) );
+                                    memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(double complex));
                                 }
                                 break;
                             }
@@ -2079,7 +2080,7 @@
                                     const double complex *lastSample = fromBytes + sampleCount;
                                     NSDecimal *toBytes               = (NSDecimal *)destData.mutableBytes;
                                     while ( fromBytes < lastSample ) {
-                                        *toBytes++ = CPTDecimalFromDouble(creal(*fromBytes++) );
+                                        *toBytes++ = CPTDecimalFromDouble(creal(*fromBytes++));
                                     }
                                 }
                                 break;
@@ -2249,7 +2250,7 @@
                             switch ( destDataType->sampleBytes ) {
                                 case sizeof(NSDecimal):
                                 { // NSDecimal -> NSDecimal
-                                    memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(NSDecimal) );
+                                    memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(NSDecimal));
                                 }
                                 break;
                             }

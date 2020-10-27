@@ -22,6 +22,7 @@ CGSize CPTCurrentSizeValue(id __nonnull boundObject, SEL __nonnull boundGetter)
     [invocation invoke];
 
     CGSize value;
+
     [invocation getReturnValue:&value];
 
     return value;
@@ -47,8 +48,8 @@ CGSize CPTCurrentSizeValue(id __nonnull boundObject, SEL __nonnull boundGetter)
     [self.startValue getValue:&start];
     [self.endValue getValue:&end];
 
-    return ( ( (current.width >= start.width) && (current.width <= end.width) ) || ( (current.width >= end.width) && (current.width <= start.width) ) ) &&
-           ( ( (current.height >= start.height) && (current.height <= end.height) ) || ( (current.height >= end.height) && (current.height <= start.height) ) );
+    return (((current.width >= start.width) && (current.width <= end.width)) || ((current.width >= end.width) && (current.width <= start.width))) &&
+           (((current.height >= start.height) && (current.height <= end.height)) || ((current.height >= end.height) && (current.height <= start.height)));
 }
 
 -(nonnull NSValue *)tweenedValueForProgress:(CGFloat)progress

@@ -34,7 +34,7 @@ static const NSTimeInterval oneDay = 24 * 60 * 60;
 
 -(nonnull instancetype)init
 {
-    if ( (self = [super init]) ) {
+    if ((self = [super init])) {
         self.title   = @"Date Plot";
         self.section = kLinePlots;
     }
@@ -63,7 +63,7 @@ static const NSTimeInterval oneDay = 24 * 60 * 60;
     }
 }
 
--(void)renderInGraphHostingView:(nonnull CPTGraphHostingView *)hostingView withTheme:(nullable CPTTheme *)theme animated:(BOOL)animated
+-(void)renderInGraphHostingView:(nonnull CPTGraphHostingView *)hostingView withTheme:(nullable CPTTheme *)theme animated:(BOOL __unused)animated
 {
     // If you make sure your dates are calculated at noon, you shouldn't have to
     // worry about daylight savings. If you use midnight, you will have to adjust
@@ -100,7 +100,7 @@ static const NSTimeInterval oneDay = 24 * 60 * 60;
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)graph.defaultPlotSpace;
 
     NSTimeInterval xLow = 0.0;
-    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:@(xLow) length:@(oneDay * (kNumPoints - 1) )];
+    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:@(xLow) length:@(oneDay * (kNumPoints - 1))];
     plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:@1.0 length:@2.0];
 
     plotSpace.allowsUserInteraction = YES;
@@ -113,7 +113,7 @@ static const NSTimeInterval oneDay = 24 * 60 * 60;
     x.orthogonalPosition    = @2.0;
     x.minorTicksPerInterval = 0;
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.dateStyle = kCFDateFormatterShortStyle;
+    dateFormatter.dateStyle = NSDateFormatterShortStyle;
     CPTTimeFormatter *timeFormatter = [[CPTTimeFormatter alloc] initWithDateFormatter:dateFormatter];
     timeFormatter.referenceDate = refDate;
     x.labelFormatter            = timeFormatter;
@@ -181,12 +181,12 @@ static const NSTimeInterval oneDay = 24 * 60 * 60;
 #pragma mark -
 #pragma mark Plot Data Source Methods
 
--(NSUInteger)numberOfRecordsForPlot:(nonnull CPTPlot *)plot
+-(NSUInteger)numberOfRecordsForPlot:(nonnull CPTPlot *__unused)plot
 {
     return self.plotData.count;
 }
 
--(nullable id)numberForPlot:(nonnull CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
+-(nullable id)numberForPlot:(nonnull CPTPlot *__unused)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
 {
     return self.plotData[index][@(fieldEnum)];
 }
@@ -194,12 +194,12 @@ static const NSTimeInterval oneDay = 24 * 60 * 60;
 #pragma mark -
 #pragma mark Plot Space Delegate Methods
 
--(CGPoint)plotSpace:(CPTPlotSpace *)space willDisplaceBy:(CGPoint)displacement
+-(CGPoint)plotSpace:(CPTPlotSpace *__unused)space willDisplaceBy:(CGPoint __unused)displacement
 {
     return CPTPointMake(0.0, 0.0);
 }
 
--(CPTPlotRange *)plotSpace:(CPTPlotSpace *)space willChangePlotRangeTo:(CPTPlotRange *)newRange forCoordinate:(CPTCoordinate)coordinate
+-(CPTPlotRange *)plotSpace:(CPTPlotSpace *)space willChangePlotRangeTo:(CPTPlotRange *__unused)newRange forCoordinate:(CPTCoordinate)coordinate
 {
     CPTPlotRange *updatedRange = nil;
 
@@ -221,7 +221,7 @@ static const NSTimeInterval oneDay = 24 * 60 * 60;
     return updatedRange;
 }
 
--(BOOL)plotSpace:(CPTPlotSpace *)space shouldHandlePointingDeviceDownEvent:(CPTNativeEvent *)event atPoint:(CGPoint)point
+-(BOOL)plotSpace:(CPTPlotSpace *)space shouldHandlePointingDeviceDownEvent:(CPTNativeEvent *)event atPoint:(CGPoint __unused)point
 {
     CPTXYPlotSpace *xySpace = (CPTXYPlotSpace *)space;
 
@@ -269,7 +269,7 @@ static const NSTimeInterval oneDay = 24 * 60 * 60;
     return [self plotSpace:space shouldHandlePointingDeviceDownEvent:event atPoint:point];
 }
 
--(BOOL)plotSpace:(CPTPlotSpace *)space shouldHandlePointingDeviceUpEvent:(CPTNativeEvent *)event atPoint:(CGPoint)point
+-(BOOL)plotSpace:(CPTPlotSpace *__unused)space shouldHandlePointingDeviceUpEvent:(CPTNativeEvent *__unused)event atPoint:(CGPoint __unused)point
 {
     return NO;
 }

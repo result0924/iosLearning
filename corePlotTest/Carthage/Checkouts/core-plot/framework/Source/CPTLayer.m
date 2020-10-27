@@ -166,7 +166,7 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
  **/
 -(nonnull instancetype)initWithFrame:(CGRect)newFrame
 {
-    if ( (self = [super init]) ) {
+    if ((self = [super init])) {
         paddingLeft          = CPTFloat(0.0);
         paddingTop           = CPTFloat(0.0);
         paddingRight         = CPTFloat(0.0);
@@ -207,7 +207,7 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
  */
 -(nonnull instancetype)initWithLayer:(nonnull id)layer
 {
-    if ( (self = [super initWithLayer:layer]) ) {
+    if ((self = [super initWithLayer:layer])) {
         CPTLayer *theLayer = (CPTLayer *)layer;
 
         paddingLeft          = theLayer->paddingLeft;
@@ -268,7 +268,7 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
  */
 -(nullable instancetype)initWithCoder:(nonnull NSCoder *)coder
 {
-    if ( (self = [super initWithCoder:coder]) ) {
+    if ((self = [super initWithCoder:coder])) {
         paddingLeft   = [coder decodeCGFloatForKey:@"CPTLayer.paddingLeft"];
         paddingTop    = [coder decodeCGFloatForKey:@"CPTLayer.paddingTop"];
         paddingRight  = [coder decodeCGFloatForKey:@"CPTLayer.paddingRight"];
@@ -305,7 +305,7 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
 
 /// @cond
 
--(id<CAAction>)actionForKey:(nonnull NSString *)aKey
+-(id<CAAction>)actionForKey:(nonnull NSString *__unused)aKey
 {
     return nil;
 }
@@ -323,24 +323,46 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
         return;
     }
     else {
-#if TARGET_OS_OSX
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wundeclared-selector"
+#if TARGET_OS_OSX
         // Workaround since @available macro is not there
 
         if ( [NSView instancesRespondToSelector:@selector(effectiveAppearance)] ) {
             NSAppearance *oldAppearance = NSAppearance.currentAppearance;
-            NSAppearance.currentAppearance = ( (NSView *)self.graph.hostingView ).effectiveAppearance;
+            NSAppearance.currentAppearance = ((NSView *)self.graph.hostingView).effectiveAppearance;
             [super display];
             NSAppearance.currentAppearance = oldAppearance;
         }
         else {
             [super display];
         }
-#pragma clang diagnostic pop
+#else
+#ifdef __IPHONE_13_0
+        if ( @available(iOS 13, *)) {
+            if ( [UITraitCollection instancesRespondToSelector:@selector(performAsCurrentTraitCollection:)] ) {
+                UITraitCollection *traitCollection = ((UIView *)self.graph.hostingView).traitCollection;
+                if ( traitCollection ) {
+                    [traitCollection performAsCurrentTraitCollection: ^{
+                        [super display];
+                    }];
+                }
+                else {
+                    [super display];
+                }
+            }
+            else {
+                [super display];
+            }
+        }
+        else {
+            [super display];
+        }
 #else
         [super display];
 #endif
+#endif
+#pragma clang diagnostic pop
     }
 }
 
@@ -357,6 +379,23 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
 }
 
 /// @endcond
+
+/**
+ * @brief Recursively marks this layer and all sublayers as needing to be redrawn.
+ **/
+-(void)setNeedsDisplayAllLayers
+{
+    [self setNeedsDisplay];
+
+    for ( CPTLayer *subLayer in self.sublayers ) {
+        if ( [subLayer respondsToSelector:@selector(setNeedsDisplayAllLayers)] ) {
+            [subLayer setNeedsDisplayAllLayers];
+        }
+        else {
+            [subLayer setNeedsDisplay];
+        }
+    }
+}
 
 /** @brief Draws layer content into the provided graphics context.
  *
@@ -429,15 +468,15 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
 
 -(void)applyTransform:(CATransform3D)transform3D toContext:(nonnull CGContextRef)context
 {
-    if ( !CATransform3DIsIdentity(transform3D) ) {
-        if ( CATransform3DIsAffine(transform3D) ) {
+    if ( !CATransform3DIsIdentity(transform3D)) {
+        if ( CATransform3DIsAffine(transform3D)) {
             CGRect selfBounds    = self.bounds;
             CGPoint anchorPoint  = self.anchorPoint;
             CGPoint anchorOffset = CPTPointMake(anchorOffset.x = selfBounds.origin.x + anchorPoint.x * selfBounds.size.width,
                                                 anchorOffset.y = selfBounds.origin.y + anchorPoint.y * selfBounds.size.height);
 
             CGAffineTransform affineTransform = CGAffineTransformMakeTranslation(-anchorOffset.x, -anchorOffset.y);
-            affineTransform = CGAffineTransformConcat(affineTransform, CATransform3DGetAffineTransform(transform3D) );
+            affineTransform = CGAffineTransformConcat(affineTransform, CATransform3DGetAffineTransform(transform3D));
             affineTransform = CGAffineTransformTranslate(affineTransform, anchorOffset.x, anchorOffset.y);
 
             CGRect transformedBounds = CGRectApplyAffineTransform(selfBounds, affineTransform);
@@ -465,7 +504,7 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
 -(nonnull NSData *)dataForPDFRepresentationOfLayer
 {
     NSMutableData *pdfData         = [[NSMutableData alloc] init];
-    CGDataConsumerRef dataConsumer = CGDataConsumerCreateWithCFData( (__bridge CFMutableDataRef)pdfData );
+    CGDataConsumerRef dataConsumer = CGDataConsumerCreateWithCFData((__bridge CFMutableDataRef)pdfData);
 
     const CGRect mediaBox   = CPTRectMake(0.0, 0.0, self.bounds.size.width, self.bounds.size.height);
     CGContextRef pdfContext = CGPDFContextCreate(dataConsumer, &mediaBox, NULL);
@@ -491,29 +530,29 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
 /// @name User Interaction
 /// @{
 
--(BOOL)pointingDeviceDownEvent:(nonnull CPTNativeEvent *)event atPoint:(CGPoint)interactionPoint
+-(BOOL)pointingDeviceDownEvent:(nonnull CPTNativeEvent *__unused)event atPoint:(CGPoint __unused)interactionPoint
 {
     return NO;
 }
 
--(BOOL)pointingDeviceUpEvent:(nonnull CPTNativeEvent *)event atPoint:(CGPoint)interactionPoint
+-(BOOL)pointingDeviceUpEvent:(nonnull CPTNativeEvent *__unused)event atPoint:(CGPoint __unused)interactionPoint
 {
     return NO;
 }
 
--(BOOL)pointingDeviceDraggedEvent:(nonnull CPTNativeEvent *)event atPoint:(CGPoint)interactionPoint
+-(BOOL)pointingDeviceDraggedEvent:(nonnull CPTNativeEvent *__unused)event atPoint:(CGPoint __unused)interactionPoint
 {
     return NO;
 }
 
--(BOOL)pointingDeviceCancelledEvent:(nonnull CPTNativeEvent *)event
+-(BOOL)pointingDeviceCancelledEvent:(nonnull CPTNativeEvent *__unused)event
 {
     return NO;
 }
 
 #if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
 #else
--(BOOL)scrollWheelEvent:(nonnull CPTNativeEvent *)event fromPoint:(CGPoint)fromPoint toPoint:(CGPoint)toPoint
+-(BOOL)scrollWheelEvent:(nonnull CPTNativeEvent *__unused)event fromPoint:(CGPoint __unused)fromPoint toPoint:(CGPoint __unused)toPoint
 {
     return NO;
 }
@@ -538,38 +577,38 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
 
     CGPoint newPosition;
 
-    if ( CGSizeEqualToSize(boundsSize, frameSize) ) { // rotated 0° or 180°
+    if ( CGSizeEqualToSize(boundsSize, frameSize)) { // rotated 0° or 180°
         CGPoint anchor = self.anchorPoint;
 
         CGPoint newAnchor = CGPointMake(boundsSize.width * anchor.x,
                                         boundsSize.height * anchor.y);
 
-        if ( scale == CPTFloat(1.0) ) {
-            newPosition.x = ceil(currentPosition.x - newAnchor.x - CPTFloat(0.5) ) + newAnchor.x;
-            newPosition.y = ceil(currentPosition.y - newAnchor.y - CPTFloat(0.5) ) + newAnchor.y;
+        if ( scale == CPTFloat(1.0)) {
+            newPosition.x = ceil(currentPosition.x - newAnchor.x - CPTFloat(0.5)) + newAnchor.x;
+            newPosition.y = ceil(currentPosition.y - newAnchor.y - CPTFloat(0.5)) + newAnchor.y;
         }
         else {
-            newPosition.x = ceil( (currentPosition.x - newAnchor.x) * scale - CPTFloat(0.5) ) / scale + newAnchor.x;
-            newPosition.y = ceil( (currentPosition.y - newAnchor.y) * scale - CPTFloat(0.5) ) / scale + newAnchor.y;
+            newPosition.x = ceil((currentPosition.x - newAnchor.x) * scale - CPTFloat(0.5)) / scale + newAnchor.x;
+            newPosition.y = ceil((currentPosition.y - newAnchor.y) * scale - CPTFloat(0.5)) / scale + newAnchor.y;
         }
     }
-    else if ( (boundsSize.width == frameSize.height) && (boundsSize.height == frameSize.width) ) { // rotated 90° or 270°
+    else if ((boundsSize.width == frameSize.height) && (boundsSize.height == frameSize.width)) { // rotated 90° or 270°
         CGPoint anchor = self.anchorPoint;
 
         CGPoint newAnchor = CGPointMake(boundsSize.height * anchor.y,
                                         boundsSize.width * anchor.x);
 
-        if ( scale == CPTFloat(1.0) ) {
-            newPosition.x = ceil(currentPosition.x - newAnchor.x - CPTFloat(0.5) ) + newAnchor.x;
-            newPosition.y = ceil(currentPosition.y - newAnchor.y - CPTFloat(0.5) ) + newAnchor.y;
+        if ( scale == CPTFloat(1.0)) {
+            newPosition.x = ceil(currentPosition.x - newAnchor.x - CPTFloat(0.5)) + newAnchor.x;
+            newPosition.y = ceil(currentPosition.y - newAnchor.y - CPTFloat(0.5)) + newAnchor.y;
         }
         else {
-            newPosition.x = ceil( (currentPosition.x - newAnchor.x) * scale - CPTFloat(0.5) ) / scale + newAnchor.x;
-            newPosition.y = ceil( (currentPosition.y - newAnchor.y) * scale - CPTFloat(0.5) ) / scale + newAnchor.y;
+            newPosition.x = ceil((currentPosition.x - newAnchor.x) * scale - CPTFloat(0.5)) / scale + newAnchor.x;
+            newPosition.y = ceil((currentPosition.y - newAnchor.y) * scale - CPTFloat(0.5)) / scale + newAnchor.y;
         }
     }
     else {
-        if ( scale == CPTFloat(1.0) ) {
+        if ( scale == CPTFloat(1.0)) {
             newPosition.x = round(currentPosition.x);
             newPosition.y = round(currentPosition.y);
         }
@@ -626,7 +665,7 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
         CGSize shadowOffset  = myShadow.shadowOffset;
         CGFloat shadowRadius = myShadow.shadowBlurRadius;
 
-        margin = CGSizeMake(ceil(ABS(shadowOffset.width) + ABS(shadowRadius) ), ceil(ABS(shadowOffset.height) + ABS(shadowRadius) ) );
+        margin = CGSizeMake(ceil(ABS(shadowOffset.width) + ABS(shadowRadius)), ceil(ABS(shadowOffset.height) + ABS(shadowRadius)));
     }
 
     return margin;
@@ -656,14 +695,14 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
 
         CGSize subLayerSize = selfBounds.size;
         subLayerSize.width  -= leftPadding + rightPadding;
-        subLayerSize.width   = MAX(subLayerSize.width, CPTFloat(0.0) );
+        subLayerSize.width   = MAX(subLayerSize.width, CPTFloat(0.0));
         subLayerSize.width   = round(subLayerSize.width);
         subLayerSize.height -= topPadding + bottomPadding;
-        subLayerSize.height  = MAX(subLayerSize.height, CPTFloat(0.0) );
+        subLayerSize.height  = MAX(subLayerSize.height, CPTFloat(0.0));
         subLayerSize.height  = round(subLayerSize.height);
 
         CGRect subLayerFrame;
-        subLayerFrame.origin = CGPointMake(round(leftPadding), round(bottomPadding) );
+        subLayerFrame.origin = CGPointMake(round(leftPadding), round(bottomPadding));
         subLayerFrame.size   = subLayerSize;
 
         CPTSublayerSet *excludedSublayers = self.sublayersExcludedFromAutomaticLayout;
@@ -712,9 +751,10 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
 
     Class layerClass = [CPTLayer class];
     CGFloat scale    = self.contentsScale;
+
     for ( CALayer *layer in sublayers ) {
         if ( [layer isKindOfClass:layerClass] ) {
-            ( (CPTLayer *)layer ).contentsScale = scale;
+            ((CPTLayer *)layer).contentsScale = scale;
         }
     }
 }
@@ -724,7 +764,7 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
     [super addSublayer:layer];
 
     if ( [layer isKindOfClass:[CPTLayer class]] ) {
-        ( (CPTLayer *)layer ).contentsScale = self.contentsScale;
+        ((CPTLayer *)layer).contentsScale = self.contentsScale;
     }
 }
 
@@ -733,7 +773,7 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
     [super insertSublayer:layer atIndex:idx];
 
     if ( [layer isKindOfClass:[CPTLayer class]] ) {
-        ( (CPTLayer *)layer ).contentsScale = self.contentsScale;
+        ((CPTLayer *)layer).contentsScale = self.contentsScale;
     }
 }
 
@@ -742,7 +782,7 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
     [super insertSublayer:layer below:sibling];
 
     if ( [layer isKindOfClass:[CPTLayer class]] ) {
-        ( (CPTLayer *)layer ).contentsScale = self.contentsScale;
+        ((CPTLayer *)layer).contentsScale = self.contentsScale;
     }
 }
 
@@ -751,7 +791,7 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
     [super insertSublayer:layer above:sibling];
 
     if ( [layer isKindOfClass:[CPTLayer class]] ) {
-        ( (CPTLayer *)layer ).contentsScale = self.contentsScale;
+        ((CPTLayer *)layer).contentsScale = self.contentsScale;
     }
 }
 
@@ -760,7 +800,7 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
     [super replaceSublayer:layer with:layer2];
 
     if ( [layer2 isKindOfClass:[CPTLayer class]] ) {
-        ( (CPTLayer *)layer2 ).contentsScale = self.contentsScale;
+        ((CPTLayer *)layer2).contentsScale = self.contentsScale;
     }
 }
 
@@ -819,14 +859,17 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
     }
 
     CGAffineTransform sublayerTransform = CATransform3DGetAffineTransform(sublayer.transform);
-    CGContextConcatCTM(context, CGAffineTransformInvert(sublayerTransform) );
+
+    CGContextConcatCTM(context, CGAffineTransformInvert(sublayerTransform));
 
     CALayer *superlayer = self.superlayer;
+
     if ( [superlayer isKindOfClass:[CPTLayer class]] ) {
         [(CPTLayer *) superlayer applySublayerMaskToContext:context forSublayer:self withOffset:layerOffset];
     }
 
     CGPathRef maskPath = self.sublayerMaskingPath;
+
     if ( maskPath ) {
         CGContextTranslateCTM(context, -layerOffset.x, -layerOffset.y);
         CGContextAddPath(context, maskPath);
@@ -853,6 +896,7 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
     }
 
     CGPathRef maskPath = self.maskingPath;
+
     if ( maskPath ) {
         CGContextAddPath(context, maskPath);
         CGContextClip(context);
@@ -866,6 +910,7 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
     [super setNeedsLayout];
 
     CPTGraph *theGraph = self.graph;
+
     if ( theGraph ) {
         [[NSNotificationCenter defaultCenter] postNotificationName:CPTGraphNeedsRedrawNotification
                                                             object:theGraph];
@@ -877,6 +922,7 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
     [super setNeedsDisplay];
 
     CPTGraph *theGraph = self.graph;
+
     if ( theGraph ) {
         [[NSNotificationCenter defaultCenter] postNotificationName:CPTGraphNeedsRedrawNotification
                                                             object:theGraph];
@@ -907,7 +953,7 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
 
 -(void)setContentsScale:(CGFloat)newContentsScale
 {
-    NSParameterAssert(newContentsScale > CPTFloat(0.0) );
+    NSParameterAssert(newContentsScale > CPTFloat(0.0));
 
     if ( self.contentsScale != newContentsScale ) {
         if ( [CALayer instancesRespondToSelector:@selector(setContentsScale:)] ) {
@@ -979,7 +1025,7 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
 
 -(void)setBounds:(CGRect)newBounds
 {
-    if ( !CGRectEqualToRect(self.bounds, newBounds) ) {
+    if ( !CGRectEqualToRect(self.bounds, newBounds)) {
         if ( self.shadow ) {
             CGSize sizeOffset = self.shadowMargin;
 
@@ -1007,13 +1053,13 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
         CGSize sizeOffset   = self.shadowMargin;
         CGRect selfBounds   = self.bounds;
         CGSize adjustedSize = CGSizeMake(selfBounds.size.width + sizeOffset.width * CPTFloat(2.0),
-                                         selfBounds.size.height + sizeOffset.height * CPTFloat(2.0) );
+                                         selfBounds.size.height + sizeOffset.height * CPTFloat(2.0));
 
-        if ( selfBounds.size.width > CPTFloat(0.0) ) {
-            adjustedAnchor.x = (adjustedAnchor.x - CPTFloat(0.5) ) * (adjustedSize.width / selfBounds.size.width) + CPTFloat(0.5);
+        if ( selfBounds.size.width > CPTFloat(0.0)) {
+            adjustedAnchor.x = (adjustedAnchor.x - CPTFloat(0.5)) * (adjustedSize.width / selfBounds.size.width) + CPTFloat(0.5);
         }
-        if ( selfBounds.size.height > CPTFloat(0.0) ) {
-            adjustedAnchor.y = (adjustedAnchor.y - CPTFloat(0.5) ) * (adjustedSize.height / selfBounds.size.height) + CPTFloat(0.5);
+        if ( selfBounds.size.height > CPTFloat(0.0)) {
+            adjustedAnchor.y = (adjustedAnchor.y - CPTFloat(0.5)) * (adjustedSize.height / selfBounds.size.height) + CPTFloat(0.5);
         }
     }
 
@@ -1026,13 +1072,13 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
         CGSize sizeOffset   = self.shadowMargin;
         CGRect selfBounds   = self.bounds;
         CGSize adjustedSize = CGSizeMake(selfBounds.size.width + sizeOffset.width * CPTFloat(2.0),
-                                         selfBounds.size.height + sizeOffset.height * CPTFloat(2.0) );
+                                         selfBounds.size.height + sizeOffset.height * CPTFloat(2.0));
 
-        if ( adjustedSize.width > CPTFloat(0.0) ) {
-            newAnchorPoint.x = (newAnchorPoint.x - CPTFloat(0.5) ) * (selfBounds.size.width / adjustedSize.width) + CPTFloat(0.5);
+        if ( adjustedSize.width > CPTFloat(0.0)) {
+            newAnchorPoint.x = (newAnchorPoint.x - CPTFloat(0.5)) * (selfBounds.size.width / adjustedSize.width) + CPTFloat(0.5);
         }
-        if ( adjustedSize.height > CPTFloat(0.0) ) {
-            newAnchorPoint.y = (newAnchorPoint.y - CPTFloat(0.5) ) * (selfBounds.size.height / adjustedSize.height) + CPTFloat(0.5);
+        if ( adjustedSize.height > CPTFloat(0.0)) {
+            newAnchorPoint.y = (newAnchorPoint.y - CPTFloat(0.5)) * (selfBounds.size.height / adjustedSize.height) + CPTFloat(0.5);
         }
     }
 

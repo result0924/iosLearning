@@ -9,7 +9,7 @@
 
 #if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
 #else
-// For IKImageBrowser
+// For NSCollectionView
 #import <Quartz/Quartz.h>
 #endif
 
@@ -53,7 +53,7 @@ NSString *const kFinancialPlots = @"Financial Plots";
 
 -(nonnull instancetype)init
 {
-    if ( (self = [super init]) ) {
+    if ((self = [super init])) {
         defaultLayerHostingView = nil;
 
         graphs  = [[NSMutableArray alloc] init];
@@ -84,6 +84,7 @@ NSString *const kFinancialPlots = @"Financial Plots";
 
     // Remove the CPTLayerHostingView
     CPTGraphHostingView *hostingView = self.defaultLayerHostingView;
+
     if ( hostingView ) {
         [hostingView removeFromSuperview];
 
@@ -124,7 +125,7 @@ NSString *const kFinancialPlots = @"Financial Plots";
 #if TARGET_OS_TV
     size = 36.0;
 #elif TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
-    switch ( UI_USER_INTERFACE_IDIOM() ) {
+    switch ( UI_USER_INTERFACE_IDIOM()) {
         case UIUserInterfaceIdiomPad:
             size = 24.0;
             break;
@@ -150,7 +151,7 @@ NSString *const kFinancialPlots = @"Financial Plots";
 
     graph.paddingLeft = boundsPadding;
 
-    if ( graph.titleDisplacement.y > CPTFloat(0.0) ) {
+    if ( graph.titleDisplacement.y > CPTFloat(0.0)) {
         graph.paddingTop = graph.titleTextStyle.fontSize * CPTFloat(2.0);
     }
     else {
@@ -174,7 +175,7 @@ NSString *const kFinancialPlots = @"Financial Plots";
 
         graph.title                    = (self.graphs.count == 1 ? self.title : nil);
         graph.titleTextStyle           = textStyle;
-        graph.titleDisplacement        = CPTPointMake(0.0, textStyle.fontSize * CPTFloat(1.5) );
+        graph.titleDisplacement        = CPTPointMake(0.0, textStyle.fontSize * CPTFloat(1.5));
         graph.titlePlotAreaFrameAnchor = CPTRectAnchorTop;
 
         // Padding
@@ -228,7 +229,7 @@ NSString *const kFinancialPlots = @"Financial Plots";
         textStyle.fontSize = labelSize;
 
         theLegend.textStyle  = textStyle;
-        theLegend.swatchSize = CGSizeMake(labelSize * CPTFloat(1.5), labelSize * CPTFloat(1.5) );
+        theLegend.swatchSize = CGSizeMake(labelSize * CPTFloat(1.5), labelSize * CPTFloat(1.5));
 
         theLegend.rowMargin    = labelSize * CPTFloat(0.75);
         theLegend.columnMargin = labelSize * CPTFloat(0.75);
@@ -242,7 +243,7 @@ NSString *const kFinancialPlots = @"Financial Plots";
 
 #if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
 
--(nonnull UIImage *)image
+-(nonnull CPTNativeImage *)image
 {
     if ( self.cachedImage == nil ) {
         CGRect imageFrame = CGRectMake(0, 0, 400, 300);
@@ -287,7 +288,7 @@ NSString *const kFinancialPlots = @"Financial Plots";
 
 #else // OSX
 
--(nonnull NSImage *)image
+-(nonnull CPTNativeImage *)image
 {
     if ( self.cachedImage == nil ) {
         CGRect imageFrame = CGRectMake(0, 0, 400, 300);
@@ -299,26 +300,9 @@ NSString *const kFinancialPlots = @"Financial Plots";
 
         CGSize boundsSize = imageFrame.size;
 
-        NSBitmapImageRep *layerImage = [[NSBitmapImageRep alloc]
-                                        initWithBitmapDataPlanes:NULL
-                                                      pixelsWide:(NSInteger)boundsSize.width
-                                                      pixelsHigh:(NSInteger)boundsSize.height
-                                                   bitsPerSample:8
-                                                 samplesPerPixel:4
-                                                        hasAlpha:YES
-                                                        isPlanar:NO
-                                                  colorSpaceName:NSCalibratedRGBColorSpace
-                                                     bytesPerRow:(NSInteger)boundsSize.width * 4
-                                                    bitsPerPixel:32];
-
-        NSGraphicsContext *bitmapContext = [NSGraphicsContext graphicsContextWithBitmapImageRep:layerImage];
-        CGContextRef context             = (CGContextRef)bitmapContext.graphicsPort;
-
-        CGContextClearRect(context, CGRectMake(0.0, 0.0, boundsSize.width, boundsSize.height) );
-        CGContextSetAllowsAntialiasing(context, true);
-        CGContextSetShouldSmoothFonts(context, false);
-        [imageView.layer renderInContext:context];
-        CGContextFlush(context);
+        NSBitmapImageRep *layerImage = [imageView bitmapImageRepForCachingDisplayInRect:imageFrame];
+        layerImage.size = boundsSize;
+        [imageView cacheDisplayInRect:imageFrame toBitmapImageRep:layerImage];
 
         self.cachedImage = [[NSImage alloc] initWithSize:NSSizeFromCGSize(boundsSize)];
         [self.cachedImage addRepresentation:layerImage];
@@ -341,7 +325,7 @@ NSString *const kFinancialPlots = @"Financial Plots";
 
 #if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
 #else
--(void)setFrameSize:(NSSize)size
+-(void)setFrameSize:(NSSize __unused)size
 {
 }
 
@@ -398,7 +382,7 @@ NSString *const kFinancialPlots = @"Financial Plots";
     self.defaultLayerHostingView = hostingView;
 }
 
--(void)renderInGraphHostingView:(nonnull CPTGraphHostingView *)hostingView withTheme:(nullable CPTTheme *)theme animated:(BOOL)animated
+-(void)renderInGraphHostingView:(nonnull CPTGraphHostingView *__unused)hostingView withTheme:(nullable CPTTheme *__unused)theme animated:(BOOL __unused)animated
 {
     NSLog(@"PlotItem:renderInLayer: Override me");
 }

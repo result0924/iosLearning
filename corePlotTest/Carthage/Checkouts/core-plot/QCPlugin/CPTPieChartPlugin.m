@@ -107,16 +107,16 @@
     else if ( [key isEqualToString:@"inputBorderColor"] ) {
         CGColorRef grayColor  = CGColorCreateGenericGray(0.0, 1.0);
         CPTDictionary *result = @{
-                                    QCPortAttributeNameKey: @"Border Color",
-                                    QCPortAttributeDefaultValueKey: (id)CFBridgingRelease(grayColor)
+            QCPortAttributeNameKey: @"Border Color",
+            QCPortAttributeDefaultValueKey: (id)CFBridgingRelease(grayColor)
         };
         return result;
     }
     else if ( [key isEqualToString:@"inputLabelColor"] ) {
         CGColorRef grayColor  = CGColorCreateGenericGray(1.0, 1.0);
         CPTDictionary *result = @{
-                                    QCPortAttributeNameKey: @"Label Color",
-                                    QCPortAttributeDefaultValueKey: (id)CFBridgingRelease(grayColor)
+            QCPortAttributeNameKey: @"Label Color",
+            QCPortAttributeDefaultValueKey: (id)CFBridgingRelease(grayColor)
         };
         return result;
     }
@@ -224,7 +224,7 @@
     return [[self valueForInputKey:key] count];
 }
 
--(nullable id)numberForPlot:(nonnull CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
+-(nullable id)numberForPlot:(nonnull CPTPlot *)plot field:(NSUInteger __unused)fieldEnum recordIndex:(NSUInteger)index
 {
     NSUInteger plotIndex = [[self.graph allPlots] indexOfObject:plot];
     NSString *key        = [NSString stringWithFormat:@"plotNumbers%lu", (unsigned long)plotIndex];
@@ -239,7 +239,7 @@
     }
 }
 
--(nullable CPTFill *)sliceFillForPieChart:(nonnull CPTPieChart *)pieChart recordIndex:(NSUInteger)index
+-(nullable CPTFill *)sliceFillForPieChart:(nonnull CPTPieChart *__unused)pieChart recordIndex:(NSUInteger)index
 {
     CGColorRef plotFillColor  = [CPTPieChart defaultPieSliceColorForIndex:index].cgColor;
     CGColorRef inputFillColor = (CGColorRef)[self areaFillColor:0];
@@ -273,9 +273,11 @@
     NSString *label = dict[[NSString stringWithFormat:@"%lu", (unsigned long)index]];
 
     CPTTextLayer *layer = [[CPTTextLayer alloc] initWithText:label];
+
     [layer sizeToFit];
 
     CPTMutableTextStyle *style = [CPTMutableTextStyle textStyle];
+
     style.color     = [CPTColor colorWithCGColor:self.inputLabelColor];
     layer.textStyle = style;
 

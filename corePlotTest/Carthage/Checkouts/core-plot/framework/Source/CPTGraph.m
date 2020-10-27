@@ -200,7 +200,7 @@ CPTGraphPlotSpaceKey const CPTGraphPlotSpaceNotificationKey       = @"CPTGraphPl
  **/
 -(nonnull instancetype)initWithFrame:(CGRect)newFrame
 {
-    if ( (self = [super initWithFrame:newFrame]) ) {
+    if ((self = [super initWithFrame:newFrame])) {
         hostingView = nil;
         plots       = [[NSMutableArray alloc] init];
 
@@ -250,7 +250,7 @@ CPTGraphPlotSpaceKey const CPTGraphPlotSpaceNotificationKey       = @"CPTGraphPl
 
 -(nonnull instancetype)initWithLayer:(nonnull id)layer
 {
-    if ( (self = [super initWithLayer:layer]) ) {
+    if ((self = [super initWithLayer:layer])) {
         CPTGraph *theLayer = (CPTGraph *)layer;
 
         hostingView              = theLayer->hostingView;
@@ -309,7 +309,7 @@ CPTGraphPlotSpaceKey const CPTGraphPlotSpaceNotificationKey       = @"CPTGraphPl
 
 -(nullable instancetype)initWithCoder:(nonnull NSCoder *)coder
 {
-    if ( (self = [super initWithCoder:coder]) ) {
+    if ((self = [super initWithCoder:coder])) {
         hostingView = [coder decodeObjectOfClass:[CPTGraphHostingView class]
                                           forKey:@"CPTGraph.hostingView"];
         plotAreaFrame = [coder decodeObjectOfClass:[CPTPlotAreaFrame class]
@@ -380,9 +380,9 @@ CPTGraphPlotSpaceKey const CPTGraphPlotSpaceNotificationKey       = @"CPTGraphPl
     [self reloadDataIfNeeded];
     [self.axisSet.axes makeObjectsPerformSelector:@selector(relabel)];
 
-#if TARGET_OS_OSX
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wundeclared-selector"
+#if TARGET_OS_OSX
     // Workaround since @available macro is not there
     if ( [NSView instancesRespondToSelector:@selector(effectiveAppearance)] ) {
         NSAppearance *oldAppearance = NSAppearance.currentAppearance;
@@ -394,10 +394,32 @@ CPTGraphPlotSpaceKey const CPTGraphPlotSpaceNotificationKey       = @"CPTGraphPl
     else {
         [super layoutAndRenderInContext:context];
     }
-#pragma clang diagnostic pop
+#else
+#ifdef __IPHONE_13_0
+    if ( @available(iOS 13, *)) {
+        if ( [UITraitCollection instancesRespondToSelector:@selector(performAsCurrentTraitCollection:)] ) {
+            UITraitCollection *traitCollection = ((UIView *)self.hostingView).traitCollection;
+            if ( traitCollection ) {
+                [traitCollection performAsCurrentTraitCollection: ^{
+                    [super layoutAndRenderInContext:context];
+                }];
+            }
+            else {
+                [super layoutAndRenderInContext:context];
+            }
+        }
+        else {
+            [super layoutAndRenderInContext:context];
+        }
+    }
+    else {
+        [super layoutAndRenderInContext:context];
+    }
 #else
     [super layoutAndRenderInContext:context];
 #endif
+#endif
+#pragma clang diagnostic pop
 }
 
 /// @endcond
@@ -800,7 +822,7 @@ CPTGraphPlotSpaceKey const CPTGraphPlotSpaceNotificationKey       = @"CPTGraphPl
 
 -(void)setLegendDisplacement:(CGPoint)newLegendDisplacement
 {
-    if ( !CGPointEqualToPoint(newLegendDisplacement, legendDisplacement) ) {
+    if ( !CGPointEqualToPoint(newLegendDisplacement, legendDisplacement)) {
         legendDisplacement                 = newLegendDisplacement;
         self.legendAnnotation.displacement = newLegendDisplacement;
     }
@@ -914,7 +936,7 @@ CPTGraphPlotSpaceKey const CPTGraphPlotSpaceNotificationKey       = @"CPTGraphPl
 
             if ( title ) {
                 if ( theTitleAnnotation ) {
-                    ( (CPTTextLayer *)theTitleAnnotation.contentLayer ).text = title;
+                    ((CPTTextLayer *)theTitleAnnotation.contentLayer).text = title;
                 }
                 else {
                     CPTPlotAreaFrame *frameLayer = self.plotAreaFrame;
@@ -956,7 +978,7 @@ CPTGraphPlotSpaceKey const CPTGraphPlotSpaceNotificationKey       = @"CPTGraphPl
                 self.title = [attributedTitle.string copy];
 
                 if ( theTitleAnnotation ) {
-                    ( (CPTTextLayer *)theTitleAnnotation.contentLayer ).attributedText = attributedTitle;
+                    ((CPTTextLayer *)theTitleAnnotation.contentLayer).attributedText = attributedTitle;
                 }
                 else {
                     CPTPlotAreaFrame *frameLayer = self.plotAreaFrame;
@@ -1007,7 +1029,7 @@ CPTGraphPlotSpaceKey const CPTGraphPlotSpaceNotificationKey       = @"CPTGraphPl
 
 -(void)setTitleDisplacement:(CGPoint)newDisplace
 {
-    if ( !CGPointEqualToPoint(newDisplace, titleDisplacement) ) {
+    if ( !CGPointEqualToPoint(newDisplace, titleDisplacement)) {
         titleDisplacement = newDisplace;
 
         self.titleAnnotation.displacement = newDisplace;
@@ -1083,6 +1105,7 @@ CPTGraphPlotSpaceKey const CPTGraphPlotSpaceNotificationKey       = @"CPTGraphPl
     // Plot spaces do not block events, because several spaces may need to receive
     // the same event sequence (e.g., dragging coordinate translation)
     BOOL handledEvent = NO;
+
     for ( CPTPlotSpace *space in self.plotSpaces ) {
         BOOL handled = [space pointingDeviceDownEvent:event atPoint:interactionPoint];
         handledEvent |= handled;
@@ -1147,7 +1170,7 @@ CPTGraphPlotSpaceKey const CPTGraphPlotSpaceNotificationKey       = @"CPTGraphPl
     // Plot spaces do not block events, because several spaces may need to receive
     // the same event sequence (e.g., dragging coordinate translation)
     for ( CPTPlotSpace *space in self.plotSpaces ) {
-        if ( !handledEvent || (handledEvent && space.isDragging) ) {
+        if ( !handledEvent || (handledEvent && space.isDragging)) {
             BOOL handled = [space pointingDeviceUpEvent:event atPoint:interactionPoint];
             handledEvent |= handled;
         }
@@ -1209,6 +1232,7 @@ CPTGraphPlotSpaceKey const CPTGraphPlotSpaceNotificationKey       = @"CPTGraphPl
     // Plot spaces do not block events, because several spaces may need to receive
     // the same event sequence (e.g., dragging coordinate translation)
     BOOL handledEvent = NO;
+
     for ( CPTPlotSpace *space in self.plotSpaces ) {
         BOOL handled = [space pointingDeviceDraggedEvent:event atPoint:interactionPoint];
         handledEvent |= handled;
@@ -1268,6 +1292,7 @@ CPTGraphPlotSpaceKey const CPTGraphPlotSpaceNotificationKey       = @"CPTGraphPl
 
     // Plot spaces
     BOOL handledEvent = NO;
+
     for ( CPTPlotSpace *space in self.plotSpaces ) {
         BOOL handled = [space pointingDeviceCancelledEvent:event];
         handledEvent |= handled;
@@ -1329,6 +1354,7 @@ CPTGraphPlotSpaceKey const CPTGraphPlotSpaceNotificationKey       = @"CPTGraphPl
 
     // Plot spaces
     BOOL handledEvent = NO;
+
     for ( CPTPlotSpace *space in self.plotSpaces ) {
         BOOL handled = [space scrollWheelEvent:event fromPoint:fromPoint toPoint:toPoint];
         handledEvent |= handled;

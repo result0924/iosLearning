@@ -6,13 +6,7 @@
 
 @property (nonatomic, readwrite, strong) NSMutableSet<CPTFunctionDataSource *> *dataSources;
 
-#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
-typedef UIFont CPTFont;
-#else
-typedef NSFont CPTFont;
-#endif
-
--(nullable CPTFont *)italicFontForFont:(nonnull CPTFont *)oldFont;
+-(nullable CPTNativeFont *)italicFontForFont:(nonnull CPTNativeFont *)oldFont;
 
 @end
 
@@ -33,7 +27,7 @@ typedef NSFont CPTFont;
 
 -(nonnull instancetype)init
 {
-    if ( (self = [super init]) ) {
+    if ((self = [super init])) {
         dataSources = [[NSMutableSet alloc] init];
 
         self.title   = @"Math Function Plot";
@@ -50,7 +44,7 @@ typedef NSFont CPTFont;
     [super killGraph];
 }
 
--(void)renderInGraphHostingView:(nonnull CPTGraphHostingView *)hostingView withTheme:(nullable CPTTheme *)theme animated:(BOOL)animated
+-(void)renderInGraphHostingView:(nonnull CPTGraphHostingView *)hostingView withTheme:(nullable CPTTheme *)theme animated:(BOOL __unused)animated
 {
 #if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
     CGRect bounds = hostingView.bounds;
@@ -146,9 +140,9 @@ typedef NSFont CPTFont;
         NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:titleString
                                                                                   attributes:textAttributes];
 
-        CPTFont *fontAttribute = textAttributes[NSFontAttributeName];
+        CPTNativeFont *fontAttribute = textAttributes[NSFontAttributeName];
         if ( fontAttribute ) {
-            CPTFont *italicFont = [self italicFontForFont:fontAttribute];
+            CPTNativeFont *italicFont = [self italicFontForFont:fontAttribute];
 
             [title addAttribute:NSFontAttributeName
                           value:italicFont
@@ -158,7 +152,7 @@ typedef NSFont CPTFont;
                           range:NSMakeRange(8, 1)];
         }
 
-        CPTFont *labelFont = [CPTFont fontWithName:@"Helvetica" size:self.titleSize * CPTFloat(0.5)];
+        CPTNativeFont *labelFont = [CPTNativeFont fontWithName:@"Helvetica" size:self.titleSize * CPTFloat(0.5)];
         [title addAttribute:NSFontAttributeName
                       value:labelFont
                       range:NSMakeRange(0, title.length)];
@@ -201,7 +195,7 @@ typedef NSFont CPTFont;
     graph.legend.numberOfRows    = 1;
     graph.legend.delegate        = self;
     graph.legendAnchor           = CPTRectAnchorBottom;
-    graph.legendDisplacement     = CGPointMake(0.0, self.titleSize * CPTFloat(1.25) );
+    graph.legendDisplacement     = CGPointMake(0.0, self.titleSize * CPTFloat(1.25));
 }
 
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
@@ -229,6 +223,7 @@ typedef NSFont CPTFont;
     }
 
     UIFont *italicFont = nil;
+
     if ( italicName ) {
         italicFont = [UIFont fontWithName:italicName
                                      size:oldFont.pointSize];
@@ -247,7 +242,7 @@ typedef NSFont CPTFont;
 
 #pragma mark - Legend delegate
 
--(void)legend:(nonnull CPTLegend *)legend legendEntryForPlot:(nonnull CPTPlot *)plot wasSelectedAtIndex:(NSUInteger)idx
+-(void)legend:(nonnull CPTLegend *__unused)legend legendEntryForPlot:(nonnull CPTPlot *)plot wasSelectedAtIndex:(NSUInteger __unused)idx
 {
     plot.hidden = !plot.hidden;
 }

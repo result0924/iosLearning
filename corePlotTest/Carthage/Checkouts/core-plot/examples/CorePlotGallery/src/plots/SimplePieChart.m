@@ -26,7 +26,7 @@
 
 -(nonnull instancetype)init
 {
-    if ( (self = [super init]) ) {
+    if ((self = [super init])) {
         self.title   = @"Simple Pie Chart";
         self.section = kPieCharts;
 
@@ -43,7 +43,7 @@
     }
 }
 
--(void)renderInGraphHostingView:(nonnull CPTGraphHostingView *)hostingView withTheme:(nullable CPTTheme *)theme animated:(BOOL)animated
+-(void)renderInGraphHostingView:(nonnull CPTGraphHostingView *)hostingView withTheme:(nullable CPTTheme *)theme animated:(BOOL __unused)animated
 {
 #if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
     CGRect bounds = hostingView.bounds;
@@ -69,7 +69,7 @@
     CPTPieChart *piePlot = [[CPTPieChart alloc] init];
     piePlot.dataSource = self;
     piePlot.pieRadius  = MIN(CPTFloat(0.7) * (hostingView.frame.size.height - CPTFloat(2.0) * graph.paddingLeft) / CPTFloat(2.0),
-                             CPTFloat(0.7) * (hostingView.frame.size.width - CPTFloat(2.0) * graph.paddingTop) / CPTFloat(2.0) );
+                             CPTFloat(0.7) * (hostingView.frame.size.width - CPTFloat(2.0) * graph.paddingTop) / CPTFloat(2.0));
     piePlot.identifier     = self.title;
     piePlot.startAngle     = CPTFloat(M_PI_4);
     piePlot.sliceDirection = CPTPieDirectionCounterClockwise;
@@ -105,7 +105,7 @@
     graph.legendDisplacement = CGPointMake(-graph.paddingRight - CPTFloat(10.0), 0.0);
 }
 
--(nullable CPTLayer *)dataLabelForPlot:(nonnull CPTPlot *)plot recordIndex:(NSUInteger)index
+-(nullable CPTLayer *)dataLabelForPlot:(nonnull CPTPlot *__unused)plot recordIndex:(NSUInteger)index
 {
     static CPTMutableTextStyle *whiteText = nil;
     static dispatch_once_t onceToken      = 0;
@@ -118,6 +118,7 @@
 
     CPTTextLayer *newLayer = [[CPTTextLayer alloc] initWithText:[NSString stringWithFormat:@"%1.0f", self.plotData[index].doubleValue]
                                                           style:whiteText];
+
     return newLayer;
 }
 
@@ -136,7 +137,8 @@
     self.offsetIndex = NSNotFound;
 
     CPTMutableNumberArray *newData = [[NSMutableArray alloc] init];
-    NSUInteger dataCount           = (NSUInteger)lrint(ceil(10.0 * arc4random() / (double)UINT32_MAX) ) + 1;
+    NSUInteger dataCount           = (NSUInteger)lrint(ceil(10.0 * arc4random() / (double)UINT32_MAX)) + 1;
+
     for ( NSUInteger i = 1; i < dataCount; i++ ) {
         [newData addObject:@(100.0 * arc4random() / (double)UINT32_MAX)];
     }
@@ -150,14 +152,14 @@
 #pragma mark -
 #pragma mark CPTLegendDelegate Methods
 
--(void)legend:(nonnull CPTLegend *)legend legendEntryForPlot:(nonnull CPTPlot *)plot wasSelectedAtIndex:(NSUInteger)idx
+-(void)legend:(nonnull CPTLegend *__unused)legend legendEntryForPlot:(nonnull CPTPlot *)plot wasSelectedAtIndex:(NSUInteger)idx
 {
     NSLog(@"Legend entry for '%@' was selected at index %lu.", plot.identifier, (unsigned long)idx);
 
     [CPTAnimation animate:self
                  property:@"sliceOffset"
-                     from:(idx == self.offsetIndex ? CPTNAN : CPTFloat(0.0) )
-                       to:(idx == self.offsetIndex ? CPTFloat(0.0) : CPTFloat(35.0) )
+                     from:(idx == self.offsetIndex ? CPTNAN : CPTFloat(0.0))
+                       to:(idx == self.offsetIndex ? CPTFloat(0.0) : CPTFloat(35.0))
                  duration:0.5
            animationCurve:CPTAnimationCurveCubicOut
                  delegate:nil];
@@ -168,12 +170,12 @@
 #pragma mark -
 #pragma mark Plot Data Source Methods
 
--(NSUInteger)numberOfRecordsForPlot:(nonnull CPTPlot *)plot
+-(NSUInteger)numberOfRecordsForPlot:(nonnull CPTPlot *__unused)plot
 {
     return self.plotData.count;
 }
 
--(nullable id)numberForPlot:(nonnull CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
+-(nullable id)numberForPlot:(nonnull CPTPlot *__unused)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
 {
     NSNumber *num;
 
@@ -187,17 +189,14 @@
     return num;
 }
 
--(NSAttributedString *)attributedLegendTitleForPieChart:(nonnull CPTPieChart *)pieChart recordIndex:(NSUInteger)index
+-(NSAttributedString *)attributedLegendTitleForPieChart:(nonnull CPTPieChart *__unused)pieChart recordIndex:(NSUInteger)index
 {
-#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
-    UIColor *sliceColor = [CPTPieChart defaultPieSliceColorForIndex:index].uiColor;
-    UIFont *labelFont   = [UIFont fontWithName:@"Helvetica" size:self.titleSize * CPTFloat(0.5)];
-#else
-    NSColor *sliceColor = [CPTPieChart defaultPieSliceColorForIndex:index].nsColor;
-    NSFont *labelFont   = [NSFont fontWithName:@"Helvetica" size:self.titleSize * CPTFloat(0.5)];
-#endif
+    CPTNativeColor *sliceColor = [CPTPieChart defaultPieSliceColorForIndex:index].nativeColor;
+    CPTNativeFont *labelFont   = [CPTNativeFont fontWithName:@"Helvetica"
+                                                        size:self.titleSize * CPTFloat(0.5)];
 
     NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"Pie Slice %lu", (unsigned long)index]];
+
     [title addAttribute:NSForegroundColorAttributeName
                   value:sliceColor
                   range:NSMakeRange(4, 5)];
@@ -209,7 +208,7 @@
     return title;
 }
 
--(CGFloat)radialOffsetForPieChart:(nonnull CPTPieChart *)pieChart recordIndex:(NSUInteger)index
+-(CGFloat)radialOffsetForPieChart:(nonnull CPTPieChart *__unused)pieChart recordIndex:(NSUInteger)index
 {
     return index == self.offsetIndex ? self.sliceOffset : 0.0;
 }
@@ -224,7 +223,7 @@
 
         [self.graphs[0] reloadData];
 
-        if ( newOffset == CPTFloat(0.0) ) {
+        if ( newOffset == CPTFloat(0.0)) {
             self.offsetIndex = NSNotFound;
         }
     }

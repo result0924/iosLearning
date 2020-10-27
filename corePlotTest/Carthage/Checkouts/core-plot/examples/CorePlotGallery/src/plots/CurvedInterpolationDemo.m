@@ -37,7 +37,7 @@ static NSString *const hermiteCubicIdentifier          = @"Hermite Cubic";
 
 -(instancetype)init
 {
-    if ( (self = [super init]) ) {
+    if ((self = [super init])) {
         self.title   = @"Curved Interpolation Options Demo";
         self.section = kLinePlots;
     }
@@ -69,7 +69,7 @@ static NSString *const hermiteCubicIdentifier          = @"Hermite Cubic";
     }
 }
 
--(void)renderInGraphHostingView:(CPTGraphHostingView *)hostingView withTheme:(CPTTheme *)theme animated:(BOOL)animated
+-(void)renderInGraphHostingView:(CPTGraphHostingView *)hostingView withTheme:(CPTTheme *)theme animated:(BOOL __unused)animated
 {
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
     CGRect bounds = hostingView.bounds;
@@ -106,7 +106,7 @@ static NSString *const hermiteCubicIdentifier          = @"Hermite Cubic";
     redLineStyle.lineColor = [[CPTColor redColor] colorWithAlphaComponent:0.5];
 
     CPTLineCap *lineCap = [CPTLineCap sweptArrowPlotLineCap];
-    lineCap.size = CGSizeMake(self.titleSize * CPTFloat(0.625), self.titleSize * CPTFloat(0.625) );
+    lineCap.size = CGSizeMake(self.titleSize * CPTFloat(0.625), self.titleSize * CPTFloat(0.625));
 
 // Axes
 // Label x axis with a fixed interval policy
@@ -243,13 +243,13 @@ static NSString *const hermiteCubicIdentifier          = @"Hermite Cubic";
     graph.legend.borderLineStyle = x.axisLineStyle;
     graph.legend.cornerRadius    = 5.0;
     graph.legendAnchor           = CPTRectAnchorBottom;
-    graph.legendDisplacement     = CGPointMake(0.0, self.titleSize * CPTFloat(2.0) );
+    graph.legendDisplacement     = CGPointMake(0.0, self.titleSize * CPTFloat(2.0));
 }
 
 #pragma mark -
 #pragma mark Plot Data Source Methods
 
--(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot
+-(NSUInteger)numberOfRecordsForPlot:(CPTPlot *__unused)plot
 {
     return self.plotData.count;
 }

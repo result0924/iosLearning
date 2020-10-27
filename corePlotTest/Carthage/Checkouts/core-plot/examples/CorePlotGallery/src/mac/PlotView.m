@@ -11,13 +11,13 @@
 
 -(nonnull instancetype)initWithFrame:(NSRect)frame
 {
-    if ( (self = [super initWithFrame:frame]) ) {
+    if ((self = [super initWithFrame:frame])) {
     }
 
     return self;
 }
 
--(void)drawRect:(NSRect)dirtyRect
+-(void)drawRect:(NSRect __unused)dirtyRect
 {
 }
 
@@ -26,6 +26,7 @@
     [super setFrameSize:newSize];
 
     id<PlotViewDelegate> theDelegate = self.delegate;
+
     if ( [theDelegate respondsToSelector:@selector(setFrameSize:)] ) {
         [theDelegate setFrameSize:newSize];
     }

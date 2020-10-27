@@ -72,13 +72,27 @@ void CPTPathApplierFunc(void *info, const CGPathElement *element);
  *  @param key The key to associate with the color space.
  *  @note The current implementation only works with named color spaces.
  **/
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-parameter"
+#endif
 -(void)encodeCGColorSpace:(nullable CGColorSpaceRef)colorSpace forKey:(nonnull NSString *)key
 {
 #if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
     NSLog(@"Color space encoding is not supported on iOS. Decoding will return a generic RGB color space.");
+#pragma clang diagnostic pop
 #else
     if ( colorSpace ) {
-        CFDataRef iccProfile = CGColorSpaceCopyICCProfile(colorSpace);
+        CFDataRef iccProfile = NULL;
+
+        // CGColorSpaceCopyICCProfile() is deprecated as of macOS 10.13
+        if ( CGColorSpaceCopyICCData ) {
+            iccProfile = CGColorSpaceCopyICCData(colorSpace);
+        }
+        else {
+            iccProfile = CGColorSpaceCopyICCProfile(colorSpace);
+        }
+
         [self encodeObject:(__bridge NSData *)iccProfile forKey:key];
         CFRelease(iccProfile);
     }
@@ -113,6 +127,7 @@ void CPTPathApplierFunc(void *__nullable info, const CGPathElement *__nonnull el
     }
 
     NSMutableArray<NSMutableDictionary<NSString *, NSNumber *> *> *pathData = (__bridge NSMutableArray<NSMutableDictionary<NSString *, NSNumber *> *> *)info;
+
     [pathData addObject:elementData];
 }
 
@@ -132,6 +147,7 @@ void CPTPathApplierFunc(void *__nullable info, const CGPathElement *__nonnull el
     // encode data count
     NSUInteger dataCount = pathData.count;
     NSString *newKey     = [[NSString alloc] initWithFormat:@"%@.count", key];
+
     [self encodeInteger:(NSInteger)dataCount forKey:newKey];
 
     // encode data elements
@@ -195,14 +211,17 @@ void CPTPathApplierFunc(void *__nullable info, const CGPathElement *__nonnull el
 
     newKey = [[NSString alloc] initWithFormat:@"%@.colorSpace", key];
     CGColorSpaceRef colorSpace = CGImageGetColorSpace(image);
+
     [self encodeCGColorSpace:colorSpace forKey:newKey];
 
     newKey = [[NSString alloc] initWithFormat:@"%@.bitmapInfo", key];
     const CGBitmapInfo info = CGImageGetBitmapInfo(image);
+
     [self encodeBytes:(const void *)(&info) length:sizeof(CGBitmapInfo) forKey:newKey];
 
     CGDataProviderRef provider = CGImageGetDataProvider(image);
     CFDataRef providerData     = CGDataProviderCopyData(provider);
+
     newKey = [[NSString alloc] initWithFormat:@"%@.provider", key];
     [self encodeObject:(__bridge NSData *)providerData forKey:newKey];
     if ( providerData ) {
@@ -210,6 +229,7 @@ void CPTPathApplierFunc(void *__nullable info, const CGPathElement *__nonnull el
     }
 
     const CGFloat *decodeArray = CGImageGetDecode(image);
+
     if ( decodeArray ) {
         size_t numberOfComponents = CGColorSpaceGetNumberOfComponents(colorSpace);
         newKey = [[NSString alloc] initWithFormat:@"%@.numberOfComponents", key];
@@ -228,7 +248,7 @@ void CPTPathApplierFunc(void *__nullable info, const CGPathElement *__nonnull el
     [self encodeBool:CGImageGetShouldInterpolate(image) forKey:newKey];
 
     newKey = [[NSString alloc] initWithFormat:@"%@.renderingIntent", key];
-    [self encodeInt:CGImageGetRenderingIntent(image) forKey:newKey];
+    [self encodeInt32:CGImageGetRenderingIntent(image) forKey:newKey];
 }
 
 /** @brief Encodes an @ref NSDecimal and associates it with the string @par{key}.
@@ -325,6 +345,10 @@ void CPTPathApplierFunc(void *__nullable info, const CGPathElement *__nonnull el
  *  @return The new path.
  *  @note The current implementation only works with named color spaces.
  **/
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-parameter"
+#endif
 -(nullable CGColorSpaceRef)newCGColorSpaceDecodeForKey:(nonnull NSString *)key
 {
     CGColorSpaceRef colorSpace = NULL;
@@ -332,11 +356,18 @@ void CPTPathApplierFunc(void *__nullable info, const CGPathElement *__nonnull el
 #if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
     NSLog(@"Color space decoding is not supported on iOS. Using generic RGB color space.");
     colorSpace = CGColorSpaceCreateDeviceRGB();
+#pragma clang diagnostic pop
 #else
     NSData *iccProfile = [self decodeObjectOfClass:[NSData class]
                                             forKey:key];
     if ( iccProfile ) {
-        colorSpace = CGColorSpaceCreateWithICCProfile( (__bridge CFDataRef)iccProfile );
+        // CGColorSpaceCreateWithICCProfile() is deprecated as of macOS 10.13
+        if ( CGColorSpaceCreateWithICCData ) {
+            colorSpace = CGColorSpaceCreateWithICCData((__bridge CFDataRef)iccProfile);
+        }
+        else {
+            colorSpace = CGColorSpaceCreateWithICCProfile((__bridge CFDataRef)iccProfile);
+        }
     }
     else {
         NSLog(@"Color space not available for key '%@'. Using generic RGB color space.", key);
@@ -446,15 +477,16 @@ void CPTPathApplierFunc(void *__nullable info, const CGPathElement *__nonnull el
     const CGBitmapInfo *bitmapInfo = (const void *)[self decodeBytesForKey:newKey returnedLength:&length];
 
     newKey = [[NSString alloc] initWithFormat:@"%@.provider", key];
-    CGDataProviderRef provider = CGDataProviderCreateWithCFData( (__bridge CFDataRef)[self decodeObjectOfClass:[NSData class]
-                                                                                                        forKey:newKey] );
+    CGDataProviderRef provider = CGDataProviderCreateWithCFData((__bridge CFDataRef)[self decodeObjectOfClass:[NSData class]
+                                                                                                       forKey:newKey]);
 
     newKey = [[NSString alloc] initWithFormat:@"%@.numberOfComponents", key];
     size_t numberOfComponents = (size_t)[self decodeInt64ForKey:newKey];
 
     CGFloat *decodeArray = NULL;
+
     if ( numberOfComponents ) {
-        decodeArray = calloc( (numberOfComponents * 2), sizeof(CGFloat) );
+        decodeArray = calloc((numberOfComponents * 2), sizeof(CGFloat));
 
         for ( size_t i = 0; i < numberOfComponents; i++ ) {
             newKey             = [[NSString alloc] initWithFormat:@"%@.decode[%zu].lower", key, i];
@@ -469,7 +501,7 @@ void CPTPathApplierFunc(void *__nullable info, const CGPathElement *__nonnull el
     bool shouldInterpolate = [self decodeBoolForKey:newKey];
 
     newKey = [[NSString alloc] initWithFormat:@"%@.renderingIntent", key];
-    CGColorRenderingIntent intent = (CGColorRenderingIntent)[self decodeIntForKey:newKey];
+    CGColorRenderingIntent intent = (CGColorRenderingIntent)[self decodeInt32ForKey:newKey];
 
     CGImageRef newImage = CGImageCreate(width,
                                         height,

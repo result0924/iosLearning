@@ -19,9 +19,12 @@
     CGFloat scale = 0.0;
 
     if ( [self respondsToSelector:@selector(hostingView)] ) {
-        scale = ( (CPTGraph *)self ).hostingView.window.backingScaleFactor;
+        scale = ((CPTGraph *)self).hostingView.window.backingScaleFactor;
     }
-    else {
+    if ((scale == 0.0) && [CALayer instancesRespondToSelector:@selector(contentsScale)] ) {
+        scale = self.contentsScale;
+    }
+    if ( scale == 0.0 ) {
         NSWindow *myWindow = self.graph.hostingView.window;
 
         if ( myWindow ) {
@@ -31,6 +34,7 @@
             scale = [NSScreen mainScreen].backingScaleFactor;
         }
     }
+    scale = MAX(scale, CPTFloat(1.0));
 
     NSBitmapImageRep *layerImage = [[NSBitmapImageRep alloc]
                                     initWithBitmapDataPlanes:NULL
@@ -52,13 +56,14 @@
     NSGraphicsContext *bitmapContext = [NSGraphicsContext graphicsContextWithBitmapImageRep:layerImage];
     CGContextRef context             = (CGContextRef)bitmapContext.graphicsPort;
 
-    CGContextClearRect(context, CPTRectMake(0.0, 0.0, boundsSize.width, boundsSize.height) );
+    CGContextClearRect(context, CPTRectMake(0.0, 0.0, boundsSize.width, boundsSize.height));
     CGContextSetAllowsAntialiasing(context, true);
     CGContextSetShouldSmoothFonts(context, false);
     [self layoutAndRenderInContext:context];
     CGContextFlush(context);
 
     NSImage *image = [[NSImage alloc] initWithSize:NSSizeFromCGSize(boundsSize)];
+
     [image addRepresentation:layerImage];
 
     return image;

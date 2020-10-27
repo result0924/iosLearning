@@ -28,7 +28,7 @@
 
     NSMutableData *data       = [NSMutableData dataWithLength:nElems * sizeof(float)];
     CPTMutableNumericData *nd = [[CPTMutableNumericData alloc] initWithData:data
-                                                                   dataType:CPTDataType(CPTFloatingPointDataType, sizeof(float), NSHostByteOrder() )
+                                                                   dataType:CPTDataType(CPTFloatingPointDataType, sizeof(float), NSHostByteOrder())
                                                                       shape:shape];
 
     XCTAssertEqual(nd.numberOfDimensions, nd.shape.count, @"numberOfDimensions == shape.count == 3");
@@ -46,6 +46,7 @@
     XCTAssertEqual(nd.numberOfDimensions, (NSUInteger)1, @"numberOfDimensions == 1");
 
     NSUInteger prod = 1;
+
     for ( NSNumber *num in nd.shape ) {
         prod *= num.unsignedIntegerValue;
     }
@@ -64,7 +65,7 @@
     NSMutableData *data = [NSMutableData dataWithLength:nElems * sizeof(NSUInteger)];
 
     XCTAssertThrowsSpecificNamed(testData = [[CPTMutableNumericData alloc] initWithData:data
-                                                                               dataType:CPTDataType(CPTUnsignedIntegerDataType, sizeof(NSUInteger), NSHostByteOrder() )
+                                                                               dataType:CPTDataType(CPTUnsignedIntegerDataType, sizeof(NSUInteger), NSHostByteOrder())
                                                                                   shape:shape],
                                  NSException,
                                  CPTNumericDataException,
@@ -95,10 +96,11 @@
     }
 
     CPTMutableNumericData *nd = [[CPTMutableNumericData alloc] initWithData:data
-                                                                   dataType:CPTDataType(CPTIntegerDataType, sizeof(NSInteger), NSHostByteOrder() )
+                                                                   dataType:CPTDataType(CPTIntegerDataType, sizeof(NSInteger), NSHostByteOrder())
                                                                       shape:nil];
 
     NSMutableData *expected = data;
+
     XCTAssertTrue([expected isEqualToData:nd.data], @"data isEqualToData:");
 }
 
@@ -113,7 +115,7 @@
     }
 
     CPTMutableNumericData *nd = [[CPTMutableNumericData alloc] initWithData:data
-                                                                   dataType:CPTDataType(CPTFloatingPointDataType, sizeof(float), NSHostByteOrder() )
+                                                                   dataType:CPTDataType(CPTFloatingPointDataType, sizeof(float), NSHostByteOrder())
                                                                       shape:nil];
 
     CPTMutableNumericData *nd2 = [self archiveRoundTrip:nd];
@@ -140,7 +142,7 @@
     }
 
     CPTMutableNumericData *nd = [[CPTMutableNumericData alloc] initWithData:data
-                                                                   dataType:CPTDataType(CPTFloatingPointDataType, sizeof(float), NSHostByteOrder() )
+                                                                   dataType:CPTDataType(CPTFloatingPointDataType, sizeof(float), NSHostByteOrder())
                                                                       shape:nil];
 
     XCTAssertEqual([nd numberOfSamples], nElems, @"numberOfSamples == nElems");
@@ -148,12 +150,13 @@
     nElems = 10;
     data   = [NSMutableData dataWithLength:nElems * sizeof(char)];
     char *charSamples = (char *)data.mutableBytes;
+
     for ( NSUInteger i = 0; i < nElems; i++ ) {
         charSamples[i] = (char)lrint(sin(i) * 100.0);
     }
 
     nd = [[CPTMutableNumericData alloc] initWithData:data
-                                            dataType:CPTDataType(CPTIntegerDataType, sizeof(char), NSHostByteOrder() )
+                                            dataType:CPTDataType(CPTIntegerDataType, sizeof(char), NSHostByteOrder())
                                                shape:nil];
 
     XCTAssertEqual([nd numberOfSamples], nElems, @"numberOfSamples == nElems");
@@ -170,7 +173,7 @@
     }
 
     CPTMutableNumericData *nd = [[CPTMutableNumericData alloc] initWithData:data
-                                                                   dataType:CPTDataType(CPTFloatingPointDataType, sizeof(float), NSHostByteOrder() )
+                                                                   dataType:CPTDataType(CPTFloatingPointDataType, sizeof(float), NSHostByteOrder())
                                                                       shape:nil];
 
     XCTAssertEqual([nd dataTypeFormat], CPTFloatingPointDataType, @"dataTypeFormat");
@@ -189,7 +192,7 @@
     }
 
     CPTMutableNumericData *fd = [[CPTMutableNumericData alloc] initWithData:data
-                                                                   dataType:CPTDataType(CPTFloatingPointDataType, sizeof(float), NSHostByteOrder() )
+                                                                   dataType:CPTDataType(CPTFloatingPointDataType, sizeof(float), NSHostByteOrder())
                                                                       shape:nil];
 
     CPTNumericData *dd = [fd dataByConvertingToType:CPTFloatingPointDataType
@@ -197,8 +200,9 @@
                                           byteOrder:NSHostByteOrder()];
 
     const double *doubleSamples = (const double *)dd.data.bytes;
+
     for ( NSUInteger i = 0; i < numberOfSamples; i++ ) {
-        XCTAssertTrue( (double)samples[i] == doubleSamples[i], @"(float)%g != (double)%g", (double)samples[i], doubleSamples[i] );
+        XCTAssertTrue((double)samples[i] == doubleSamples[i], @"(float)%g != (double)%g", (double)samples[i], doubleSamples[i]);
     }
 }
 
@@ -213,12 +217,12 @@
     }
 
     CPTMutableNumericData *fd = [[CPTMutableNumericData alloc] initWithData:data
-                                                                   dataType:CPTDataType(CPTFloatingPointDataType, sizeof(float), NSHostByteOrder() )
+                                                                   dataType:CPTDataType(CPTFloatingPointDataType, sizeof(float), NSHostByteOrder())
                                                                       shape:nil];
 
-    XCTAssertEqual( ( (float *)[fd mutableBytes] ) + 4, (float *)[fd mutableSamplePointer:4], @"%p,%p", samples + 4, (float *)[fd mutableSamplePointer:4] );
-    XCTAssertEqual( ( (float *)[fd mutableBytes] ), (float *)[fd mutableSamplePointer:0], @"" );
-    XCTAssertEqual( ( (float *)[fd mutableBytes] ) + nElems - 1, (float *)[fd mutableSamplePointer:nElems - 1], @"" );
+    XCTAssertEqual(((float *)[fd mutableBytes]) + 4, (float *)[fd mutableSamplePointer:4], @"%p,%p", samples + 4, (float *)[fd mutableSamplePointer:4]);
+    XCTAssertEqual(((float *)[fd mutableBytes]), (float *)[fd mutableSamplePointer:0], @"");
+    XCTAssertEqual(((float *)[fd mutableBytes]) + nElems - 1, (float *)[fd mutableSamplePointer:nElems - 1], @"");
     XCTAssertNil([fd samplePointer:nElems], @"too many samples");
 }
 
@@ -233,7 +237,7 @@
     }
 
     CPTMutableNumericData *fd = [[CPTMutableNumericData alloc] initWithData:data
-                                                                   dataType:CPTDataType(CPTFloatingPointDataType, sizeof(float), NSHostByteOrder() )
+                                                                   dataType:CPTDataType(CPTFloatingPointDataType, sizeof(float), NSHostByteOrder())
                                                                       shape:nil];
 
     XCTAssertEqualWithAccuracy([[fd sampleValue:0] doubleValue], sin(0), 0.01, @"sample value");
@@ -245,13 +249,13 @@
     const NSUInteger nElems = 10;
     NSMutableData *data     = [NSMutableData dataWithLength:nElems * sizeof(float)];
     CPTNumericData *nd      = [[CPTNumericData alloc] initWithData:data
-                                                          dataType:CPTDataType(CPTFloatingPointDataType, sizeof(float), NSHostByteOrder() )
+                                                          dataType:CPTDataType(CPTFloatingPointDataType, sizeof(float), NSHostByteOrder())
                                                              shape:nil];
 
     CPTMutableNumericData *ndCopy = [nd mutableCopy];
 
     // should be mutable--if not, this will error
-    ndCopy.dataType = CPTDataType(CPTFloatingPointDataType, sizeof(double), NSHostByteOrder() );
+    ndCopy.dataType = CPTDataType(CPTFloatingPointDataType, sizeof(double), NSHostByteOrder());
 }
 
 @end

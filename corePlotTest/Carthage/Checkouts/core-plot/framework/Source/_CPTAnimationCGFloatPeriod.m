@@ -24,6 +24,7 @@ CGFloat CPTCurrentFloatValue(id __nonnull boundObject, SEL __nonnull boundGetter
     [invocation invoke];
 
     CGFloat value;
+
     [invocation getReturnValue:&value];
 
     return value;
@@ -31,7 +32,7 @@ CGFloat CPTCurrentFloatValue(id __nonnull boundObject, SEL __nonnull boundGetter
 
 -(void)setStartValueFromObject:(nonnull id)boundObject propertyGetter:(nonnull SEL)boundGetter
 {
-    self.startValue = @(CPTCurrentFloatValue(boundObject, boundGetter) );
+    self.startValue = @(CPTCurrentFloatValue(boundObject, boundGetter));
 }
 
 -(BOOL)canStartWithValueFromObject:(nonnull id)boundObject propertyGetter:(nonnull SEL)boundGetter
@@ -47,7 +48,7 @@ CGFloat CPTCurrentFloatValue(id __nonnull boundObject, SEL __nonnull boundGetter
     [self.startValue getValue:&start];
     [self.endValue getValue:&end];
 
-    return ( (current >= start) && (current <= end) ) || ( (current >= end) && (current <= start) );
+    return ((current >= start) && (current <= end)) || ((current >= end) && (current <= start));
 }
 
 -(nonnull NSValue *)tweenedValueForProgress:(CGFloat)progress

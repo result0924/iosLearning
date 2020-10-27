@@ -18,8 +18,8 @@
 
 /** @brief Immutable wrapper for various shadow drawing properties.
  *
- *  @see See Apple&rsquo;s <a href="http://developer.apple.com/library/mac/#documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_shadows/dq_shadows.html">Quartz 2D</a>
- *  and <a href="http://developer.apple.com/documentation/GraphicsImaging/Reference/CGContext/Reference/reference.html">CGContext</a>
+ *  @see See Apple&rsquo;s <a href="https://developer.apple.com/library/mac/#documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_shadows/dq_shadows.html">Quartz 2D</a>
+ *  and <a href="https://developer.apple.com/documentation/GraphicsImaging/Reference/CGContext/Reference/reference.html">CGContext</a>
  *  documentation for more information about each of these properties.
  *
  *  In general, you will want to create a CPTMutableShadow if you want to customize properties.
@@ -70,7 +70,7 @@
  **/
 -(nonnull instancetype)init
 {
-    if ( (self = [super init]) ) {
+    if ((self = [super init])) {
         shadowOffset     = CGSizeZero;
         shadowBlurRadius = CPTFloat(0.0);
         shadowColor      = nil;
@@ -94,7 +94,7 @@
 
 -(nullable instancetype)initWithCoder:(nonnull NSCoder *)coder
 {
-    if ( (self = [super init]) ) {
+    if ((self = [super init])) {
         shadowOffset     = [coder decodeCPTSizeForKey:@"CPTShadow.shadowOffset"];
         shadowBlurRadius = [coder decodeCGFloatForKey:@"CPTShadow.shadowBlurRadius"];
         shadowColor      = [coder decodeObjectOfClass:[CPTColor class]
@@ -174,7 +174,7 @@
 
 -(void)setShadowBlurRadius:(CGFloat)newShadowBlurRadius
 {
-    NSParameterAssert(newShadowBlurRadius >= CPTFloat(0.0) );
+    NSParameterAssert(newShadowBlurRadius >= CPTFloat(0.0));
 
     if ( newShadowBlurRadius != shadowBlurRadius ) {
         shadowBlurRadius = newShadowBlurRadius;

@@ -68,8 +68,8 @@ typedef NSMutableSet<CALayer *> CPTMutableSublayerSet;
 /**
  *  @brief Layer delegate.
  **/
-#if ( ( TARGET_OS_SIMULATOR || TARGET_OS_IPHONE || TARGET_OS_TV) && (__IPHONE_OS_VERSION_MAX_ALLOWED >= 100000) ) \
-    || (TARGET_OS_MAC && (MAC_OS_X_VERSION_MAX_ALLOWED >= 101200) )
+#if ((TARGET_OS_SIMULATOR || TARGET_OS_IPHONE || TARGET_OS_TV) && (__IPHONE_OS_VERSION_MAX_ALLOWED >= 100000)) \
+    || (TARGET_OS_MAC && (MAC_OS_X_VERSION_MAX_ALLOWED >= 101200))
 // CALayerDelegate is defined by Core Animation in iOS 10.0+, macOS 10.12+, and tvOS 10.0+
 @protocol CPTLayerDelegate<CALayerDelegate>
 #else
@@ -124,14 +124,15 @@ typedef NSMutableSet<CALayer *> CPTMutableSublayerSet;
 
 /// @name Initialization
 /// @{
--(nonnull instancetype)initWithFrame:(CGRect)newFrame NS_DESIGNATED_INITIALIZER;
--(nullable instancetype)initWithCoder:(nonnull NSCoder *)coder NS_DESIGNATED_INITIALIZER;
--(nonnull instancetype)initWithLayer:(nonnull id)layer NS_DESIGNATED_INITIALIZER;
+-(nonnull instancetype)initWithFrame:(CGRect)newFrame NS_DESIGNATED_INITIALIZER cpt_requires_super;
+-(nullable instancetype)initWithCoder:(nonnull NSCoder *)coder NS_DESIGNATED_INITIALIZER cpt_requires_super;
+-(nonnull instancetype)initWithLayer:(nonnull id)layer NS_DESIGNATED_INITIALIZER cpt_requires_super;
 /// @}
 
 /// @name Drawing
 /// @{
--(void)renderAsVectorInContext:(nonnull CGContextRef)context;
+-(void)setNeedsDisplayAllLayers;
+-(void)renderAsVectorInContext:(nonnull CGContextRef)context cpt_requires_super;
 -(void)recursivelyRenderInContext:(nonnull CGContextRef)context;
 -(void)layoutAndRenderInContext:(nonnull CGContextRef)context;
 -(nonnull NSData *)dataForPDFRepresentationOfLayer;
@@ -139,8 +140,8 @@ typedef NSMutableSet<CALayer *> CPTMutableSublayerSet;
 
 /// @name Masking
 /// @{
--(void)applySublayerMaskToContext:(nonnull CGContextRef)context forSublayer:(nonnull CPTLayer *)sublayer withOffset:(CGPoint)offset;
--(void)applyMaskToContext:(nonnull CGContextRef)context;
+-(void)applySublayerMaskToContext:(nonnull CGContextRef)context forSublayer:(nonnull CPTLayer *)sublayer withOffset:(CGPoint)offset cpt_requires_super;
+-(void)applyMaskToContext:(nonnull CGContextRef)context cpt_requires_super;
 /// @}
 
 /// @name Layout

@@ -80,6 +80,7 @@
                                                     length:@10.0];
 
     NSDecimal plotPoint[2];
+
     plotPoint[CPTCoordinateX] = CPTDecimalFromDouble(5.0);
     plotPoint[CPTCoordinateY] = CPTDecimalFromDouble(5.0);
 
@@ -112,6 +113,7 @@
                                                     length:@10.0];
 
     double plotPoint[2];
+
     plotPoint[CPTCoordinateX] = 5.0;
     plotPoint[CPTCoordinateY] = 5.0;
 
@@ -146,7 +148,7 @@
     plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:@1.0
                                                     length:@9.0];
 
-    CPTNumberArray *plotPoint = @[@(sqrt(10.0) ), @(sqrt(10.0) )];
+    CPTNumberArray *plotPoint = @[@(sqrt(10.0)), @(sqrt(10.0))];
 
     CGPoint viewPoint = [plotSpace plotAreaViewPointForPlotPoint:plotPoint];
 
@@ -177,8 +179,9 @@
                                                     length:@9.0];
 
     NSDecimal plotPoint[2];
-    plotPoint[CPTCoordinateX] = CPTDecimalFromDouble(sqrt(10.0) );
-    plotPoint[CPTCoordinateY] = CPTDecimalFromDouble(sqrt(10.0) );
+
+    plotPoint[CPTCoordinateX] = CPTDecimalFromDouble(sqrt(10.0));
+    plotPoint[CPTCoordinateY] = CPTDecimalFromDouble(sqrt(10.0));
 
     CGPoint viewPoint = [plotSpace plotAreaViewPointForPlotPoint:plotPoint numberOfCoordinates:2];
 
@@ -209,6 +212,7 @@
                                                     length:@9.0];
 
     double plotPoint[2];
+
     plotPoint[CPTCoordinateX] = sqrt(10.0);
     plotPoint[CPTCoordinateY] = sqrt(10.0);
 
@@ -264,6 +268,7 @@
                                                     length:@200.0];
 
     NSDecimal plotPoint[2];
+
     plotPoint[CPTCoordinateX] = CPTDecimalFromInteger(9);
     plotPoint[CPTCoordinateY] = CPTDecimalFromInteger(0);
 
@@ -286,6 +291,7 @@
                                                     length:@200.0];
 
     double plotPoint[2];
+
     plotPoint[CPTCoordinateX] = 9.0;
     plotPoint[CPTCoordinateY] = 0.0;
 
@@ -315,9 +321,9 @@
     NSString *errMessage;
 
     errMessage = [NSString stringWithFormat:@"plotPoint[CPTCoordinateX] was %@", plotPoint[CPTCoordinateX]];
-    XCTAssertTrue(CPTDecimalEquals([plotPoint[CPTCoordinateX] decimalValue], CPTDecimalFromDouble(5.0) ), @"%@", errMessage);
+    XCTAssertTrue(CPTDecimalEquals([plotPoint[CPTCoordinateX] decimalValue], CPTDecimalFromDouble(5.0)), @"%@", errMessage);
     errMessage = [NSString stringWithFormat:@"plotPoint[CPTCoordinateY] was %@", plotPoint[CPTCoordinateY]];
-    XCTAssertTrue(CPTDecimalEquals([plotPoint[CPTCoordinateY] decimalValue], CPTDecimalFromDouble(5.0) ), @"%@", errMessage);
+    XCTAssertTrue(CPTDecimalEquals([plotPoint[CPTCoordinateY] decimalValue], CPTDecimalFromDouble(5.0)), @"%@", errMessage);
 }
 
 -(void)testPlotPointForViewPointLinear
@@ -339,9 +345,9 @@
     [plotSpace plotPoint:plotPoint numberOfCoordinates:2 forPlotAreaViewPoint:viewPoint];
 
     errMessage = [NSString stringWithFormat:@"plotPoint[CPTCoordinateX] was %@", NSDecimalString(&plotPoint[CPTCoordinateX], nil)];
-    XCTAssertTrue(CPTDecimalEquals(plotPoint[CPTCoordinateX], CPTDecimalFromDouble(5.0) ), @"%@", errMessage);
+    XCTAssertTrue(CPTDecimalEquals(plotPoint[CPTCoordinateX], CPTDecimalFromDouble(5.0)), @"%@", errMessage);
     errMessage = [NSString stringWithFormat:@"plotPoint[CPTCoordinateY] was %@", NSDecimalString(&plotPoint[CPTCoordinateY], nil)];
-    XCTAssertTrue(CPTDecimalEquals(plotPoint[CPTCoordinateY], CPTDecimalFromDouble(5.0) ), @"%@", errMessage);
+    XCTAssertTrue(CPTDecimalEquals(plotPoint[CPTCoordinateY], CPTDecimalFromDouble(5.0)), @"%@", errMessage);
 }
 
 -(void)testDoublePrecisionPlotPointForViewPointLinear
@@ -414,9 +420,9 @@
     [plotSpace plotPoint:plotPoint numberOfCoordinates:2 forPlotAreaViewPoint:viewPoint];
 
     errMessage = [NSString stringWithFormat:@"plotPoint[CPTCoordinateX] was %@", NSDecimalString(&plotPoint[CPTCoordinateX], nil)];
-    XCTAssertTrue(CPTDecimalEquals(plotPoint[CPTCoordinateX], CPTDecimalFromDouble(sqrt(10.0) ) ), @"%@", errMessage);
+    XCTAssertTrue(CPTDecimalEquals(plotPoint[CPTCoordinateX], CPTDecimalFromDouble(sqrt(10.0))), @"%@", errMessage);
     errMessage = [NSString stringWithFormat:@"plotPoint[CPTCoordinateY] was %@", NSDecimalString(&plotPoint[CPTCoordinateY], nil)];
-    XCTAssertTrue(CPTDecimalEquals(plotPoint[CPTCoordinateY], CPTDecimalFromDouble(sqrt(10.0) ) ), @"%@", errMessage);
+    XCTAssertTrue(CPTDecimalEquals(plotPoint[CPTCoordinateY], CPTDecimalFromDouble(sqrt(10.0))), @"%@", errMessage);
 }
 
 -(void)testDoublePrecisionPlotPointForViewPointLog
@@ -489,9 +495,9 @@
     [plotSpace plotPoint:plotPoint numberOfCoordinates:2 forPlotAreaViewPoint:viewPoint];
 
     errMessage = [NSString stringWithFormat:@"plotPoint[CPTCoordinateX] was %@", NSDecimalString(&plotPoint[CPTCoordinateX], nil)];
-    XCTAssertTrue(CPTDecimalEquals(plotPoint[CPTCoordinateX], CPTDecimalFromInteger(0) ), @"%@", errMessage);
+    XCTAssertTrue(CPTDecimalEquals(plotPoint[CPTCoordinateX], CPTDecimalFromInteger(0)), @"%@", errMessage);
     errMessage = [NSString stringWithFormat:@"plotPoint[CPTCoordinateY] was %@", NSDecimalString(&plotPoint[CPTCoordinateY], nil)];
-    XCTAssertTrue(CPTDecimalEquals(plotPoint[CPTCoordinateY], CPTDecimalFromInteger(0) ), @"%@", errMessage);
+    XCTAssertTrue(CPTDecimalEquals(plotPoint[CPTCoordinateY], CPTDecimalFromInteger(0)), @"%@", errMessage);
 }
 
 -(void)testDoublePrecisionPlotPointForViewPointLogModulus
@@ -610,7 +616,7 @@
 
     CGRect myBounds = self.graph.bounds;
 
-    [plotSpace scaleBy:0.5 aboutPoint:CGPointMake(CGRectGetMidX(myBounds), CGRectGetMidY(myBounds) )];
+    [plotSpace scaleBy:0.5 aboutPoint:CGPointMake(CGRectGetMidX(myBounds), CGRectGetMidY(myBounds))];
 
     CPTPlotRange *expectedRangeX = [CPTPlotRange plotRangeWithLocation:@(-5.0)
                                                                 length:@20.0];
@@ -618,6 +624,7 @@
                                                                 length:@(-20.0)];
 
     NSString *errMessage = [NSString stringWithFormat:@"xRange was %@, expected %@", plotSpace.xRange, expectedRangeX];
+
     XCTAssertTrue([plotSpace.xRange isEqualToRange:expectedRangeX], @"%@", errMessage);
 
     errMessage = [NSString stringWithFormat:@"yRange was %@, expected %@", plotSpace.yRange, expectedRangeY];
@@ -637,7 +644,7 @@
 
     CGRect myBounds = self.graph.bounds;
 
-    [plotSpace scaleBy:2.0 aboutPoint:CGPointMake(CGRectGetMidX(myBounds), CGRectGetMidY(myBounds) )];
+    [plotSpace scaleBy:2.0 aboutPoint:CGPointMake(CGRectGetMidX(myBounds), CGRectGetMidY(myBounds))];
 
     CPTPlotRange *expectedRangeX = [CPTPlotRange plotRangeWithLocation:@2.5
                                                                 length:@5.0];
@@ -645,6 +652,7 @@
                                                                 length:@(-5.0)];
 
     NSString *errMessage = [NSString stringWithFormat:@"xRange was %@, expected %@", plotSpace.xRange, expectedRangeX];
+
     XCTAssertTrue([plotSpace.xRange isEqualToRange:expectedRangeX], @"%@", errMessage);
 
     errMessage = [NSString stringWithFormat:@"yRange was %@, expected %@", plotSpace.yRange, expectedRangeY];
@@ -666,6 +674,7 @@
     CPTXYPlotSpace *newPlotSpace = [self archiveRoundTrip:plotSpace];
 
     NSString *errMessage = [NSString stringWithFormat:@"xRange was %@, expected %@", plotSpace.xRange, newPlotSpace.xRange];
+
     XCTAssertTrue([plotSpace.xRange isEqualToRange:newPlotSpace.xRange], @"%@", errMessage);
 
     errMessage = [NSString stringWithFormat:@"yRange was %@, expected %@", plotSpace.yRange, newPlotSpace.yRange];

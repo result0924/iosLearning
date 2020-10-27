@@ -20,6 +20,7 @@
 
     // Create graph
     CPTXYGraph *newGraph = [[CPTXYGraph alloc] initWithFrame:NSRectToCGRect(self.hostView.bounds)];
+
     self.hostView.hostedGraph = newGraph;
     self.graph                = newGraph;
 
@@ -28,6 +29,7 @@
 
     // Background
     CGColorRef grayColor = CGColorCreateGenericGray(0.7, 1.0);
+
     newGraph.fill = [CPTFill fillWithColor:[CPTColor colorWithCGColor:grayColor]];
     CGColorRelease(grayColor);
 
@@ -39,10 +41,12 @@
 
     // Setup plot space
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)newGraph.defaultPlotSpace;
+
     plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:@(-1.0) length:@11.0];
     plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:@(-1.0) length:@14.0];
 
     CPTMutableShadow *lineShadow = [CPTMutableShadow shadow];
+
     lineShadow.shadowOffset     = CGSizeMake(3.0, -3.0);
     lineShadow.shadowBlurRadius = 4.0;
     lineShadow.shadowColor      = [CPTColor redColor];
@@ -50,7 +54,7 @@
     // Create a series of plots that uses the data source method
     for ( NSUInteger i = CPTPlotSymbolTypeNone; i <= CPTPlotSymbolTypeCustom; i++ ) {
         CPTScatterPlot *dataSourceLinePlot = [[CPTScatterPlot alloc] initWithFrame:newGraph.bounds];
-        dataSourceLinePlot.identifier = [NSString stringWithFormat:@"%lu", (unsigned long)i];
+        dataSourceLinePlot.identifier = @(i);
         dataSourceLinePlot.shadow     = lineShadow;
 
         CPTMutableLineStyle *lineStyle = [dataSourceLinePlot.dataLineStyle mutableCopy];
@@ -67,7 +71,7 @@
 #pragma mark -
 #pragma mark Plot Data Source Methods
 
--(NSUInteger)numberOfRecordsForPlot:(nonnull CPTPlot *)plot
+-(NSUInteger)numberOfRecordsForPlot:(nonnull CPTPlot *__unused)plot
 {
     return 10;
 }
@@ -82,7 +86,7 @@
             break;
 
         case CPTScatterPlotFieldY:
-            num = @( ( (NSString *)plot.identifier ).integerValue );
+            num = (NSNumber *)plot.identifier;
             break;
 
         default:
@@ -98,12 +102,14 @@
     gradientFill.gradientType = CPTGradientTypeRadial;
 
     CPTMutableShadow *symbolShadow = [CPTMutableShadow shadow];
+
     symbolShadow.shadowOffset     = CGSizeMake(3.0, -3.0);
     symbolShadow.shadowBlurRadius = 3.0;
     symbolShadow.shadowColor      = [CPTColor blackColor];
 
     CPTPlotSymbol *symbol = [[CPTPlotSymbol alloc] init];
-    symbol.symbolType = (CPTPlotSymbolType)( (NSString *)plot.identifier ).intValue;
+
+    symbol.symbolType = (CPTPlotSymbolType)((NSString *)plot.identifier).intValue;
     symbol.fill       = [CPTFill fillWithGradient:gradientFill];
     symbol.shadow     = symbolShadow;
 
@@ -116,9 +122,9 @@
         CGMutablePathRef path = CGPathCreateMutable();
         CGPathMoveToPoint(path, NULL, 0., 0.);
 
-        CGPathAddEllipseInRect(path, NULL, CGRectMake(0., 0., 10., 10.) );
-        CGPathAddEllipseInRect(path, NULL, CGRectMake(1.5, 4., 3., 3.) );
-        CGPathAddEllipseInRect(path, NULL, CGRectMake(5.5, 4., 3., 3.) );
+        CGPathAddEllipseInRect(path, NULL, CGRectMake(0., 0., 10., 10.));
+        CGPathAddEllipseInRect(path, NULL, CGRectMake(1.5, 4., 3., 3.));
+        CGPathAddEllipseInRect(path, NULL, CGRectMake(5.5, 4., 3., 3.));
         CGPathMoveToPoint(path, NULL, 5., 2.);
         CGPathAddArc(path, NULL, 5., 3.3, 2.8, 0., M_PI, TRUE);
         CGPathCloseSubpath(path);

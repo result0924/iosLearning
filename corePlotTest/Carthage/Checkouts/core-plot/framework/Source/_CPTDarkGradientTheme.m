@@ -14,15 +14,6 @@
 
 CPTThemeName const kCPTDarkGradientTheme = @"Dark Gradients";
 
-/// @cond
-@interface _CPTDarkGradientTheme()
-
--(void)applyThemeToAxis:(CPTXYAxis *)axis usingMajorLineStyle:(nonnull CPTLineStyle *)majorLineStyle minorLineStyle:(nonnull CPTLineStyle *)minorLineStyle textStyle:(nonnull CPTMutableTextStyle *)textStyle minorTickTextStyle:(nonnull CPTMutableTextStyle *)minorTickTextStyle;
-
-@end
-
-/// @endcond
-
 #pragma mark -
 
 /**
@@ -41,23 +32,6 @@ CPTThemeName const kCPTDarkGradientTheme = @"Dark Gradients";
 }
 
 #pragma mark -
-
--(void)applyThemeToAxis:(CPTXYAxis *)axis usingMajorLineStyle:(nonnull CPTLineStyle *)majorLineStyle minorLineStyle:(nonnull CPTLineStyle *)minorLineStyle textStyle:(nonnull CPTMutableTextStyle *)textStyle minorTickTextStyle:(nonnull CPTMutableTextStyle *)minorTickTextStyle
-{
-    axis.labelingPolicy          = CPTAxisLabelingPolicyFixedInterval;
-    axis.majorIntervalLength     = @0.5;
-    axis.orthogonalPosition      = @0.0;
-    axis.tickDirection           = CPTSignNone;
-    axis.minorTicksPerInterval   = 4;
-    axis.majorTickLineStyle      = majorLineStyle;
-    axis.minorTickLineStyle      = minorLineStyle;
-    axis.axisLineStyle           = majorLineStyle;
-    axis.majorTickLength         = CPTFloat(7.0);
-    axis.minorTickLength         = CPTFloat(5.0);
-    axis.labelTextStyle          = textStyle;
-    axis.minorTickLabelTextStyle = minorTickTextStyle;
-    axis.titleTextStyle          = textStyle;
-}
 
 -(void)applyThemeToBackground:(nonnull CPTGraph *)graph
 {
@@ -79,6 +53,7 @@ CPTThemeName const kCPTDarkGradientTheme = @"Dark Gradients";
     plotAreaFrame.fill = [CPTFill fillWithGradient:gradient];
 
     CPTMutableLineStyle *borderLineStyle = [CPTMutableLineStyle lineStyle];
+
     borderLineStyle.lineColor = [CPTColor colorWithGenericGray:CPTFloat(0.2)];
     borderLineStyle.lineWidth = CPTFloat(4.0);
 
@@ -95,20 +70,35 @@ CPTThemeName const kCPTDarkGradientTheme = @"Dark Gradients";
     majorLineStyle.lineWidth = CPTFloat(2.0);
 
     CPTMutableLineStyle *minorLineStyle = [CPTMutableLineStyle lineStyle];
+
     minorLineStyle.lineCap   = kCGLineCapSquare;
     minorLineStyle.lineColor = [CPTColor darkGrayColor];
     minorLineStyle.lineWidth = CPTFloat(1.0);
 
     CPTMutableTextStyle *whiteTextStyle = [[CPTMutableTextStyle alloc] init];
+
     whiteTextStyle.color    = [CPTColor whiteColor];
     whiteTextStyle.fontSize = CPTFloat(14.0);
 
     CPTMutableTextStyle *whiteMinorTickTextStyle = [[CPTMutableTextStyle alloc] init];
+
     whiteMinorTickTextStyle.color    = [CPTColor whiteColor];
     whiteMinorTickTextStyle.fontSize = CPTFloat(12.0);
 
     for ( CPTXYAxis *axis in axisSet.axes ) {
-        [self applyThemeToAxis:axis usingMajorLineStyle:majorLineStyle minorLineStyle:minorLineStyle textStyle:whiteTextStyle minorTickTextStyle:whiteMinorTickTextStyle];
+        axis.labelingPolicy          = CPTAxisLabelingPolicyFixedInterval;
+        axis.majorIntervalLength     = @0.5;
+        axis.orthogonalPosition      = @0.0;
+        axis.tickDirection           = CPTSignNone;
+        axis.minorTicksPerInterval   = 4;
+        axis.majorTickLineStyle      = majorLineStyle;
+        axis.minorTickLineStyle      = minorLineStyle;
+        axis.axisLineStyle           = majorLineStyle;
+        axis.majorTickLength         = CPTFloat(7.0);
+        axis.minorTickLength         = CPTFloat(5.0);
+        axis.labelTextStyle          = whiteTextStyle;
+        axis.minorTickLabelTextStyle = whiteMinorTickTextStyle;
+        axis.titleTextStyle          = whiteTextStyle;
     }
 }
 

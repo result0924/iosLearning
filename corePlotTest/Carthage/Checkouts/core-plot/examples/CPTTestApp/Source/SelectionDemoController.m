@@ -57,6 +57,7 @@ static NSString *const SELECTION_PLOT = @"Selection Plot";
     // Graph title
     newGraph.title = @"This is the Graph Title";
     CPTMutableTextStyle *textStyle = [CPTMutableTextStyle textStyle];
+
     textStyle.color                   = [CPTColor grayColor];
     textStyle.fontName                = @"Helvetica-Bold";
     textStyle.fontSize                = 18.0;
@@ -123,6 +124,7 @@ static NSString *const SELECTION_PLOT = @"Selection Plot";
     dataSourceLinePlot.cachePrecision = CPTPlotCachePrecisionDouble;
 
     CPTMutableLineStyle *lineStyle = [dataSourceLinePlot.dataLineStyle mutableCopy];
+
     lineStyle.lineWidth              = 2.0;
     lineStyle.lineColor              = [CPTColor greenColor];
     dataSourceLinePlot.dataLineStyle = lineStyle;
@@ -137,6 +139,7 @@ static NSString *const SELECTION_PLOT = @"Selection Plot";
 
     // Create a plot for the selection marker
     CPTScatterPlot *selectionPlot = [[CPTScatterPlot alloc] init];
+
     selectionPlot.identifier     = SELECTION_PLOT;
     selectionPlot.cachePrecision = CPTPlotCachePrecisionDouble;
 
@@ -151,17 +154,22 @@ static NSString *const SELECTION_PLOT = @"Selection Plot";
     // Auto scale the plot space to fit the plot data
     // Compress ranges so we can scroll
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)self.graph.defaultPlotSpace;
+
     [plotSpace scaleToFitPlots:@[dataSourceLinePlot]];
     CPTMutablePlotRange *xRange = [plotSpace.xRange mutableCopy];
+
     [xRange expandRangeByFactor:@0.75];
     plotSpace.xRange = xRange;
     CPTMutablePlotRange *yRange = [plotSpace.yRange mutableCopy];
+
     [yRange expandRangeByFactor:@0.75];
     plotSpace.yRange = yRange;
 
     CPTPlotRange *globalXRange = [CPTPlotRange plotRangeWithLocation:@(-1.0) length:@10.0];
+
     plotSpace.globalXRange = globalXRange;
     CPTPlotRange *globalYRange = [CPTPlotRange plotRangeWithLocation:@(-5.0) length:@10.0];
+
     plotSpace.globalYRange = globalYRange;
 }
 
@@ -266,7 +274,7 @@ static NSString *const SELECTION_PLOT = @"Selection Plot";
 
     CPTPlotSymbol *symbol = (id)[NSNull null];
 
-    if ( [(NSString *) plot.identifier isEqualToString:SELECTION_PLOT] && (index == 2) ) {
+    if ( [(NSString *) plot.identifier isEqualToString:SELECTION_PLOT] && (index == 2)) {
         if ( !redDot ) {
             redDot            = [[CPTPlotSymbol alloc] init];
             redDot.symbolType = CPTPlotSymbolTypeEllipse;
@@ -282,7 +290,7 @@ static NSString *const SELECTION_PLOT = @"Selection Plot";
 #pragma mark -
 #pragma mark CPTScatterPlot delegate methods
 
--(void)scatterPlot:(nonnull CPTScatterPlot *)plot plotSymbolWasSelectedAtRecordIndex:(NSUInteger)index
+-(void)scatterPlot:(nonnull CPTScatterPlot *__unused)plot plotSymbolWasSelectedAtRecordIndex:(NSUInteger)index
 {
     self.selectedIndex = index;
 }

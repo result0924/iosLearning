@@ -40,7 +40,7 @@ static NSMutableSet<Class> *themes = nil;
  **/
 -(nonnull instancetype)init
 {
-    if ( (self = [super init]) ) {
+    if ((self = [super init])) {
         graphClass = Nil;
     }
     return self;
@@ -58,6 +58,7 @@ static NSMutableSet<Class> *themes = nil;
     [coder encodeObject:[[self class] name] forKey:@"CPTTheme.name"];
 
     Class theGraphClass = self.graphClass;
+
     if ( theGraphClass ) {
         [coder encodeObject:NSStringFromClass(theGraphClass) forKey:@"CPTTheme.graphClass"];
     }
@@ -186,11 +187,13 @@ static NSMutableSet<Class> *themes = nil;
     [self applyThemeToBackground:graph];
 
     CPTPlotAreaFrame *plotAreaFrame = graph.plotAreaFrame;
+
     if ( plotAreaFrame ) {
         [self applyThemeToPlotArea:plotAreaFrame];
     }
 
     CPTAxisSet *axisSet = graph.axisSet;
+
     if ( axisSet ) {
         [self applyThemeToAxisSet:axisSet];
     }
@@ -213,21 +216,21 @@ static NSMutableSet<Class> *themes = nil;
 /** @brief Applies the background theme to the provided graph.
  *  @param graph The graph to style.
  **/
--(void)applyThemeToBackground:(nonnull CPTGraph *)graph
+-(void)applyThemeToBackground:(nonnull CPTGraph *__unused)graph
 {
 }
 
 /** @brief Applies the theme to the provided plot area.
  *  @param plotAreaFrame The plot area to style.
  **/
--(void)applyThemeToPlotArea:(nonnull CPTPlotAreaFrame *)plotAreaFrame
+-(void)applyThemeToPlotArea:(nonnull CPTPlotAreaFrame *__unused)plotAreaFrame
 {
 }
 
 /** @brief Applies the theme to the provided axis set.
  *  @param axisSet The axis set to style.
  **/
--(void)applyThemeToAxisSet:(nonnull CPTAxisSet *)axisSet
+-(void)applyThemeToAxisSet:(nonnull CPTAxisSet *__unused)axisSet
 {
 }
 

@@ -17,7 +17,7 @@
 
 -(nonnull instancetype)init
 {
-    if ( (self = [super init]) ) {
+    if ((self = [super init])) {
         self.title   = @"Colored Bar Chart";
         self.section = kBarPlots;
     }
@@ -36,7 +36,7 @@
     }
 }
 
--(void)renderInGraphHostingView:(nonnull CPTGraphHostingView *)hostingView withTheme:(nullable CPTTheme *)theme animated:(BOOL)animated
+-(void)renderInGraphHostingView:(nonnull CPTGraphHostingView *)hostingView withTheme:(nullable CPTTheme *)theme animated:(BOOL __unused)animated
 {
 #if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
     CGRect bounds = hostingView.bounds;
@@ -131,20 +131,21 @@
     theLegend.textStyle    = whiteTextStyle;
     theLegend.numberOfRows = 1;
 
-    graph.legend             = theLegend;
-    graph.legendAnchor       = CPTRectAnchorTop;
-    graph.legendDisplacement = CGPointMake(0.0, self.titleSize * CPTFloat(-2.625) );
+    graph.legend              = theLegend;
+    graph.legend.swatchLayout = CPTLegendSwatchLayoutTop;
+    graph.legendAnchor        = CPTRectAnchorTop;
+    graph.legendDisplacement  = CGPointMake(0.0, self.titleSize * CPTFloat(-2.625));
 }
 
 #pragma mark -
 #pragma mark Plot Data Source Methods
 
--(NSUInteger)numberOfRecordsForPlot:(nonnull CPTPlot *)plot
+-(NSUInteger)numberOfRecordsForPlot:(nonnull CPTPlot *__unused)plot
 {
     return self.plotData.count;
 }
 
--(nullable NSArray *)numbersForPlot:(nonnull CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndexRange:(NSRange)indexRange
+-(nullable NSArray *)numbersForPlot:(nonnull CPTPlot *__unused)plot field:(NSUInteger)fieldEnum recordIndexRange:(NSRange)indexRange
 {
     CPTNumberArray *nums = nil;
 
@@ -167,7 +168,7 @@
     return nums;
 }
 
--(nullable CPTFill *)barFillForBarPlot:(nonnull CPTBarPlot *)barPlot recordIndex:(NSUInteger)index
+-(nullable CPTFill *)barFillForBarPlot:(nonnull CPTBarPlot *__unused)barPlot recordIndex:(NSUInteger)index
 {
     CPTColor *color = nil;
 
@@ -214,7 +215,12 @@
     return [CPTFill fillWithGradient:fillGradient];
 }
 
--(nullable NSString *)legendTitleForBarPlot:(nonnull CPTBarPlot *)barPlot recordIndex:(NSUInteger)index
+-(nullable NSNumber *)barWidthForBarPlot:(nonnull CPTBarPlot *__unused)barPlot recordIndex:(NSUInteger __unused)idx
+{
+    return @((double)(arc4random_uniform(50) + 25) / 100.0);
+}
+
+-(nullable NSString *)legendTitleForBarPlot:(nonnull CPTBarPlot *__unused)barPlot recordIndex:(NSUInteger)index
 {
     return [NSString stringWithFormat:@"Bar %lu", (unsigned long)(index + 1)];
 }

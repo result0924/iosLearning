@@ -12,6 +12,8 @@
 
 @end
 
+#pragma mark -
+
 @implementation PlotGallery
 
 @synthesize plotItems;
@@ -45,7 +47,7 @@ static PlotGallery *sharedPlotGallery = nil;
 
     @synchronized ( thisClass ) {
         if ( sharedPlotGallery == nil ) {
-            if ( (self = [super init]) ) {
+            if ((self = [super init])) {
                 sharedPlotGallery = self;
                 plotItems         = [[NSMutableArray alloc] init];
                 plotSections      = [[NSCountedSet alloc] init];
@@ -56,7 +58,7 @@ static PlotGallery *sharedPlotGallery = nil;
     return sharedPlotGallery;
 }
 
--(nonnull id)copyWithZone:(nullable NSZone *)zone
+-(nonnull id)copyWithZone:(nullable NSZone *__unused)zone
 {
     return self;
 }
@@ -66,6 +68,7 @@ static PlotGallery *sharedPlotGallery = nil;
     [self.plotItems addObject:plotItem];
 
     NSString *sectionName = plotItem.section;
+
     if ( sectionName ) {
         [self.plotSections addObject:sectionName];
     }

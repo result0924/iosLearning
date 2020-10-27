@@ -1,8 +1,9 @@
 import Foundation
 import Cocoa
+import CorePlot
 
 class DateController : NSObject, CPTPlotDataSource {
-    private let oneDay : Double = 24 * 60 * 60;
+    private let oneDay : Double = 24 * 60 * 60
 
     @IBOutlet var hostView : CPTGraphHostingView? = nil
 
@@ -28,7 +29,7 @@ class DateController : NSObject, CPTPlotDataSource {
         newGraph.apply(theme)
 
         if let host = self.hostView {
-            host.hostedGraph = newGraph;
+            host.hostedGraph = newGraph
         }
 
         // Setup scatter plot space
@@ -42,12 +43,12 @@ class DateController : NSObject, CPTPlotDataSource {
         if let x = axisSet.xAxis {
             x.majorIntervalLength   = oneDay as NSNumber
             x.orthogonalPosition    = 2.0
-            x.minorTicksPerInterval = 0;
+            x.minorTicksPerInterval = 0
             let dateFormatter = DateFormatter()
             dateFormatter.dateStyle = .short
             let timeFormatter = CPTTimeFormatter(dateFormatter:dateFormatter)
-            timeFormatter.referenceDate = refDate;
-            x.labelFormatter            = timeFormatter;
+            timeFormatter.referenceDate = refDate
+            x.labelFormatter            = timeFormatter
         }
 
         if let y = axisSet.yAxis {
@@ -100,6 +101,9 @@ class DateController : NSObject, CPTPlotDataSource {
             
         case .Y:
             return self.plotData[Int(record)] as NSNumber
+
+        @unknown default:
+            return nil
         }
     }
 }

@@ -20,7 +20,7 @@ static NSString *const outerChartName = @"Outer";
 
 -(nonnull instancetype)init
 {
-    if ( (self = [super init]) ) {
+    if ((self = [super init])) {
         self.title   = @"Donut Chart";
         self.section = kPieCharts;
     }
@@ -60,7 +60,7 @@ static NSString *const outerChartName = @"Outer";
 
     // Add pie chart
     const CGFloat outerRadius = MIN(CPTFloat(0.7) * (hostingView.frame.size.height - CPTFloat(2.0) * graph.paddingLeft) / CPTFloat(2.0),
-                                    CPTFloat(0.7) * (hostingView.frame.size.width - CPTFloat(2.0) * graph.paddingTop) / CPTFloat(2.0) );
+                                    CPTFloat(0.7) * (hostingView.frame.size.width - CPTFloat(2.0) * graph.paddingTop) / CPTFloat(2.0));
     const CGFloat innerRadius = outerRadius / CPTFloat(2.0);
 
     CPTPieChart *piePlot = [[CPTPieChart alloc] init];
@@ -92,7 +92,7 @@ static NSString *const outerChartName = @"Outer";
     // Add another pie chart
     piePlot                 = [[CPTPieChart alloc] init];
     piePlot.dataSource      = self;
-    piePlot.pieRadius       = (animated ? CPTFloat(0.0) : (innerRadius - CPTFloat(5.0) ) );
+    piePlot.pieRadius       = (animated ? CPTFloat(0.0) : (innerRadius - CPTFloat(5.0)));
     piePlot.identifier      = innerChartName;
     piePlot.borderLineStyle = whiteLineStyle;
     piePlot.startAngle      = CPTFloat(M_PI_4);
@@ -121,12 +121,12 @@ static NSString *const outerChartName = @"Outer";
 #pragma mark -
 #pragma mark Plot Data Source Methods
 
--(NSUInteger)numberOfRecordsForPlot:(nonnull CPTPlot *)plot
+-(NSUInteger)numberOfRecordsForPlot:(nonnull CPTPlot *__unused)plot
 {
     return self.plotData.count;
 }
 
--(nullable id)numberForPlot:(nonnull CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
+-(nullable id)numberForPlot:(nonnull CPTPlot *__unused)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
 {
     NSNumber *num;
 
@@ -195,12 +195,12 @@ static NSString *const outerChartName = @"Outer";
     NSLog(@"animationCancelled: %@", operation);
 }
 
--(void)animationWillUpdate:(nonnull CPTAnimationOperation *)operation
+-(void)animationWillUpdate:(nonnull CPTAnimationOperation *__unused)operation
 {
     NSLog(@"animationWillUpdate:");
 }
 
--(void)animationDidUpdate:(nonnull CPTAnimationOperation *)operation
+-(void)animationDidUpdate:(nonnull CPTAnimationOperation *__unused)operation
 {
     NSLog(@"animationDidUpdate:");
 }

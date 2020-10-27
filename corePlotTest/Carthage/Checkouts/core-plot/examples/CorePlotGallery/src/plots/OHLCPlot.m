@@ -26,7 +26,7 @@ static const NSTimeInterval oneDay = 24 * 60 * 60;
 
 -(nonnull instancetype)init
 {
-    if ( (self = [super init]) ) {
+    if ((self = [super init])) {
         graph    = nil;
         plotData = @[];
 
@@ -46,8 +46,8 @@ static const NSTimeInterval oneDay = 24 * 60 * 60;
 
             double rOpen  = 3.0 * arc4random() / (double)UINT32_MAX + 1.0;
             double rClose = (arc4random() / (double)UINT32_MAX - 0.5) * 0.125 + rOpen;
-            double rHigh  = MAX(rOpen, MAX(rClose, (arc4random() / (double)UINT32_MAX - 0.5) * 0.5 + rOpen) );
-            double rLow   = MIN(rOpen, MIN(rClose, (arc4random() / (double)UINT32_MAX - 0.5) * 0.5 + rOpen) );
+            double rHigh  = MAX(rOpen, MAX(rClose, (arc4random() / (double)UINT32_MAX - 0.5) * 0.5 + rOpen));
+            double rLow   = MIN(rOpen, MIN(rClose, (arc4random() / (double)UINT32_MAX - 0.5) * 0.5 + rOpen));
 
             [newData addObject:
              @{ @(CPTTradingRangePlotFieldX): @(x),
@@ -62,7 +62,7 @@ static const NSTimeInterval oneDay = 24 * 60 * 60;
     }
 }
 
--(void)renderInGraphHostingView:(nonnull CPTGraphHostingView *)hostingView withTheme:(nullable CPTTheme *)theme animated:(BOOL)animated
+-(void)renderInGraphHostingView:(nonnull CPTGraphHostingView *)hostingView withTheme:(nullable CPTTheme *)theme animated:(BOOL __unused)animated
 {
     // If you make sure your dates are calculated at noon, you shouldn't have to
     // worry about daylight savings. If you use midnight, you will have to adjust
@@ -97,7 +97,7 @@ static const NSTimeInterval oneDay = 24 * 60 * 60;
     xAxis.majorIntervalLength   = @(oneDay);
     xAxis.minorTicksPerInterval = 0;
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.dateStyle = kCFDateFormatterShortStyle;
+    dateFormatter.dateStyle = NSDateFormatterShortStyle;
     CPTTimeFormatter *timeFormatter = [[CPTTimeFormatter alloc] initWithDateFormatter:dateFormatter];
     timeFormatter.referenceDate = refDate;
     xAxis.labelFormatter        = timeFormatter;
@@ -105,7 +105,7 @@ static const NSTimeInterval oneDay = 24 * 60 * 60;
     CPTLineCap *lineCap = [[CPTLineCap alloc] init];
     lineCap.lineStyle    = xAxis.axisLineStyle;
     lineCap.lineCapType  = CPTLineCapTypeOpenArrow;
-    lineCap.size         = CGSizeMake(self.titleSize * CPTFloat(0.5), self.titleSize * CPTFloat(0.5) );
+    lineCap.size         = CGSizeMake(self.titleSize * CPTFloat(0.5), self.titleSize * CPTFloat(0.5));
     xAxis.axisLineCapMax = lineCap;
 
     CPTXYAxis *yAxis = xyAxisSet.yAxis;
@@ -170,7 +170,7 @@ static const NSTimeInterval oneDay = 24 * 60 * 60;
     newGraph.legend.cornerRadius       = 5.0;
     newGraph.legend.swatchCornerRadius = 5.0;
     newGraph.legendAnchor              = CPTRectAnchorBottom;
-    newGraph.legendDisplacement        = CGPointMake(0.0, self.titleSize * CPTFloat(3.0) );
+    newGraph.legendDisplacement        = CGPointMake(0.0, self.titleSize * CPTFloat(3.0));
 
     // Set plot ranges
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)newGraph.defaultPlotSpace;
@@ -181,7 +181,7 @@ static const NSTimeInterval oneDay = 24 * 60 * 60;
 #pragma mark -
 #pragma mark Plot Data Source Methods
 
--(NSUInteger)numberOfRecordsForPlot:(nonnull CPTPlot *)plot
+-(NSUInteger)numberOfRecordsForPlot:(nonnull CPTPlot *__unused)plot
 {
     return self.plotData.count;
 }

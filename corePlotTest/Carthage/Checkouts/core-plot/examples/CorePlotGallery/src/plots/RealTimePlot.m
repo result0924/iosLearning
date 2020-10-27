@@ -32,7 +32,7 @@ static NSString *const kPlotIdentifier = @"Data Source Plot";
 
 -(nonnull instancetype)init
 {
-    if ( (self = [super init]) ) {
+    if ((self = [super init])) {
         plotData  = [[NSMutableArray alloc] initWithCapacity:kMaxDataPoints];
         dataTimer = nil;
 
@@ -158,7 +158,7 @@ static NSString *const kPlotIdentifier = @"Data Source Plot";
 #pragma mark -
 #pragma mark Timer callback
 
--(void)newData:(nonnull NSTimer *)theTimer
+-(void)newData:(nonnull NSTimer *__unused)theTimer
 {
     CPTGraph *theGraph = (self.graphs)[0];
     CPTPlot *thePlot   = [theGraph plotWithIdentifier:kPlotIdentifier];
@@ -172,7 +172,7 @@ static NSString *const kPlotIdentifier = @"Data Source Plot";
         CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)theGraph.defaultPlotSpace;
         NSUInteger location       = (self.currentIndex >= kMaxDataPoints ? self.currentIndex - kMaxDataPoints + 2 : 0);
 
-        CPTPlotRange *oldRange = [CPTPlotRange plotRangeWithLocation:@( (location > 0) ? (location - 1) : 0 )
+        CPTPlotRange *oldRange = [CPTPlotRange plotRangeWithLocation:@((location > 0) ? (location - 1) : 0)
                                                               length:@(kMaxDataPoints - 2)];
         CPTPlotRange *newRange = [CPTPlotRange plotRangeWithLocation:@(location)
                                                               length:@(kMaxDataPoints - 2)];
@@ -184,7 +184,7 @@ static NSString *const kPlotIdentifier = @"Data Source Plot";
                      duration:CPTFloat(1.0 / kFrameRate)];
 
         self.currentIndex++;
-        [self.plotData addObject:@( (1.0 - kAlpha) * self.plotData.lastObject.doubleValue + kAlpha * arc4random() / (double)UINT32_MAX )];
+        [self.plotData addObject:@((1.0 - kAlpha) * self.plotData.lastObject.doubleValue + kAlpha * arc4random() / (double)UINT32_MAX)];
         [thePlot insertDataAtIndex:self.plotData.count - 1 numberOfRecords:1];
     }
 }
@@ -192,12 +192,12 @@ static NSString *const kPlotIdentifier = @"Data Source Plot";
 #pragma mark -
 #pragma mark Plot Data Source Methods
 
--(NSUInteger)numberOfRecordsForPlot:(nonnull CPTPlot *)plot
+-(NSUInteger)numberOfRecordsForPlot:(nonnull CPTPlot *__unused)plot
 {
     return self.plotData.count;
 }
 
--(nullable id)numberForPlot:(nonnull CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
+-(nullable id)numberForPlot:(nonnull CPTPlot *__unused)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
 {
     NSNumber *num = nil;
 

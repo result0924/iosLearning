@@ -40,7 +40,7 @@
  **/
 -(nonnull instancetype)initWithFrame:(CGRect)newFrame
 {
-    if ( (self = [super initWithFrame:newFrame]) ) {
+    if ((self = [super initWithFrame:newFrame])) {
         plotArea = nil;
         major    = NO;
 
@@ -55,7 +55,7 @@
 
 -(nonnull instancetype)initWithLayer:(nonnull id)layer
 {
-    if ( (self = [super initWithLayer:layer]) ) {
+    if ((self = [super initWithLayer:layer])) {
         CPTGridLineGroup *theLayer = (CPTGridLineGroup *)layer;
 
         plotArea = theLayer->plotArea;
@@ -81,7 +81,7 @@
 
 -(nullable instancetype)initWithCoder:(nonnull NSCoder *)coder
 {
-    if ( (self = [super initWithCoder:coder]) ) {
+    if ((self = [super initWithCoder:coder])) {
         plotArea = [coder decodeObjectOfClass:[CPTPlotArea class]
                                        forKey:@"CPTGridLineGroup.plotArea"];
         major = [coder decodeBoolForKey:@"CPTGridLineGroup.major"];
@@ -114,7 +114,10 @@
         return;
     }
 
+    [super renderAsVectorInContext:context];
+
     CPTPlotArea *thePlotArea = self.plotArea;
+
     for ( CPTAxis *axis in thePlotArea.axisSet.axes ) {
         if ( !axis.separateLayers ) {
             [axis drawGridLinesInContext:context isMajor:self.major];

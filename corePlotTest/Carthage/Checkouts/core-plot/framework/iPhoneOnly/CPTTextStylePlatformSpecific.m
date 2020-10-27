@@ -4,7 +4,7 @@
 #import "CPTMutableTextStyle.h"
 #import "CPTPlatformSpecificCategories.h"
 #import "CPTPlatformSpecificFunctions.h"
-#import "tgmath.h"
+#import <tgmath.h>
 
 @implementation CPTTextStyle(CPTPlatformSpecificTextStyleExtensions)
 
@@ -42,18 +42,21 @@
     UIFont *styleFont = attributes[NSFontAttributeName];
 
     if ( styleFont ) {
+        newStyle.font     = styleFont;
         newStyle.fontName = styleFont.fontName;
         newStyle.fontSize = styleFont.pointSize;
     }
 
     // Color
     UIColor *styleColor = attributes[NSForegroundColorAttributeName];
+
     if ( styleColor ) {
         newStyle.color = [CPTColor colorWithCGColor:styleColor.CGColor];
     }
 
     // Text alignment and line break mode
     NSParagraphStyle *paragraphStyle = attributes[NSParagraphStyleAttributeName];
+
     if ( paragraphStyle ) {
         newStyle.textAlignment = (CPTTextAlignment)paragraphStyle.alignment;
         newStyle.lineBreakMode = paragraphStyle.lineBreakMode;
@@ -72,10 +75,10 @@
     CPTMutableDictionary *myAttributes = [NSMutableDictionary dictionary];
 
     // Font
-    UIFont *styleFont  = nil;
+    UIFont *styleFont  = self.font;
     NSString *fontName = self.fontName;
 
-    if ( fontName ) {
+    if ((styleFont == nil) && fontName ) {
         styleFont = [UIFont fontWithName:fontName size:self.fontSize];
     }
 
@@ -94,6 +97,7 @@
 
     // Text alignment and line break mode
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+
     paragraphStyle.alignment     = (NSTextAlignment)self.textAlignment;
     paragraphStyle.lineBreakMode = self.lineBreakMode;
 
@@ -132,6 +136,7 @@
     UIFont *styleFont = attributes[NSFontAttributeName];
 
     if ( styleFont ) {
+        newStyle.font     = styleFont;
         newStyle.fontName = styleFont.fontName;
         newStyle.fontSize = styleFont.pointSize;
     }
@@ -222,10 +227,10 @@
         UIColor *styleColor = style.attributes[NSForegroundColorAttributeName];
         [styleColor set];
 
-        UIFont *theFont    = nil;
+        UIFont *theFont    = style.font;
         NSString *fontName = style.fontName;
 
-        if ( fontName ) {
+        if ((theFont == nil) && fontName ) {
             theFont = [UIFont fontWithName:fontName size:style.fontSize];
         }
 
@@ -241,7 +246,10 @@
     UIColor *styleColor = style.attributes[NSForegroundColorAttributeName];
     [styleColor set];
 
-    UIFont *theFont = [UIFont fontWithName:style.fontName size:style.fontSize];
+    UIFont *theFont = self.font;
+    if ( theFont == nil ) {
+        theFont = [UIFont fontWithName:style.fontName size:style.fontSize];
+    }
 
     [self drawInRect:rect
             withFont:theFont

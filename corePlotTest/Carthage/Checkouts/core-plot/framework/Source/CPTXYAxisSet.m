@@ -42,7 +42,7 @@
  **/
 -(nonnull instancetype)initWithFrame:(CGRect)newFrame
 {
-    if ( (self = [super initWithFrame:newFrame]) ) {
+    if ((self = [super initWithFrame:newFrame])) {
         CPTXYAxis *xAxis = [[CPTXYAxis alloc] initWithFrame:newFrame];
         xAxis.coordinate    = CPTCoordinateX;
         xAxis.tickDirection = CPTSignNegative;
@@ -70,6 +70,7 @@
     }
 
     CPTLineStyle *theLineStyle = self.borderLineStyle;
+
     if ( theLineStyle ) {
         [super renderAsVectorInContext:context];
 
@@ -80,7 +81,7 @@
 
         CGFloat radius = superlayer.cornerRadius;
 
-        if ( radius > CPTFloat(0.0) ) {
+        if ( radius > CPTFloat(0.0)) {
             CGContextBeginPath(context);
             CPTAddRoundedRectPath(context, borderRect, radius);
 

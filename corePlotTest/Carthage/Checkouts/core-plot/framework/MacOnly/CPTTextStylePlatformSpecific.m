@@ -40,12 +40,14 @@
     NSFont *styleFont = attributes[NSFontAttributeName];
 
     if ( styleFont ) {
+        newStyle.font     = styleFont;
         newStyle.fontName = styleFont.fontName;
         newStyle.fontSize = styleFont.pointSize;
     }
 
     // Color
     NSColor *styleColor = attributes[NSForegroundColorAttributeName];
+
     if ( styleColor ) {
         // CGColor property is available in macOS 10.8 and later
         if ( [styleColor respondsToSelector:@selector(CGColor)] ) {
@@ -54,7 +56,7 @@
         else {
             const NSInteger numberOfComponents = styleColor.numberOfComponents;
 
-            CGFloat *components = calloc( (size_t)numberOfComponents, sizeof(CGFloat) );
+            CGFloat *components = calloc((size_t)numberOfComponents, sizeof(CGFloat));
             [styleColor getComponents:components];
 
             CGColorSpaceRef colorSpace = styleColor.colorSpace.CGColorSpace;
@@ -69,6 +71,7 @@
 
     // Text alignment and line break mode
     NSParagraphStyle *paragraphStyle = attributes[NSParagraphStyleAttributeName];
+
     if ( paragraphStyle ) {
         newStyle.textAlignment = (CPTTextAlignment)paragraphStyle.alignment;
         newStyle.lineBreakMode = paragraphStyle.lineBreakMode;
@@ -87,10 +90,10 @@
     CPTMutableDictionary *myAttributes = [NSMutableDictionary dictionary];
 
     // Font
-    NSFont *styleFont  = nil;
+    NSFont *styleFont  = self.font;
     NSString *fontName = self.fontName;
 
-    if ( fontName ) {
+    if ((styleFont == nil) && fontName ) {
         styleFont = [NSFont fontWithName:fontName size:self.fontSize];
     }
 
@@ -101,6 +104,7 @@
 
     // Color
     NSColor *styleColor = self.color.nsColor;
+
     if ( styleColor ) {
         [myAttributes setValue:styleColor
                         forKey:NSForegroundColorAttributeName];
@@ -108,6 +112,7 @@
 
     // Text alignment and line break mode
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+
     paragraphStyle.alignment     = (NSTextAlignment)self.textAlignment;
     paragraphStyle.lineBreakMode = self.lineBreakMode;
 
@@ -146,12 +151,14 @@
     NSFont *styleFont = attributes[NSFontAttributeName];
 
     if ( styleFont ) {
+        newStyle.font     = styleFont;
         newStyle.fontName = styleFont.fontName;
         newStyle.fontSize = styleFont.pointSize;
     }
 
     // Color
     NSColor *styleColor = attributes[NSForegroundColorAttributeName];
+
     if ( styleColor ) {
         // CGColor property is available in macOS 10.8 and later
         if ( [styleColor respondsToSelector:@selector(CGColor)] ) {
@@ -160,7 +167,7 @@
         else {
             const NSInteger numberOfComponents = styleColor.numberOfComponents;
 
-            CGFloat *components = calloc( (size_t)numberOfComponents, sizeof(CGFloat) );
+            CGFloat *components = calloc((size_t)numberOfComponents, sizeof(CGFloat));
             [styleColor getComponents:components];
 
             CGColorSpaceRef colorSpace = styleColor.colorSpace.CGColorSpace;
@@ -175,6 +182,7 @@
 
     // Text alignment and line break mode
     NSParagraphStyle *paragraphStyle = attributes[NSParagraphStyleAttributeName];
+
     if ( paragraphStyle ) {
         newStyle.textAlignment = (CPTTextAlignment)paragraphStyle.alignment;
         newStyle.lineBreakMode = paragraphStyle.lineBreakMode;
@@ -241,10 +249,10 @@
 
     CPTPushCGContext(context);
 
-    NSFont *theFont    = nil;
+    NSFont *theFont    = style.font;
     NSString *fontName = style.fontName;
 
-    if ( fontName ) {
+    if ((theFont == nil) && fontName ) {
         theFont = [NSFont fontWithName:fontName size:style.fontSize];
     }
 
@@ -255,9 +263,9 @@
         paragraphStyle.lineBreakMode = style.lineBreakMode;
 
         CPTDictionary *attributes = @{
-                                        NSFontAttributeName: theFont,
-                                        NSForegroundColorAttributeName: foregroundColor,
-                                        NSParagraphStyleAttributeName: paragraphStyle
+            NSFontAttributeName: theFont,
+            NSForegroundColorAttributeName: foregroundColor,
+            NSParagraphStyleAttributeName: paragraphStyle
         };
         [self drawWithRect:NSRectFromCGRect(rect)
                    options:CPTStringDrawingOptions

@@ -37,6 +37,7 @@
                                                object:nil];
 
     UIView *hostView = self.hostingView;
+
     if ( hostView ) {
         [self.detailItem renderInView:hostView withTheme:[self currentTheme] animated:YES];
     }
@@ -51,7 +52,7 @@
 
 -(nonnull instancetype)initWithNibName:(nullable NSString *)nibNameOrNil bundle:(nullable NSBundle *)nibBundleOrNil
 {
-    if ( (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) ) {
+    if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
         [self setupView];
     }
 
@@ -124,6 +125,7 @@
     self.currentThemeName = themeName;
 
     UIView *hostView = self.hostingView;
+
     if ( hostView ) {
         [self.detailItem renderInView:hostView withTheme:[self currentTheme] animated:YES];
     }

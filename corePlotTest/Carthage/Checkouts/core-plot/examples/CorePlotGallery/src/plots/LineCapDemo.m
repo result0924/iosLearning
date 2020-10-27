@@ -14,7 +14,7 @@
 
 -(nonnull instancetype)init
 {
-    if ( (self = [super init]) ) {
+    if ((self = [super init])) {
         self.title   = @"Line Caps";
         self.section = kDemoPlots;
     }
@@ -22,7 +22,7 @@
     return self;
 }
 
--(void)renderInGraphHostingView:(nonnull CPTGraphHostingView *)hostingView withTheme:(nullable CPTTheme *)theme animated:(BOOL)animated
+-(void)renderInGraphHostingView:(nonnull CPTGraphHostingView *)hostingView withTheme:(nullable CPTTheme *)theme animated:(BOOL __unused)animated
 {
 #if TARGET_OS_IPHONE
     CGRect bounds = hostingView.bounds;

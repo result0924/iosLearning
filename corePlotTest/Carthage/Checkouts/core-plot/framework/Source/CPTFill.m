@@ -85,7 +85,7 @@
 
 /// @cond
 
--(nonnull id)copyWithZone:(nullable NSZone *)zone
+-(nonnull id)copyWithZone:(nullable NSZone *__unused)zone
 {
     // do nothing--implemented in subclasses
     return nil;
@@ -98,7 +98,7 @@
 
 /// @cond
 
--(void)encodeWithCoder:(nonnull NSCoder *)coder
+-(void)encodeWithCoder:(nonnull NSCoder *__unused)coder
 {
     // do nothing--implemented in subclasses
 }
@@ -114,12 +114,14 @@
 
     id gradient = [coder decodeObjectOfClass:[CPTGradient class]
                                       forKey:@"_CPTFillGradient.fillGradient"];
+
     if ( gradient ) {
         return [self initWithGradient:gradient];
     }
 
     id image = [coder decodeObjectOfClass:[CPTImage class]
                                    forKey:@"_CPTFillImage.fillImage"];
+
     if ( image ) {
         return [self initWithImage:image];
     }
@@ -186,7 +188,7 @@
  *  @param rect The rectangle to draw into.
  *  @param context The graphics context to draw into.
  **/
--(void)fillRect:(CGRect)rect inContext:(nonnull CGContextRef)context
+-(void)fillRect:(CGRect __unused)rect inContext:(nonnull CGContextRef __unused)context
 {
     // do nothing--subclasses override to do drawing here
 }
@@ -194,7 +196,7 @@
 /** @brief Draws the gradient into the given graphics context clipped to the current drawing path.
  *  @param context The graphics context to draw into.
  **/
--(void)fillPathInContext:(nonnull CGContextRef)context
+-(void)fillPathInContext:(nonnull CGContextRef __unused)context
 {
     // do nothing--subclasses override to do drawing here
 }
@@ -208,7 +210,7 @@
 {
     const CGRect rect = CGRectMake(0.0, 0.0, 100.0, 100.0);
 
-    return CPTQuickLookImage(rect, ^(CGContextRef context, CGFloat scale, CGRect bounds) {
+    return CPTQuickLookImage(rect, ^(CGContextRef context, CGFloat __unused scale, CGRect bounds) {
         [self fillRect:bounds inContext:context];
     });
 }

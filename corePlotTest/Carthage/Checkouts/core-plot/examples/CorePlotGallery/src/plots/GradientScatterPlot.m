@@ -24,7 +24,7 @@
 
 -(nonnull instancetype)init
 {
-    if ( (self = [super init]) ) {
+    if ((self = [super init])) {
         self.title   = @"Gradient Scatter Plot";
         self.section = kLinePlots;
     }
@@ -61,7 +61,7 @@
     }
 }
 
--(void)renderInGraphHostingView:(nonnull CPTGraphHostingView *)hostingView withTheme:(nullable CPTTheme *)theme animated:(BOOL)animated
+-(void)renderInGraphHostingView:(nonnull CPTGraphHostingView *)hostingView withTheme:(nullable CPTTheme *)theme animated:(BOOL __unused)animated
 {
 #if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
     CGRect bounds = hostingView.bounds;
@@ -190,12 +190,12 @@
 #pragma mark -
 #pragma mark Plot Data Source Methods
 
--(NSUInteger)numberOfRecordsForPlot:(nonnull CPTPlot *)plot
+-(NSUInteger)numberOfRecordsForPlot:(nonnull CPTPlot *__unused)plot
 {
     return self.plotData.count;
 }
 
--(nullable id)numberForPlot:(nonnull CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
+-(nullable id)numberForPlot:(nonnull CPTPlot *__unused)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
 {
     NSString *key = (fieldEnum == CPTScatterPlotFieldX ? @"x" : @"y");
     NSNumber *num = self.plotData[index][key];
@@ -206,7 +206,7 @@
 #pragma mark -
 #pragma mark Plot Space Delegate Methods
 
--(nullable CPTPlotRange *)plotSpace:(nonnull CPTPlotSpace *)space willChangePlotRangeTo:(nonnull CPTPlotRange *)newRange forCoordinate:(CPTCoordinate)coordinate
+-(nullable CPTPlotRange *)plotSpace:(nonnull CPTPlotSpace *__unused)space willChangePlotRangeTo:(nonnull CPTPlotRange *)newRange forCoordinate:(CPTCoordinate)coordinate
 {
     // Impose a limit on how far user can scroll in x
     if ( coordinate == CPTCoordinateX ) {
@@ -222,7 +222,7 @@
 #pragma mark -
 #pragma mark CPTScatterPlot delegate method
 
--(void)scatterPlot:(nonnull CPTScatterPlot *)plot plotSymbolWasSelectedAtRecordIndex:(NSUInteger)index
+-(void)scatterPlot:(nonnull CPTScatterPlot *__unused)plot plotSymbolWasSelectedAtRecordIndex:(NSUInteger)index
 {
     CPTGraph *graph = (self.graphs)[0];
 
@@ -235,6 +235,7 @@
 
     // Setup a style for the annotation
     CPTMutableTextStyle *hitAnnotationTextStyle = [CPTMutableTextStyle textStyle];
+
     hitAnnotationTextStyle.color    = [CPTColor whiteColor];
     hitAnnotationTextStyle.fontSize = 16.0;
     hitAnnotationTextStyle.fontName = @"Helvetica-Bold";
@@ -250,11 +251,13 @@
     // Add annotation
     // First make a string for the y value
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+
     formatter.maximumFractionDigits = 2;
     NSString *yString = [formatter stringFromNumber:y];
 
     // Now add the annotation to the plot area
     CPTPlotSpace *defaultSpace = graph.defaultPlotSpace;
+
     if ( defaultSpace ) {
         CPTTextLayer *textLayer = [[CPTTextLayer alloc] initWithText:yString style:hitAnnotationTextStyle];
         annotation                = [[CPTPlotSpaceAnnotation alloc] initWithPlotSpace:defaultSpace anchorPlotPoint:anchorPoint];
@@ -268,7 +271,7 @@
 #pragma mark -
 #pragma mark Plot area delegate method
 
--(void)plotAreaWasSelected:(nonnull CPTPlotArea *)plotArea
+-(void)plotAreaWasSelected:(nonnull CPTPlotArea *__unused)plotArea
 {
     // Remove the annotation
     CPTPlotSpaceAnnotation *annotation = self.symbolTextAnnotation;

@@ -38,8 +38,8 @@
  *  -# As a cut out mask over an area filled with a CPTFill (@ref lineFill)
  *  -# Filled with a solid color (@ref lineColor)
  *
- *  @see See Apple&rsquo;s <a href="http://developer.apple.com/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_paths/dq_paths.html#//apple_ref/doc/uid/TP30001066-CH211-TPXREF105">Quartz 2D</a>
- *  and <a href="http://developer.apple.com/documentation/GraphicsImaging/Reference/CGContext/Reference/reference.html">CGContext</a>
+ *  @see See Apple&rsquo;s <a href="https://developer.apple.com/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_paths/dq_paths.html#//apple_ref/doc/uid/TP30001066-CH211-TPXREF105">Quartz 2D</a>
+ *  and <a href="https://developer.apple.com/documentation/GraphicsImaging/Reference/CGContext/Reference/reference.html">CGContext</a>
  *  documentation for more information about each of these properties.
  **/
 
@@ -154,7 +154,7 @@
  **/
 -(nonnull instancetype)init
 {
-    if ( (self = [super init]) ) {
+    if ((self = [super init])) {
         lineCap      = kCGLineCapButt;
         lineJoin     = kCGLineJoinMiter;
         miterLimit   = CPTFloat(10.0);
@@ -190,7 +190,7 @@
 
 -(nullable instancetype)initWithCoder:(nonnull NSCoder *)coder
 {
-    if ( (self = [super init]) ) {
+    if ((self = [super init])) {
         lineCap     = (CGLineCap)[coder decodeIntForKey:@"CPTLineStyle.lineCap"];
         lineJoin    = (CGLineJoin)[coder decodeIntForKey:@"CPTLineStyle.lineJoin"];
         miterLimit  = [coder decodeCGFloatForKey:@"CPTLineStyle.miterLimit"];
@@ -238,8 +238,9 @@
     CPTNumberArray *myDashPattern = self.dashPattern;
 
     NSUInteger dashCount = myDashPattern.count;
+
     if ( dashCount > 0 ) {
-        CGFloat *dashLengths = (CGFloat *)calloc(dashCount, sizeof(CGFloat) );
+        CGFloat *dashLengths = (CGFloat *)calloc(dashCount, sizeof(CGFloat));
 
         NSUInteger dashCounter = 0;
         for ( NSNumber *currentDashLength in myDashPattern ) {
@@ -309,7 +310,7 @@
 -(void)strokePathWithGradient:(nonnull CPTGradient *)gradient inContext:(nonnull CGContextRef)context
 {
     if ( gradient ) {
-        CGRect deviceRect = CGContextConvertRectToDeviceSpace(context, CPTRectMake(0.0, 0.0, 1.0, 1.0) );
+        CGRect deviceRect = CGContextConvertRectToDeviceSpace(context, CPTRectMake(0.0, 0.0, 1.0, 1.0));
 
         CGFloat step = CPTFloat(2.0) / deviceRect.size.height;
 
@@ -319,7 +320,7 @@
         CGContextBeginPath(context);
 
         CGFloat width = startWidth;
-        while ( width > CPTFloat(0.0) ) {
+        while ( width > CPTFloat(0.0)) {
             CGContextSetLineWidth(context, width);
 
             CGColorRef gradientColor = [gradient newColorAtPosition:CPTFloat(1.0) - width / startWidth];
@@ -421,7 +422,7 @@
 {
     const CGRect rect = CGRectMake(0.0, 0.0, 100.0, 100.0);
 
-    return CPTQuickLookImage(rect, ^(CGContextRef context, CGFloat scale, CGRect bounds) {
+    return CPTQuickLookImage(rect, ^(CGContextRef context, CGFloat __unused scale, CGRect bounds) {
         const CGRect alignedRect = CPTAlignBorderedRectToUserSpace(context, bounds, self);
 
         [self setLineStyleInContext:context];

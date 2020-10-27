@@ -92,7 +92,7 @@ typedef NSMutableOrderedSet<NSString *> CPTMutableCategorySet;
  **/
 -(nonnull instancetype)init
 {
-    if ( (self = [super init]) ) {
+    if ((self = [super init])) {
         identifier            = nil;
         allowsUserInteraction = NO;
         isDragging            = NO;
@@ -125,6 +125,7 @@ typedef NSMutableOrderedSet<NSString *> CPTMutableCategorySet;
     [coder encodeConditionalObject:self.graph forKey:@"CPTPlotSpace.graph"];
     [coder encodeObject:self.identifier forKey:@"CPTPlotSpace.identifier"];
     id<CPTPlotSpaceDelegate> theDelegate = self.delegate;
+
     if ( [theDelegate conformsToProtocol:@protocol(NSCoding)] ) {
         [coder encodeConditionalObject:theDelegate forKey:@"CPTPlotSpace.delegate"];
     }
@@ -143,7 +144,7 @@ typedef NSMutableOrderedSet<NSString *> CPTMutableCategorySet;
  */
 -(nullable instancetype)initWithCoder:(nonnull NSCoder *)coder
 {
-    if ( (self = [super init]) ) {
+    if ((self = [super init])) {
         graph = [coder decodeObjectOfClass:[CPTGraph class]
                                     forKey:@"CPTPlotSpace.graph"];
         identifier = [[coder decodeObjectOfClass:[NSObject class]
@@ -505,7 +506,7 @@ typedef NSMutableOrderedSet<NSString *> CPTMutableCategorySet;
  *  @param plotPoint An array of data point coordinates (as NSNumber values).
  *  @return The drawing coordinates of the data point.
  **/
--(CGPoint)plotAreaViewPointForPlotPoint:(nonnull CPTNumberArray *)plotPoint
+-(CGPoint)plotAreaViewPointForPlotPoint:(nonnull CPTNumberArray *cpt_unused)plotPoint
 {
     NSParameterAssert(plotPoint.count == self.numberOfCoordinates);
 
@@ -517,7 +518,7 @@ typedef NSMutableOrderedSet<NSString *> CPTMutableCategorySet;
  *  @param count The number of coordinate values in the @par{plotPoint} array.
  *  @return The drawing coordinates of the data point.
  **/
--(CGPoint)plotAreaViewPointForPlotPoint:(nonnull NSDecimal *)plotPoint numberOfCoordinates:(NSUInteger)count
+-(CGPoint)plotAreaViewPointForPlotPoint:(nonnull NSDecimal *__unused)plotPoint numberOfCoordinates:(NSUInteger cpt_unused)count
 {
     NSParameterAssert(count == self.numberOfCoordinates);
 
@@ -529,7 +530,7 @@ typedef NSMutableOrderedSet<NSString *> CPTMutableCategorySet;
  *  @param count The number of coordinate values in the @par{plotPoint} array.
  *  @return The drawing coordinates of the data point.
  **/
--(CGPoint)plotAreaViewPointForDoublePrecisionPlotPoint:(nonnull double *)plotPoint numberOfCoordinates:(NSUInteger)count
+-(CGPoint)plotAreaViewPointForDoublePrecisionPlotPoint:(nonnull double *__unused)plotPoint numberOfCoordinates:(NSUInteger cpt_unused)count
 {
     NSParameterAssert(count == self.numberOfCoordinates);
 
@@ -540,7 +541,7 @@ typedef NSMutableOrderedSet<NSString *> CPTMutableCategorySet;
  *  @param point The drawing coordinates of the data point.
  *  @return An array of data point coordinates (as NSNumber values).
  **/
--(nullable CPTNumberArray *)plotPointForPlotAreaViewPoint:(CGPoint)point
+-(nullable CPTNumberArray *)plotPointForPlotAreaViewPoint:(CGPoint __unused)point
 {
     return nil;
 }
@@ -550,7 +551,7 @@ typedef NSMutableOrderedSet<NSString *> CPTMutableCategorySet;
  *  @param count The number of coordinate values in the @par{plotPoint} array.
  *  @param point The drawing coordinates of the data point.
  **/
--(void)plotPoint:(nonnull NSDecimal *)plotPoint numberOfCoordinates:(NSUInteger)count forPlotAreaViewPoint:(CGPoint)point
+-(void)plotPoint:(nonnull NSDecimal *__unused)plotPoint numberOfCoordinates:(NSUInteger cpt_unused)count forPlotAreaViewPoint:(CGPoint __unused)point
 {
     NSParameterAssert(count == self.numberOfCoordinates);
 }
@@ -560,7 +561,7 @@ typedef NSMutableOrderedSet<NSString *> CPTMutableCategorySet;
  *  @param count The number of coordinate values in the @par{plotPoint} array.
  *  @param point The drawing coordinates of the data point.
  **/
--(void)doublePrecisionPlotPoint:(nonnull double *)plotPoint numberOfCoordinates:(NSUInteger)count forPlotAreaViewPoint:(CGPoint)point
+-(void)doublePrecisionPlotPoint:(nonnull double *__unused)plotPoint numberOfCoordinates:(NSUInteger cpt_unused)count forPlotAreaViewPoint:(CGPoint __unused)point
 {
     NSParameterAssert(count == self.numberOfCoordinates);
 }
@@ -569,7 +570,7 @@ typedef NSMutableOrderedSet<NSString *> CPTMutableCategorySet;
  *  @param event The event.
  *  @return The drawing coordinates of the point.
  **/
--(CGPoint)plotAreaViewPointForEvent:(nonnull CPTNativeEvent *)event
+-(CGPoint)plotAreaViewPointForEvent:(nonnull CPTNativeEvent *__unused)event
 {
     return CGPointZero;
 }
@@ -578,7 +579,7 @@ typedef NSMutableOrderedSet<NSString *> CPTMutableCategorySet;
  *  @param event The event.
  *  @return An array of data point coordinates (as NSNumber values).
  **/
--(nullable CPTNumberArray *)plotPointForEvent:(nonnull CPTNativeEvent *)event
+-(nullable CPTNumberArray *)plotPointForEvent:(nonnull CPTNativeEvent *__unused)event
 {
     return nil;
 }
@@ -588,7 +589,7 @@ typedef NSMutableOrderedSet<NSString *> CPTMutableCategorySet;
  *  @param count The number of coordinate values in the @par{plotPoint} array.
  *  @param event The event.
  **/
--(void)plotPoint:(nonnull NSDecimal *)plotPoint numberOfCoordinates:(NSUInteger)count forEvent:(nonnull CPTNativeEvent *)event
+-(void)plotPoint:(nonnull NSDecimal *__unused)plotPoint numberOfCoordinates:(NSUInteger cpt_unused)count forEvent:(nonnull CPTNativeEvent *__unused)event
 {
     NSParameterAssert(count == self.numberOfCoordinates);
 }
@@ -598,7 +599,7 @@ typedef NSMutableOrderedSet<NSString *> CPTMutableCategorySet;
  *  @param count The number of coordinate values in the @par{plotPoint} array.
  *  @param event The event.
  **/
--(void)doublePrecisionPlotPoint:(nonnull double *)plotPoint numberOfCoordinates:(NSUInteger)count forEvent:(nonnull CPTNativeEvent *)event
+-(void)doublePrecisionPlotPoint:(nonnull double *__unused)plotPoint numberOfCoordinates:(NSUInteger cpt_unused)count forEvent:(nonnull CPTNativeEvent *__unused)event
 {
     NSParameterAssert(count == self.numberOfCoordinates);
 }
@@ -607,7 +608,7 @@ typedef NSMutableOrderedSet<NSString *> CPTMutableCategorySet;
  *  @param newRange The new plot range.
  *  @param coordinate The axis coordinate.
  **/
--(void)setPlotRange:(nonnull CPTPlotRange *)newRange forCoordinate:(CPTCoordinate)coordinate
+-(void)setPlotRange:(nonnull CPTPlotRange *__unused)newRange forCoordinate:(CPTCoordinate __unused)coordinate
 {
 }
 
@@ -615,7 +616,7 @@ typedef NSMutableOrderedSet<NSString *> CPTMutableCategorySet;
  *  @param coordinate The axis coordinate.
  *  @return The range of values.
  **/
--(nullable CPTPlotRange *)plotRangeForCoordinate:(CPTCoordinate)coordinate
+-(nullable CPTPlotRange *)plotRangeForCoordinate:(CPTCoordinate __unused)coordinate
 {
     return nil;
 }
@@ -624,7 +625,7 @@ typedef NSMutableOrderedSet<NSString *> CPTMutableCategorySet;
  *  @param newType The new scale type.
  *  @param coordinate The axis coordinate.
  **/
--(void)setScaleType:(CPTScaleType)newType forCoordinate:(CPTCoordinate)coordinate
+-(void)setScaleType:(CPTScaleType __unused)newType forCoordinate:(CPTCoordinate __unused)coordinate
 {
 }
 
@@ -632,7 +633,7 @@ typedef NSMutableOrderedSet<NSString *> CPTMutableCategorySet;
  *  @param coordinate The axis coordinate.
  *  @return The scale type.
  **/
--(CPTScaleType)scaleTypeForCoordinate:(CPTCoordinate)coordinate
+-(CPTScaleType)scaleTypeForCoordinate:(CPTCoordinate __unused)coordinate
 {
     return CPTScaleTypeLinear;
 }
@@ -640,7 +641,7 @@ typedef NSMutableOrderedSet<NSString *> CPTMutableCategorySet;
 /** @brief Scales the plot ranges so that the plots just fit in the visible space.
  *  @param plots An array of the plots that have to fit in the visible area.
  **/
--(void)scaleToFitPlots:(nullable CPTPlotArray *)plots
+-(void)scaleToFitPlots:(nullable CPTPlotArray *__unused)plots
 {
 }
 
@@ -656,6 +657,7 @@ typedef NSMutableOrderedSet<NSString *> CPTMutableCategorySet;
 
     // Determine union of ranges
     CPTMutablePlotRange *unionRange = nil;
+
     for ( CPTPlot *plot in plots ) {
         CPTPlotRange *currentRange = [plot plotRangeForCoordinate:coordinate];
         if ( !unionRange ) {
@@ -666,7 +668,7 @@ typedef NSMutableOrderedSet<NSString *> CPTMutableCategorySet;
 
     // Set range
     if ( unionRange ) {
-        if ( CPTDecimalEquals(unionRange.lengthDecimal, CPTDecimalFromInteger(0) ) ) {
+        if ( CPTDecimalEquals(unionRange.lengthDecimal, CPTDecimalFromInteger(0))) {
             [unionRange unionPlotRange:[self plotRangeForCoordinate:coordinate]];
         }
         [self setPlotRange:unionRange forCoordinate:coordinate];
@@ -676,7 +678,7 @@ typedef NSMutableOrderedSet<NSString *> CPTMutableCategorySet;
 /** @brief Scales the plot ranges so that the plots just fit in the visible space.
  *  @param plots An array of the plots that have to fit in the visible area.
  **/
--(void)scaleToFitEntirePlots:(nullable CPTPlotArray *)plots
+-(void)scaleToFitEntirePlots:(nullable CPTPlotArray *__unused)plots
 {
 }
 
@@ -692,6 +694,7 @@ typedef NSMutableOrderedSet<NSString *> CPTMutableCategorySet;
 
     // Determine union of ranges
     CPTMutablePlotRange *unionRange = nil;
+
     for ( CPTPlot *plot in plots ) {
         CPTPlotRange *currentRange = [plot plotRangeForCoordinate:coordinate];
         if ( !unionRange ) {
@@ -702,7 +705,7 @@ typedef NSMutableOrderedSet<NSString *> CPTMutableCategorySet;
 
     // Set range
     if ( unionRange ) {
-        if ( CPTDecimalEquals(unionRange.lengthDecimal, CPTDecimalFromInteger(0) ) ) {
+        if ( CPTDecimalEquals(unionRange.lengthDecimal, CPTDecimalFromInteger(0))) {
             [unionRange unionPlotRange:[self plotRangeForCoordinate:coordinate]];
         }
         [self setPlotRange:unionRange forCoordinate:coordinate];
@@ -713,7 +716,7 @@ typedef NSMutableOrderedSet<NSString *> CPTMutableCategorySet;
  *  @param interactionScale The scaling factor. One (@num{1}) gives no scaling.
  *  @param interactionPoint The plot area view point about which the scaling occurs.
  **/
--(void)scaleBy:(CGFloat)interactionScale aboutPoint:(CGPoint)interactionPoint
+-(void)scaleBy:(CGFloat __unused)interactionScale aboutPoint:(CGPoint __unused)interactionPoint
 {
 }
 

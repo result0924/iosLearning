@@ -30,7 +30,7 @@ static const NSTimeInterval oneDay = 24 * 60 * 60;
 
 -(nonnull instancetype)init
 {
-    if ( (self = [super init]) ) {
+    if ((self = [super init])) {
         graph    = nil;
         plotData = @[];
 
@@ -68,7 +68,7 @@ static const NSTimeInterval oneDay = 24 * 60 * 60;
     }
 }
 
--(void)renderInGraphHostingView:(nonnull CPTGraphHostingView *)hostingView withTheme:(nullable CPTTheme *)theme animated:(BOOL)animated
+-(void)renderInGraphHostingView:(nonnull CPTGraphHostingView *)hostingView withTheme:(nullable CPTTheme *)theme animated:(BOOL __unused)animated
 {
     // If you make sure your dates are calculated at noon, you shouldn't have to
     // worry about daylight savings. If you use midnight, you will have to adjust
@@ -137,7 +137,7 @@ static const NSTimeInterval oneDay = 24 * 60 * 60;
     x.orthogonalPosition    = @2.0;
     x.minorTicksPerInterval = 0;
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.dateStyle = kCFDateFormatterShortStyle;
+    dateFormatter.dateStyle = NSDateFormatterShortStyle;
     CPTTimeFormatter *timeFormatter = [[CPTTimeFormatter alloc] initWithDateFormatter:dateFormatter];
     timeFormatter.referenceDate = refDate;
     x.labelFormatter            = timeFormatter;
@@ -170,19 +170,20 @@ static const NSTimeInterval oneDay = 24 * 60 * 60;
     newGraph.legend.borderLineStyle    = x.axisLineStyle;
     newGraph.legend.cornerRadius       = 5.0;
     newGraph.legend.swatchCornerRadius = 3.0;
+    newGraph.legend.swatchLayout       = CPTLegendSwatchLayoutBottom;
     newGraph.legendAnchor              = CPTRectAnchorTop;
-    newGraph.legendDisplacement        = CGPointMake(0.0, self.titleSize * CPTFloat(-2.0) - CPTFloat(12.0) );
+    newGraph.legendDisplacement        = CGPointMake(0.0, self.titleSize * CPTFloat(-2.0) - CPTFloat(12.0));
 }
 
 #pragma mark -
 #pragma mark Plot Data Source Methods
 
--(NSUInteger)numberOfRecordsForPlot:(nonnull CPTPlot *)plot
+-(NSUInteger)numberOfRecordsForPlot:(nonnull CPTPlot *__unused)plot
 {
     return self.plotData.count;
 }
 
--(nullable id)numberForPlot:(nonnull CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
+-(nullable id)numberForPlot:(nonnull CPTPlot *__unused)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
 {
     return self.plotData[index][@(fieldEnum)];
 }
@@ -190,7 +191,7 @@ static const NSTimeInterval oneDay = 24 * 60 * 60;
 #pragma mark -
 #pragma mark Plot Space Delegate Methods
 
--(BOOL)plotSpace:(nonnull CPTPlotSpace *)space shouldHandlePointingDeviceUpEvent:(nonnull CPTNativeEvent *)event atPoint:(CGPoint)point
+-(BOOL)plotSpace:(nonnull CPTPlotSpace *__unused)space shouldHandlePointingDeviceUpEvent:(nonnull CPTNativeEvent *__unused)event atPoint:(CGPoint __unused)point
 {
     CPTRangePlot *rangePlot = (CPTRangePlot *)[self.graph plotWithIdentifier:@"Range Plot"];
 
@@ -207,6 +208,11 @@ static const NSTimeInterval oneDay = 24 * 60 * 60;
     }
 
     return NO;
+}
+
+-(nullable NSNumber *)barWidthForRangePlot:(nonnull CPTRangePlot *__unused)plot recordIndex:(NSUInteger __unused)idx
+{
+    return @(arc4random_uniform(85) + 15);
 }
 
 #pragma mark -
