@@ -2,7 +2,8 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="wXA-Sj-hIj">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -11,7 +12,7 @@
         <!--Wait-->
         <scene sceneID="9fJ-mQ-COv">
             <objects>
-                <viewController id="fgH-vs-17c" sceneMemberID="viewController">
+                <viewController id="fgH-vs-17c" customClass="ChildHostingController" customModule="CombineTest" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Sy4-U3-WrW">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -190,7 +191,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus nec posuere nul
                             <constraint firstItem="WhC-mI-lTF" firstAttribute="top" secondItem="V20-XK-hyt" secondAttribute="top" id="xFU-qv-ZOW"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="TOS" id="CyC-33-30a"/>
+                    <tabBarItem key="tabBarItem" title="TOS" image="doc" catalog="system" id="CyC-33-30a"/>
                     <connections>
                         <outlet property="nameField" destination="alv-uC-DLy" id="guh-eR-eCv"/>
                         <outlet property="privacySwitch" destination="g1g-Ol-Dzh" id="mJR-ih-5Ne"/>
@@ -224,6 +225,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus nec posuere nul
     </scenes>
     <resources>
         <image name="disabledButton" width="21" height="21"/>
+        <image name="doc" catalog="system" width="115" height="128"/>
         <image name="scribble" catalog="system" width="128" height="118"/>
         <image name="selectedSubmit" width="21" height="21"/>
         <image name="submitButton" width="21" height="25"/>
