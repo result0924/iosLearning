@@ -36,6 +36,7 @@ class ScatterChartView: UIView {
         configureGraph()
         configureScatter()
         configureAxes()
+        configureAnnotations()
     }
     
     override init(frame: CGRect) {
@@ -64,7 +65,7 @@ class ScatterChartView: UIView {
         let graph = CPTXYGraph(frame: hostView.frame)
         graph.fill = CPTFill(color: CPTColor.clear())
         graph.plotAreaFrame?.masksToBorder = false
-        graph.paddingTop = 0
+        graph.paddingTop = 80
         graph.paddingBottom = 40
         graph.paddingLeft = 50
         graph.paddingRight = 40
@@ -128,6 +129,47 @@ class ScatterChartView: UIView {
         y.majorGridLineStyle = yLineStyle
         y.labelingPolicy = .none
         y.labelTextStyle = yAxisTextStyle
+    }
+    
+    private func configureAnnotations() {
+        let textLayer = CPTTextLayer.init(text: "abc")
+        textLayer.isOpaque = false
+        textLayer.fill = CPTFill(color: .clear())
+        textLayer.paddingLeft = 5
+        textLayer.paddingTop = 5
+        textLayer.paddingRight = 5
+        textLayer.paddingBottom = 0
+        textLayer.cornerRadius = 10
+        textLayer.backgroundColor = UIColor.cBlue(alpha: 1).cgColor
+        
+        let symbolTextAnnotation = CPTPlotSpaceAnnotation(plotSpace: (hostView.hostedGraph?.defaultPlotSpace)!, anchorPlotPoint: [NSNumber(value: 20), NSNumber(value: 160)])
+        symbolTextAnnotation.contentLayer = textLayer;
+        symbolTextAnnotation.displacement = CGPoint(x: 0, y: 40);
+        hostView.hostedGraph?.plotAreaFrame?.plotArea?.addAnnotation(symbolTextAnnotation)
+        
+        let textLayer2 = CPTTextLayer.init(text: "8")
+        textLayer2.isOpaque = false
+        textLayer2.fill = CPTFill(color: .clear())
+        textLayer2.paddingLeft = 5
+        textLayer2.paddingTop = 5
+        textLayer2.paddingRight = 5
+        textLayer2.paddingBottom = 0
+        textLayer2.cornerRadius = 10
+        textLayer2.backgroundColor = UIColor.clear.cgColor
+        
+        let symbolTextAnnotation2 = CPTPlotSpaceAnnotation(plotSpace: (hostView.hostedGraph?.defaultPlotSpace)!, anchorPlotPoint: [NSNumber(value: 30), NSNumber(value: 160)])
+        symbolTextAnnotation2.contentLayer = textLayer2;
+        symbolTextAnnotation2.displacement = CGPoint(x: 0, y: 70);
+        hostView.hostedGraph?.plotAreaFrame?.plotArea?.addAnnotation(symbolTextAnnotation2)
+        
+        let symbolTextAnnotation3 = CPTPlotSpaceAnnotation(plotSpace: (hostView.hostedGraph?.defaultPlotSpace)!, anchorPlotPoint: [NSNumber(value: 16), NSNumber(value: 160)])
+        let markImage = UIImage.init(named: "icCheckmark")
+        let imageRect = CGRect(x: 0, y: 0, width: 14, height: 14)
+        let newImageLayer = CPTBorderedLayer.init(frame: imageRect)
+        newImageLayer.fill = CPTFill.init(image: CPTImage.init(cgImage: markImage?.cgImage, scale: 2))
+        symbolTextAnnotation3.contentLayer = newImageLayer;
+        symbolTextAnnotation3.displacement = CGPoint(x: 0, y: 70);
+        hostView.hostedGraph?.plotAreaFrame?.plotArea?.addAnnotation(symbolTextAnnotation3)
     }
     
     func reloadCharts() {
