@@ -13,7 +13,7 @@
         <scene sceneID="oEu-SM-NoR">
             <objects>
                 <navigationController id="TiU-9S-LRt" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Test List" image="newspaper" catalog="system" id="vF4-yg-gRF"/>
+                    <tabBarItem key="tabBarItem" title="Test List" image="lasso" catalog="system" id="vF4-yg-gRF"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="epq-sz-bix">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -135,8 +135,105 @@
                     <view key="view" contentMode="scaleToFill" id="gH1-jj-jHe">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="MEn-pn-1aQ">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" systemColor="opaqueSeparatorColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ScatterTableViewCell" id="OZJ-3h-ART" customClass="ScatterTableViewCell" customModule="corePlotTest" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="55.5" width="375" height="300"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="OZJ-3h-ART" id="9Rr-zj-tPe">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Idv-0V-0kf">
+                                                    <rect key="frame" x="10" y="0.0" width="355" height="300"/>
+                                                    <subviews>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hrc-9L-F2d">
+                                                            <rect key="frame" x="0.0" y="0.0" width="355" height="50"/>
+                                                            <subviews>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="圖表趨勢" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Uf-bF-t8R">
+                                                                    <rect key="frame" x="20" y="0.0" width="315" height="50"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                                                    <nil key="textColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="trailing" secondItem="9Uf-bF-t8R" secondAttribute="trailing" constant="20" id="GqK-YM-nka"/>
+                                                                <constraint firstItem="9Uf-bF-t8R" firstAttribute="top" secondItem="hrc-9L-F2d" secondAttribute="top" id="SVB-bw-UZ2"/>
+                                                                <constraint firstItem="9Uf-bF-t8R" firstAttribute="leading" secondItem="hrc-9L-F2d" secondAttribute="leading" constant="20" id="SZb-bp-EzK"/>
+                                                                <constraint firstAttribute="height" constant="50" id="bMW-Hr-rDK"/>
+                                                                <constraint firstAttribute="bottom" secondItem="9Uf-bF-t8R" secondAttribute="bottom" id="mS6-bH-WLZ"/>
+                                                            </constraints>
+                                                        </view>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yps-Et-w7b" customClass="ScatterChartView" customModule="corePlotTest" customModuleProvider="target">
+                                                            <rect key="frame" x="0.0" y="50" width="355" height="250"/>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        </view>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xoc-pi-m0B" customClass="BarChartView" customModule="corePlotTest" customModuleProvider="target">
+                                                            <rect key="frame" x="0.0" y="50" width="355" height="250"/>
+                                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                        </view>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q7I-GI-2Je" customClass="ScatterBarChartView" customModule="corePlotTest" customModuleProvider="target">
+                                                            <rect key="frame" x="0.0" y="50" width="355" height="250"/>
+                                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                        </view>
+                                                    </subviews>
+                                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                    <constraints>
+                                                        <constraint firstItem="hrc-9L-F2d" firstAttribute="leading" secondItem="Idv-0V-0kf" secondAttribute="leading" id="52r-re-NXs"/>
+                                                        <constraint firstItem="Q7I-GI-2Je" firstAttribute="leading" secondItem="Idv-0V-0kf" secondAttribute="leading" id="5XY-nM-HfP"/>
+                                                        <constraint firstAttribute="bottom" secondItem="Q7I-GI-2Je" secondAttribute="bottom" id="E5h-NW-Bef"/>
+                                                        <constraint firstAttribute="height" constant="300" id="EOC-Yh-sjF"/>
+                                                        <constraint firstAttribute="bottom" secondItem="Xoc-pi-m0B" secondAttribute="bottom" id="Iat-ky-hkY"/>
+                                                        <constraint firstItem="Xoc-pi-m0B" firstAttribute="leading" secondItem="Idv-0V-0kf" secondAttribute="leading" id="PW2-SG-Rqx"/>
+                                                        <constraint firstItem="Yps-Et-w7b" firstAttribute="top" secondItem="hrc-9L-F2d" secondAttribute="bottom" id="U10-Ug-Xuw"/>
+                                                        <constraint firstAttribute="trailing" secondItem="Q7I-GI-2Je" secondAttribute="trailing" id="WMf-w6-mqO"/>
+                                                        <constraint firstItem="hrc-9L-F2d" firstAttribute="top" secondItem="Idv-0V-0kf" secondAttribute="top" id="Yeo-Aa-PvZ"/>
+                                                        <constraint firstAttribute="bottom" secondItem="Yps-Et-w7b" secondAttribute="bottom" id="eix-WX-Qzj"/>
+                                                        <constraint firstItem="Yps-Et-w7b" firstAttribute="leading" secondItem="Idv-0V-0kf" secondAttribute="leading" id="gKC-AM-9t6"/>
+                                                        <constraint firstItem="Q7I-GI-2Je" firstAttribute="top" secondItem="hrc-9L-F2d" secondAttribute="bottom" id="ieD-mD-dXw"/>
+                                                        <constraint firstAttribute="trailing" secondItem="hrc-9L-F2d" secondAttribute="trailing" id="qqo-mx-7hS"/>
+                                                        <constraint firstAttribute="trailing" secondItem="Xoc-pi-m0B" secondAttribute="trailing" id="qwP-tq-4j2"/>
+                                                        <constraint firstAttribute="trailing" secondItem="Yps-Et-w7b" secondAttribute="trailing" id="u6V-ax-2SZ"/>
+                                                        <constraint firstItem="Xoc-pi-m0B" firstAttribute="top" secondItem="hrc-9L-F2d" secondAttribute="bottom" id="vwo-we-1o3"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstItem="Idv-0V-0kf" firstAttribute="top" secondItem="9Rr-zj-tPe" secondAttribute="top" id="JQ6-01-bgu"/>
+                                                <constraint firstAttribute="trailing" secondItem="Idv-0V-0kf" secondAttribute="trailing" constant="10" id="JxC-fT-jKP"/>
+                                                <constraint firstAttribute="bottom" secondItem="Idv-0V-0kf" secondAttribute="bottom" id="byW-NL-70h"/>
+                                                <constraint firstItem="Idv-0V-0kf" firstAttribute="leading" secondItem="9Rr-zj-tPe" secondAttribute="leading" constant="10" id="okw-gv-prG"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="barChartView" destination="Xoc-pi-m0B" id="QYy-n2-D2O"/>
+                                            <outlet property="baseView" destination="Idv-0V-0kf" id="q6O-yp-wxy"/>
+                                            <outlet property="scatterBarChartView" destination="Q7I-GI-2Je" id="iI0-Fg-XaQ"/>
+                                            <outlet property="scatterChartView" destination="Yps-Et-w7b" id="Kcq-7B-VNw"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="7Lz-Qy-LGk" id="tdt-HW-kD2"/>
+                                    <outlet property="delegate" destination="7Lz-Qy-LGk" id="khV-o7-kJE"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="upv-J3-lNz"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="upv-J3-lNz" firstAttribute="bottom" secondItem="MEn-pn-1aQ" secondAttribute="bottom" id="IAK-9h-Rut"/>
+                            <constraint firstItem="MEn-pn-1aQ" firstAttribute="top" secondItem="upv-J3-lNz" secondAttribute="top" id="K9M-19-sEc"/>
+                            <constraint firstItem="upv-J3-lNz" firstAttribute="trailing" secondItem="MEn-pn-1aQ" secondAttribute="trailing" id="pjy-av-IFw"/>
+                            <constraint firstItem="MEn-pn-1aQ" firstAttribute="leading" secondItem="upv-J3-lNz" secondAttribute="leading" id="tT5-hc-Jxn"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="smw-rH-cLb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -194,7 +291,10 @@
         </scene>
     </scenes>
     <resources>
-        <image name="newspaper" catalog="system" width="128" height="108"/>
+        <image name="lasso" catalog="system" width="128" height="118"/>
+        <systemColor name="opaqueSeparatorColor">
+            <color red="0.77647058823529413" green="0.77647058823529413" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

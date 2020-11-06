@@ -751,6 +751,10 @@ extension String {
 }
 
 extension UIColor {
+    static func cGreen(alpha: CGFloat) -> UIColor {
+        return UIColor.init(red: 43 / 255, green: 181 / 255, blue: 155 / 255, alpha: alpha)
+    }
+    
     static func cBlue(alpha: CGFloat) -> UIColor {
         return UIColor.init(red: 0.16, green: 0.53, blue: 0.87, alpha: alpha)
     }
@@ -767,5 +771,9 @@ extension CPTColor {
     
     static func chartRed(alpha: CGFloat) -> CPTColor {
         return CPTColor(cgColor: UIColor.cRed(alpha: alpha).cgColor)
+    }
+    
+    static func chartGreen(alpha: CGFloat) -> CPTColor {
+        return CPTColor(cgColor: UIColor.cGreen(alpha: alpha).cgColor)
     }
 }
