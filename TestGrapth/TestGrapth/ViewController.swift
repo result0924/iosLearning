@@ -26,6 +26,11 @@ class ViewController: UIViewController {
             ContentCellModel.init(leftContent: "lunch".localized, lowest: 50, low: nil, high: nil, middle: nil, highest: 250, rightContent: "-"),
             ContentCellModel.init(leftContent: "dinner".localized, lowest: 50, low: 88, high: 135, middle: 111, highest: 250, rightContent: "53%")]
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        tableView.reloadData()
+    }
 
 }
 
