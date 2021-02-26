@@ -29,13 +29,11 @@ if let url = URL(string:UIApplicationOpenSettingsURLString) {
             }
         }
 ```
-https://www.jianshu.com/p/5fd0ac245e85
-
-- ActionSheet for iPad
+### reinstall
+- [Terminal open vscode](https://stackoverflow.com/questions/30065227/run-open-vscode-from-mac-terminal)
+- [Terminal open gitx](https://stackoverflow.com/questions/11625836/make-gitx-open-via-terminal-for-the-repo-laying-at-the-current-path)
+- zsh add alias
 ```
-if let popoverController = alertController.popoverPresentationController {
-            popoverController.sourceView = self.view
-            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
-            popoverController.permittedArrowDirections = []
-        }
+vim ~/.zshrc
+source ~/.zshrc
 ```
