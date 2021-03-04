@@ -85,6 +85,15 @@ class ScatterChartView: UIView {
         scatterChart.delegate = self
         scatterChart.title = "scatter"
         
+        // Put an area gradient under the plot above
+        let areaColor    = CPTColor(componentRed: 0.3, green: 1.0, blue: 0.3, alpha: 0.8)
+        let areaGradient = CPTGradient(beginning: areaColor, ending: .clear())
+        areaGradient.angle = -90
+        let areaGradientFill = CPTFill(gradient: areaGradient)
+        scatterChart.areaFill      = areaGradientFill
+        // 從y軸的90開始往上填
+        scatterChart.areaBaseValue = 90
+        
         hostGraph.add(scatterChart)
     }
     
