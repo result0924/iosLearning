@@ -17,6 +17,8 @@
 
 ### Some thing
 
+- [Use string print Data](https://gist.github.com/jkereako/606cda72f3f8aa5c6c8eb5ec8ce227a1)
+
 - Unit test import project
 ```
 @testable import project
