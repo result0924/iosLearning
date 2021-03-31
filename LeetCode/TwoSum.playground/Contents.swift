@@ -18,11 +18,25 @@ class Solution {
         
         return [0, 0]
     }
+    
+    // good solution
+    func niceTwoSum(_ nums: [Int], _ target: Int) -> [Int] {
+        var numToIndex: [Int: Int] = [:]
+        for index in nums.indices {
+            let num = nums[index]
+            let needle = target - num
+            if let previousIndex = numToIndex[needle], previousIndex != index {
+                return [previousIndex, index]
+            }
+            numToIndex[num] = index
+        }
+        return []
+    }
 }
 
 let nums = [3,2,3]
 let target = 6
 
-print("\(Solution().twoSum(nums, target))")
-
+print("self answer\(Solution().twoSum(nums, target))")
+print("good answer\(Solution().niceTwoSum(nums, target))")
 
