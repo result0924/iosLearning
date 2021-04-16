@@ -4,7 +4,7 @@
 
 - [老司機週報](https://github.com/SwiftOldDriver/iOS-Weekly/releases)
 - [13的開發者週報](https://ethanhuang13.substack.com/)
-- [swfitGG](https://swift.gg/)
+- [SwfitGG](https://swift.gg/)
 - [整理XCode空間](https://medium.com/%E5%BD%BC%E5%BE%97%E6%BD%98%E7%9A%84-swift-ios-app-%E9%96%8B%E7%99%BC%E6%95%99%E5%AE%A4/%E5%88%AA%E9%99%A4xcode%E4%BD%94%E6%93%9A%E7%A1%AC%E7%A2%9F%E5%A4%A7%E9%87%8F%E7%A9%BA%E9%96%93%E7%9A%84derived-data-190c85eba79)
 
 ### Inter View
