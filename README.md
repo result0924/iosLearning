@@ -19,7 +19,7 @@
 - [Xcode Tips](https://github.com/Xcode-Tips/xcode-tips.github.io)
 
 ### Some thing
-
+- [Bash腳本資料教學](https://wangdoc.com/bash/intro.html)
 - [Use string print Data](https://gist.github.com/jkereako/606cda72f3f8aa5c6c8eb5ec8ce227a1)
 - [Record your screen](https://github.com/wulkano/kap)
 
