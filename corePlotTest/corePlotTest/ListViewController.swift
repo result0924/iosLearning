@@ -9,7 +9,7 @@
 import UIKit
 
 class ListViewController: UIViewController {
-    let dataArray = ["Test Graph 1", "Test Graph 2"]
+    let dataArray = ["Test Graph 1", "Test Graph 2", "Test Graph 3"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,7 +21,7 @@ class ListViewController: UIViewController {
 
 extension ListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return dataArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -34,12 +34,16 @@ extension ListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let test1 = storyboard.instantiateViewController(withIdentifier: "ViewController")
-            navigationController?.pushViewController(test1, animated: true)
+            let vc = storyboard.instantiateViewController(withIdentifier: "ViewController")
+            navigationController?.pushViewController(vc, animated: true)
+        } else if indexPath.row == 1 {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "CGMChartViewController")
+            navigationController?.pushViewController(vc, animated: true)
         } else {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let test2 = storyboard.instantiateViewController(withIdentifier: "GraphViewController")
-            navigationController?.pushViewController(test2, animated: true)
+            let vc = storyboard.instantiateViewController(withIdentifier: "GraphViewController")
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
     

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="oq1-SG-PJu">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="oq1-SG-PJu">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -13,7 +13,7 @@
         <scene sceneID="oEu-SM-NoR">
             <objects>
                 <navigationController id="TiU-9S-LRt" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Test List" image="lasso" catalog="system" id="vF4-yg-gRF"/>
+                    <tabBarItem key="tabBarItem" title="Test List" image="pencil" catalog="system" id="vF4-yg-gRF"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="epq-sz-bix">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -289,9 +289,41 @@
             </objects>
             <point key="canvasLocation" x="-1306" y="-216"/>
         </scene>
+        <!--Chart View Controller-->
+        <scene sceneID="KJ6-Go-6hq">
+            <objects>
+                <viewController storyboardIdentifier="CGMChartViewController" id="Vhd-YE-r4q" customClass="CGMChartViewController" customModule="corePlotTest" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="aQY-QW-sDE">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mWD-7a-Pc6">
+                                <rect key="frame" x="0.0" y="20" width="375" height="200"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="K5s-xl-hQw"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="EKu-QW-SU5"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="EKu-QW-SU5" firstAttribute="trailing" secondItem="mWD-7a-Pc6" secondAttribute="trailing" id="MHW-BG-kQl"/>
+                            <constraint firstItem="mWD-7a-Pc6" firstAttribute="leading" secondItem="EKu-QW-SU5" secondAttribute="leading" id="pLh-K7-E6n"/>
+                            <constraint firstItem="mWD-7a-Pc6" firstAttribute="top" secondItem="EKu-QW-SU5" secondAttribute="top" constant="20" id="prB-wV-X2h"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="plotView" destination="mWD-7a-Pc6" id="hXn-64-hJc"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0J0-aX-cGX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="457" y="117"/>
+        </scene>
     </scenes>
     <resources>
-        <image name="lasso" catalog="system" width="128" height="118"/>
+        <image name="pencil" catalog="system" width="128" height="113"/>
         <systemColor name="opaqueSeparatorColor">
             <color red="0.77647058823529413" green="0.77647058823529413" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

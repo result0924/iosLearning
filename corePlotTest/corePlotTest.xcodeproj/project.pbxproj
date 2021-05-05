@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6C4F703D26316D2A00BA62D4 /* CGMChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4F703C26316D2A00BA62D4 /* CGMChartViewController.swift */; };
 		6C793B8F255404C6002D607B /* BarChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C793B8E255404C6002D607B /* BarChartView.swift */; };
 		6C793B922554053B002D607B /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C793B912554053B002D607B /* UIColor+Extension.swift */; };
 		6C793BA5255520A8002D607B /* ScatterBarChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C793BA4255520A8002D607B /* ScatterBarChartView.swift */; };
@@ -26,6 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6C4F703C26316D2A00BA62D4 /* CGMChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGMChartViewController.swift; sourceTree = "<group>"; };
 		6C793B8E255404C6002D607B /* BarChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartView.swift; sourceTree = "<group>"; };
 		6C793B912554053B002D607B /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		6C793BA4255520A8002D607B /* ScatterBarChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScatterBarChartView.swift; sourceTree = "<group>"; };
@@ -95,6 +97,7 @@
 				6C9C859F254831160098CFE8 /* GraphViewController.swift */,
 				6C9C8682254ABACF0098CFE8 /* ScatterTableViewCell.swift */,
 				D09CB51C2269D62200C62350 /* ViewController.swift */,
+				6C4F703C26316D2A00BA62D4 /* CGMChartViewController.swift */,
 				6C9C873F254C13B90098CFE8 /* ScatterChartView.swift */,
 				6C793BA4255520A8002D607B /* ScatterBarChartView.swift */,
 				6C793B8E255404C6002D607B /* BarChartView.swift */,
@@ -213,6 +216,7 @@
 				6C9C873D254C071C0098CFE8 /* String+Extension.swift in Sources */,
 				D09CB51D2269D62200C62350 /* ViewController.swift in Sources */,
 				6C9C8683254ABACF0098CFE8 /* ScatterTableViewCell.swift in Sources */,
+				6C4F703D26316D2A00BA62D4 /* CGMChartViewController.swift in Sources */,
 				6C793B922554053B002D607B /* UIColor+Extension.swift in Sources */,
 				6C793BA5255520A8002D607B /* ScatterBarChartView.swift in Sources */,
 				6C9C8686254ABBBC0098CFE8 /* UITableView+Extension.swift in Sources */,
