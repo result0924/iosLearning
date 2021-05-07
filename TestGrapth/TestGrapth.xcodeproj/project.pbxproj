@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6C1A7AFB264295A10021E2B3 /* AGPGraphViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C1A7AFA264295A10021E2B3 /* AGPGraphViewController.swift */; };
+		6C1A7B3C2642A01C0021E2B3 /* AGPTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C1A7B3B2642A01C0021E2B3 /* AGPTableViewCell.swift */; };
 		6CDEB401254176A800AC2090 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDEB400254176A800AC2090 /* AppDelegate.swift */; };
 		6CDEB405254176A800AC2090 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDEB404254176A800AC2090 /* ViewController.swift */; };
 		6CDEB408254176A800AC2090 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6CDEB406254176A800AC2090 /* Main.storyboard */; };
@@ -42,6 +44,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6C1A7AFA264295A10021E2B3 /* AGPGraphViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AGPGraphViewController.swift; sourceTree = "<group>"; };
+		6C1A7B3B2642A01C0021E2B3 /* AGPTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AGPTableViewCell.swift; sourceTree = "<group>"; };
 		6CDEB3FD254176A800AC2090 /* TestGrapth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestGrapth.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6CDEB400254176A800AC2090 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6CDEB404254176A800AC2090 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -119,6 +123,8 @@
 				D04FE50F255FF38B00A3F314 /* MainTableViewController.swift */,
 				6CDEB404254176A800AC2090 /* ViewController.swift */,
 				6CDEB442254196FA00AC2090 /* ScoreTableViewCell.swift */,
+				6C1A7AFA264295A10021E2B3 /* AGPGraphViewController.swift */,
+				6C1A7B3B2642A01C0021E2B3 /* AGPTableViewCell.swift */,
 				6CDEB406254176A800AC2090 /* Main.storyboard */,
 				6CDEB409254176AB00AC2090 /* Assets.xcassets */,
 				6CDEB40B254176AB00AC2090 /* LaunchScreen.storyboard */,
@@ -292,6 +298,8 @@
 			files = (
 				D04FE5132560012000A3F314 /* DashLineView.swift in Sources */,
 				6CDEB443254196FA00AC2090 /* ScoreTableViewCell.swift in Sources */,
+				6C1A7AFB264295A10021E2B3 /* AGPGraphViewController.swift in Sources */,
+				6C1A7B3C2642A01C0021E2B3 /* AGPTableViewCell.swift in Sources */,
 				6CDEB46B25466D1200AC2090 /* UIView+Extension.swift in Sources */,
 				6CDEB405254176A800AC2090 /* ViewController.swift in Sources */,
 				6CDEB401254176A800AC2090 /* AppDelegate.swift in Sources */,

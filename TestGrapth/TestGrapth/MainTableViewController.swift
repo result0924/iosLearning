@@ -25,15 +25,15 @@ class MainTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
-        cell.textLabel?.text = "text graph:\(indexPath.row)"
+        cell.textLabel?.text = "test graph:\(indexPath.row)"
         return cell
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if 0 == indexPath.row, let vc = storyboard?.instantiateViewController(withIdentifier: "TestGraphVCFirst") as? ViewController {
             navigationController?.pushViewController(vc, animated: true)
-        } else {
-            print("wait")
+        } else if 1 == indexPath.row, let vc = storyboard?.instantiateViewController(withIdentifier: "AGPGraphViewController") as? AGPGraphViewController {
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
 }
