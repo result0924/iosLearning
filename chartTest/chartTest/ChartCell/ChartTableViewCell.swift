@@ -30,7 +30,7 @@ class ChartTableViewCell: UITableViewCell, ChartViewDelegate {
         // Initialization code
         chartView.delegate = self
         
-        chartView.chartDescription?.enabled = false
+        chartView.chartDescription.enabled = false
         chartView.dragEnabled = true
         chartView.setScaleEnabled(true)
         chartView.pinchZoomEnabled = true
@@ -53,7 +53,7 @@ class ChartTableViewCell: UITableViewCell, ChartViewDelegate {
         xAxis.drawGridLinesEnabled = false
 //        xAxis.centerAxisLabelsEnabled = true
         xAxis.granularity = 86400 * 30
-        xAxis.valueFormatter = DateValueFormatter()
+        xAxis.valueFormatter = DateValueFormatter() as? AxisValueFormatter
         
         let ll1 = ChartLimitLine(limit: 150, label: "Upper Limit")
         ll1.lineWidth = 2
@@ -69,7 +69,7 @@ class ChartTableViewCell: UITableViewCell, ChartViewDelegate {
         leftAxis.axisRange = 10
         
         chartView.legend.form = .line
-        chartView.chartDescription?.enabled = false
+        chartView.chartDescription.enabled = false
         
         print("chart frame: \(chartView.frame)")
         chartContentView.addSubview(chartView)
@@ -99,7 +99,7 @@ class ChartTableViewCell: UITableViewCell, ChartViewDelegate {
 
         print("values:\(values)")
         
-        let set1 = LineChartDataSet(values: values, label: "test")
+        let set1 = LineChartDataSet(entries: values, label: "test")
         set1.colors = [.blue]
         set1.circleColors = [.red, .blue, .blue, .red]
         set1.drawCircleHoleEnabled = false
