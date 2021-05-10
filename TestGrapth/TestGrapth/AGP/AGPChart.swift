@@ -21,14 +21,16 @@ extension PointEntry: Comparable {
     }
 }
 
-struct AGPLineModel {
+struct AGPChartModel {
     let tenPercentDatas: [PointEntry]
+    let twentyFivePercentDatas: [PointEntry]
+    let seventyFivePercentDatas: [PointEntry]
     let ninetyPercentDatas: [PointEntry]
 }
 
 class AGPChart: UIView {
     
-    private var chartModel: AGPLineModel?
+    private var chartModel: AGPChartModel?
     
     /// preserved space at top of the chart
     let topSpace: CGFloat = 40.0
@@ -42,8 +44,11 @@ class AGPChart: UIView {
     /// The top most horizontal line in the chart will be 10% higher than the highest value in the chart
     private let topHorizontalLine: CGFloat = 110.0 / 100.0
     
-    /// Contains the main line which represents the data
-    private let dataLayer: CALayer = CALayer()
+    /// Contains the chart which represents the ten to ninety data
+    private let tenToNinetyDataLayer: CALayer = CALayer()
+    
+    /// Contains the chart which represents the twenty-five to seventy-five data
+    private let twentyFiveToSeventyFiveDataLayer: CALayer = CALayer()
     
     /// Contains dataLayer
     private let mainLayer: CALayer = CALayer()
@@ -54,8 +59,11 @@ class AGPChart: UIView {
     /// Contains horizontal lines
     private let gridLayer: CALayer = CALayer()
     
-    /// An array of CGPoint on dataLayer coordinate system that the main line will go through. These points will be calculated from dataEntries array
-    private var dataPoints: [CGPoint]?
+    /// An array of CGPoint on tenToNinetyDataLayer coordinate system that the main line will go through. These points will be calculated from AGPLineModel tenPercentDatas and ninetyPercentDatas
+    private var tenToNinetyDataPoints: [CGPoint]?
+    
+    /// An array of CGPoint on twentyFiveToSeventyFiveDataLayer coordinate system that the main line will go through. These points will be calculated from AGPLineModel twentyFivePercentDatas and seventyFivePercentDatas
+    private var twentyFiveToSeventyFiveDataPoints: [CGPoint]?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -73,12 +81,13 @@ class AGPChart: UIView {
     }
     
     
-    func updateChartData(chartModel: AGPLineModel) {
+    func updateChartData(chartModel: AGPChartModel) {
         self.chartModel = chartModel
     }
     
     private func setupView() {
-        mainLayer.addSublayer(dataLayer)
+        mainLayer.addSublayer(tenToNinetyDataLayer)
+        mainLayer.addSublayer(twentyFiveToSeventyFiveDataLayer)
         scrollView.layer.addSublayer(mainLayer)
         
         self.layer.addSublayer(gridLayer)
@@ -94,21 +103,20 @@ class AGPChart: UIView {
         scrollView.frame = CGRect(x: 0, y: 0, width: self.frame.size.width, height: self.frame.size.height)
         
         scrollView.contentSize = CGSize(width: CGFloat(chartModel.tenPercentDatas.count) * lineGap, height: self.frame.size.height)
-//            scrollView.backgroundColor = UIColor.red
         mainLayer.frame = CGRect(x: 0, y: 0, width: CGFloat(chartModel.tenPercentDatas.count) * lineGap, height: self.frame.size.height)
-//            mainLayer.backgroundColor = UIColor.red.cgColor
 //            print("dataLayer y:\(topSpace)")
 //            print("dataLayer bottom space:\(bottomSpace)")
 //            print("dataLayer width:\(mainLayer.frame.width)")
 //            print("dataLayer height:\(mainLayer.frame.height - topSpace - bottomSpace)")
-        dataLayer.frame = CGRect(x: 0, y: topSpace, width: mainLayer.frame.width, height: mainLayer.frame.height - topSpace - bottomSpace)
-//            dataLayer.backgroundColor = UIColor.red.cgColor
-        dataPoints = convertDataEntriesToPoints(entries: chartModel.ninetyPercentDatas, entries2: chartModel.tenPercentDatas)
-//            print("dataPoints:\(dataPoints)")
+        tenToNinetyDataLayer.frame = CGRect(x: 0, y: topSpace, width: mainLayer.frame.width, height: mainLayer.frame.height - topSpace - bottomSpace)
+        twentyFiveToSeventyFiveDataLayer.frame = CGRect(x: 0, y: topSpace, width: mainLayer.frame.width, height: mainLayer.frame.height - topSpace - bottomSpace)
+        tenToNinetyDataPoints = convertDataEntriesToPoints(entries: chartModel.ninetyPercentDatas, entries2: chartModel.tenPercentDatas)
+        twentyFiveToSeventyFiveDataPoints = convertDataEntriesToPoints(entries: chartModel.seventyFivePercentDatas, entries2: chartModel.twentyFivePercentDatas)
         gridLayer.frame = CGRect(x: 0, y: topSpace, width: self.frame.width, height: mainLayer.frame.height - topSpace - bottomSpace)
         clean()
         drawHorizontalLines()
-        drawCurvedChart()
+        drawTenToNinetyCurvedChart()
+        drawTwentyFiveToSeventyFiveCurvedChart()
         drawLabels()
     }
     
@@ -116,20 +124,20 @@ class AGPChart: UIView {
      Convert an array of PointEntry to an array of CGPoint on dataLayer coordinate system
      */
     private func convertDataEntriesToPoints(entries: [PointEntry], entries2: [PointEntry]) -> [CGPoint] {
-        if let max = entries.max()?.value,
-            let min = entries2.min()?.value {
+        if let max = chartModel?.ninetyPercentDatas.max()?.value,
+           let min = chartModel?.tenPercentDatas.min()?.value {
             
             var result: [CGPoint] = []
             let minMaxRange: CGFloat = CGFloat(max - min) * topHorizontalLine
             
             for i in 0..<entries.count {
-                let height = dataLayer.frame.height * (1 - ((CGFloat(entries[i].value) - CGFloat(min)) / minMaxRange))
+                let height = tenToNinetyDataLayer.frame.height * (1 - ((CGFloat(entries[i].value) - CGFloat(min)) / minMaxRange))
                 let point = CGPoint(x: CGFloat(i)*lineGap + 40, y: height)
                 result.append(point)
             }
             
             for index in stride(from: entries2.count - 1, through: 0, by: -1) {
-                let height = dataLayer.frame.height * (1 - ((CGFloat(entries2[index].value) - CGFloat(min)) / minMaxRange))
+                let height = tenToNinetyDataLayer.frame.height * (1 - ((CGFloat(entries2[index].value) - CGFloat(min)) / minMaxRange))
                 let point = CGPoint(x: CGFloat(index)*lineGap + 40, y: height)
                 result.append(point)
             }
@@ -137,36 +145,40 @@ class AGPChart: UIView {
         }
         return []
     }
-
-    /**
-     Create a zigzag bezier path that connects all points in dataPoints
-     */
-    private func createPath() -> UIBezierPath? {
-        guard let dataPoints = dataPoints, dataPoints.count > 0 else {
-            return nil
-        }
-        let path = UIBezierPath()
-        path.move(to: dataPoints[0])
-        
-        for i in 1..<dataPoints.count {
-            path.addLine(to: dataPoints[i])
-        }
-        return path
-    }
     
     /**
      Draw a curved line connecting all points in dataPoints
      */
-    private func drawCurvedChart() {
-        guard let dataPoints = dataPoints, dataPoints.count > 0 else {
+    private func drawTenToNinetyCurvedChart() {
+        guard let dataPoints = tenToNinetyDataPoints, dataPoints.count > 0 else {
             return
         }
+        
+        print("dataPoints: \(dataPoints)")
         if let path = CurveAlgorithm.shared.createCurvedPath(dataPoints) {
             let lineLayer = CAShapeLayer()
             lineLayer.path = path.cgPath
             lineLayer.strokeColor = UIColor.clear.cgColor
             lineLayer.fillColor =  UIColor(red: 43 / 255, green: 181 / 255, blue: 155 / 255, alpha: 0.1).cgColor
-            dataLayer.addSublayer(lineLayer)
+            tenToNinetyDataLayer.addSublayer(lineLayer)
+        }
+    }
+    
+    /**
+     Draw a curved line connecting all points in dataPoints
+     */
+    private func drawTwentyFiveToSeventyFiveCurvedChart() {
+        guard let dataPoints = twentyFiveToSeventyFiveDataPoints, dataPoints.count > 0 else {
+            return
+        }
+        
+        print("dataPoints2: \(dataPoints)")
+        if let path = CurveAlgorithm.shared.createCurvedPath(dataPoints) {
+            let lineLayer = CAShapeLayer()
+            lineLayer.path = path.cgPath
+            lineLayer.strokeColor = UIColor.clear.cgColor
+            lineLayer.fillColor =  UIColor(red: 43 / 255, green: 181 / 255, blue: 155 / 255, alpha: 1).cgColor
+            twentyFiveToSeventyFiveDataLayer.addSublayer(lineLayer)
         }
     }
     
@@ -257,7 +269,8 @@ class AGPChart: UIView {
                 $0.removeFromSuperlayer()
             }
         })
-        dataLayer.sublayers?.forEach({$0.removeFromSuperlayer()})
+        tenToNinetyDataLayer.sublayers?.forEach({$0.removeFromSuperlayer()})
+        twentyFiveToSeventyFiveDataLayer.sublayers?.forEach({$0.removeFromSuperlayer()})
         gridLayer.sublayers?.forEach({$0.removeFromSuperlayer()})
     }
     
