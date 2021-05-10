@@ -213,12 +213,30 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="AGPTableViewCell" id="aAu-ub-Vea" customClass="AGPTableViewCell" customModule="TestGrapth" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="55.5" width="414" height="43.5"/>
+                                        <rect key="frame" x="0.0" y="55.5" width="414" height="216.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="aAu-ub-Vea" id="a5S-a1-XeT">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="216.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kmW-Gi-rf3" customClass="AGPChart" customModule="TestGrapth" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="216.5"/>
+                                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="216" id="B1q-98-PyW"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="kmW-Gi-rf3" secondAttribute="trailing" id="747-4K-ogd"/>
+                                                <constraint firstItem="kmW-Gi-rf3" firstAttribute="top" secondItem="a5S-a1-XeT" secondAttribute="top" id="BVf-JY-9ah"/>
+                                                <constraint firstAttribute="bottom" secondItem="kmW-Gi-rf3" secondAttribute="bottom" id="Oca-P7-4yy"/>
+                                                <constraint firstItem="kmW-Gi-rf3" firstAttribute="leading" secondItem="a5S-a1-XeT" secondAttribute="leading" id="pQA-sT-JcJ"/>
+                                            </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="agpChart" destination="kmW-Gi-rf3" id="AFL-P3-KDV"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>

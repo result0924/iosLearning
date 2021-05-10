@@ -8,40 +8,69 @@
 import UIKit
 
 class AGPTableViewCell: UITableViewCell {
-    var graphView = UIView()
-
+    @IBOutlet weak var agpChart: AGPChart!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        setupConstraint()
-    }
-    
-    private func setupConstraint() {
-        contentView.addSubview(graphView)
-        graphView.translatesAutoresizingMaskIntoConstraints = false
-        graphView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 40).isActive = true
-        graphView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30).isActive = true
-        graphView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -40).isActive = true
-        graphView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0).isActive = true
     }
 
     func updateContent() {
-        // UIBezierPath
-//        graphView.backgroundColor = .red
-        
-        let shapeLayer = CAShapeLayer()
-        shapeLayer.frame = CGRect(x: 0, y: 0, width: 200, height: 200)
-        shapeLayer.fillColor = nil
-        shapeLayer.lineWidth = 3
-        shapeLayer.strokeColor = UIColor.black.cgColor
-        // 可以把 move 想像為起點，addline 則是下一個點的位置
-        let path = UIBezierPath()
-        path.move(to: .zero)
-        path.addLine(to: CGPoint(x: 0, y: 200))
-        path.addLine(to: CGPoint(x: 200, y: 200))
-        path.addLine(to: CGPoint(x: 200, y: 0))
-        shapeLayer.path = path.cgPath
-        graphView.layer.addSublayer(shapeLayer)
+        agpChart.updateChartData(chartModel: AGPLineModel(tenPercentDatas: generateTenEntries(), ninetyPercentDatas: generateNinetyEntries()))
+    }
+    
+    private func generateNinetyEntries() -> [PointEntry] {
+        var result: [PointEntry] = []
+        for i in 0..<5 {
+            var value = 0
+            
+            if i == 0 {
+                value = 250
+            } else if i == 1 {
+                value = 230
+            } else if i == 2 {
+                value = 270
+            } else if i == 3 {
+                value = 290
+            } else {
+                value = 240
+            }
+            
+            let formatter = DateFormatter()
+            formatter.dateFormat = "d MMM"
+            var date = Date()
+            date.addTimeInterval(TimeInterval(24*60*60*i))
+            
+            result.append(PointEntry(value: value, label: formatter.string(from: date)))
+        }
+        return result
+    }
+    
+    private func generateTenEntries() -> [PointEntry] {
+        var result: [PointEntry] = []
+        for i in 0..<5 {
+            var value = 0
+            
+            if i == 0 {
+                value = 160
+            } else if i == 1 {
+                value = 170
+            } else if i == 2 {
+                value = 130
+            } else if i == 3 {
+                value = 180
+            } else {
+                value = 150
+            }
+            
+            let formatter = DateFormatter()
+            formatter.dateFormat = "d MMM"
+            var date = Date()
+            date.addTimeInterval(TimeInterval(24*60*60*i))
+            
+            result.append(PointEntry(value: value, label: formatter.string(from: date)))
+        }
+        return result
     }
 
 }
