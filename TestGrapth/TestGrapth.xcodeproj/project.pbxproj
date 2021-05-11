@@ -11,6 +11,7 @@
 		6C1A7B3C2642A01C0021E2B3 /* AGPTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C1A7B3B2642A01C0021E2B3 /* AGPTableViewCell.swift */; };
 		6C87FAA42649084700FA3F35 /* AGPChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C87FAA32649084700FA3F35 /* AGPChart.swift */; };
 		6C87FAB4264909D200FA3F35 /* CurveAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C87FAB3264909D200FA3F35 /* CurveAlgorithm.swift */; };
+		6C87FB3E264A763200FA3F35 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C87FB3D264A763200FA3F35 /* Date+Extension.swift */; };
 		6CDEB401254176A800AC2090 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDEB400254176A800AC2090 /* AppDelegate.swift */; };
 		6CDEB405254176A800AC2090 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDEB404254176A800AC2090 /* ViewController.swift */; };
 		6CDEB408254176A800AC2090 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6CDEB406254176A800AC2090 /* Main.storyboard */; };
@@ -50,6 +51,7 @@
 		6C1A7B3B2642A01C0021E2B3 /* AGPTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AGPTableViewCell.swift; sourceTree = "<group>"; };
 		6C87FAA32649084700FA3F35 /* AGPChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AGPChart.swift; sourceTree = "<group>"; };
 		6C87FAB3264909D200FA3F35 /* CurveAlgorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurveAlgorithm.swift; sourceTree = "<group>"; };
+		6C87FB3D264A763200FA3F35 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		6CDEB3FD254176A800AC2090 /* TestGrapth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestGrapth.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6CDEB400254176A800AC2090 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6CDEB404254176A800AC2090 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -104,6 +106,7 @@
 			children = (
 				6C87FAA32649084700FA3F35 /* AGPChart.swift */,
 				6C87FAB3264909D200FA3F35 /* CurveAlgorithm.swift */,
+				6C87FB3D264A763200FA3F35 /* Date+Extension.swift */,
 			);
 			path = AGP;
 			sourceTree = "<group>";
@@ -321,6 +324,7 @@
 				6CDEB401254176A800AC2090 /* AppDelegate.swift in Sources */,
 				D04FE510255FF38B00A3F314 /* MainTableViewController.swift in Sources */,
 				D04FE51525614D0000A3F314 /* CustomBarView.swift in Sources */,
+				6C87FB3E264A763200FA3F35 /* Date+Extension.swift in Sources */,
 				6CDEB4602542CB2100AC2090 /* String+Extension.swift in Sources */,
 				6CDEB43E2541961F00AC2090 /* UITableView+Extensions.swift in Sources */,
 			);
