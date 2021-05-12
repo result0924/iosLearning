@@ -50,7 +50,7 @@ class AGPTableViewCell: UITableViewCell {
             let quarterSecondNumber: Int = 15 * 60
             let quarterInDay: Int = 96
             
-            for index in Array(0...quarterInDay - 1) {
+            for index in Array(0...quarterInDay) {
                 
                 switch type {
                 case .ten:

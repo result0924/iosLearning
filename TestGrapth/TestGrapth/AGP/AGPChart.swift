@@ -44,16 +44,16 @@ class AGPChart: UIView {
     private var chartModel: AGPChartModel?
     
     /// preserved space at top of the chart
-    let topSpace: CGFloat = 60.0
+    private let topSpace: CGFloat = 60.0
     
     /// preserved space at bottom of the chart to show labels along the Y axis
-    let bottomSpace: CGFloat = 40.0
+    private let bottomSpace: CGFloat = 40.0
     
     /// preserved space at left of the chart to show labels along the X axis
-    let leftPaddingSpace: CGFloat = 40.0
+    private let leftPaddingSpace: CGFloat = 40.0
     
     /// preserved space at right of the chart to show labels along the X axis
-    let rightPaddingSpace: CGFloat = 30.0
+    private let rightPaddingSpace: CGFloat = 30.0
     
     /// The top most horizontal line in the chart will be 10% higher than the highest value in the chart
     private let topHorizontalLine: CGFloat = 100.0 / 100.0
@@ -66,6 +66,16 @@ class AGPChart: UIView {
     
     /// Contains the chart which represents the median data
     private let medianDataLayer: CALayer = CALayer()
+    
+    private let firstOvalImage: CAShapeLayer = CAShapeLayer()
+    private let secondOvalImage: CAShapeLayer = CAShapeLayer()
+    private let thirdOvalImage: CAShapeLayer = CAShapeLayer()
+    private let fourthOvalImage: CAShapeLayer = CAShapeLayer()
+    private lazy var symbolView: UIView = {
+        let view = UIView(frame: CGRect(x: leftPaddingSpace, y: 0, width: dataLayerFrame.width / 4, height: mainLayer.frame.height - bottomSpace))
+        view.backgroundColor = UIColor(red: 43 / 255, green: 181 / 255, blue: 155 / 255, alpha: 0.1)
+        return view
+    }()
     
     /// Contains dataLayer
     private let mainLayer: CALayer = CALayer()
@@ -125,13 +135,20 @@ class AGPChart: UIView {
         self.layer.addSublayer(gridLayer)
         self.addSubview(scrollView)
         self.backgroundColor = .white
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
+
+        self.addGestureRecognizer(tap)
     }
     
     override func layoutSubviews() {
+        reloadAGPChartView()
+    }
+    
+    private func reloadAGPChartView() {
         guard let chartModel = chartModel else {
             return
         }
-        
         let mainFrame = CGRect(x: 0, y: 0, width: self.frame.size.width, height: self.frame.size.height)
         
         scrollView.frame = mainFrame
@@ -152,6 +169,7 @@ class AGPChart: UIView {
         drawTenToNinetyCurvedChart()
         drawTwentyFiveToSeventyFiveCurvedChart()
         drawMedianCurvedChart()
+        drawSymbols()
         drawLabels()
     }
     
@@ -189,14 +207,14 @@ class AGPChart: UIView {
             let minMaxRange: CGFloat = CGFloat(max - min) * topHorizontalLine
             
             for i in 0..<entries.count {
-                let height = tenToNinetyDataLayer.frame.height * (1 - ((CGFloat(entries[i].value) - CGFloat(min)) / minMaxRange))
+                let height = dataLayerFrame.height * (1 - ((CGFloat(entries[i].value) - CGFloat(min)) / minMaxRange))
                 let startInterVal: TimeInterval = chartModel?.startInterval ?? 0
                 let point = CGPoint(x: dataLayerFrame.width / 86400 * CGFloat(entries[Int(i)].date.timeIntervalSince1970 - startInterVal), y: height)
                 leftToRight.append(point)
             }
             
             for i in stride(from: entries2.count - 1, through: 0, by: -1) {
-                let height = tenToNinetyDataLayer.frame.height * (1 - ((CGFloat(entries2[i].value) - CGFloat(min)) / minMaxRange))
+                let height = dataLayerFrame.height * (1 - ((CGFloat(entries2[i].value) - CGFloat(min)) / minMaxRange))
                 let startInterVal: TimeInterval = chartModel?.startInterval ?? 0
                 let point = CGPoint(x: dataLayerFrame.width / 86400 * CGFloat(entries2[Int(i)].date.timeIntervalSince1970 - startInterVal), y: height)
                 rightToLeft.append(point)
@@ -291,6 +309,59 @@ class AGPChart: UIView {
         }
     }
     
+    private func drawSymbols() {
+        self.addSubview(symbolView)
+        
+        for i in 1...4 {
+            let pointArray: [Float] = [1, 3, 5, 7]
+            let xPoint: CGFloat = CGFloat(Float(dataLayerFrame.width) / 86400 * (86400 / 8) * pointArray[i - 1]) + leftPaddingSpace
+            
+            let padding: CGFloat = 9
+            let width = dataLayerFrame.width / 4 - (padding * 2)
+            
+            let imageFrame = CGRect(x: 0, y: 0, width: width, height: 24)
+            let imageColor = UIColor(red: 204 / 255, green: 204 / 255, blue: 204 / 255, alpha: 1).cgColor
+            let imagePath = UIBezierPath(roundedRect: imageFrame, cornerRadius: 12).cgPath
+            let imagePosition = CGPoint(x: xPoint, y: 34)
+            
+            let viewDataImageFrame = CGRect(x: xPoint, y: 34, width: 16, height: 16)
+            
+            let imageLayer = CALayer()
+            let viewDataImage = UIImage(named: "iconViewData")?.cgImage
+            
+            if i == 1 {
+                firstOvalImage.frame = imageFrame
+                firstOvalImage.fillColor = UIColor(red: 43 / 255, green: 181 / 255, blue: 155 / 255, alpha: 1).cgColor
+                firstOvalImage.path = imagePath
+                firstOvalImage.position = imagePosition
+                mainLayer.addSublayer(firstOvalImage)
+            } else if i == 2 {
+                secondOvalImage.frame = imageFrame
+                secondOvalImage.fillColor = imageColor
+                secondOvalImage.path = imagePath
+                secondOvalImage.position = imagePosition
+                mainLayer.addSublayer(secondOvalImage)
+            } else if i == 3 {
+                thirdOvalImage.frame = imageFrame
+                thirdOvalImage.fillColor = imageColor
+                thirdOvalImage.path = imagePath
+                thirdOvalImage.position = imagePosition
+                mainLayer.addSublayer(thirdOvalImage)
+            } else if i == 4 {
+                fourthOvalImage.frame = imageFrame
+                fourthOvalImage.fillColor = imageColor
+                fourthOvalImage.path = imagePath
+                fourthOvalImage.position = imagePosition
+                mainLayer.addSublayer(fourthOvalImage)
+            }
+            
+            imageLayer.frame = viewDataImageFrame
+            imageLayer.position = imagePosition
+            imageLayer.contents = viewDataImage
+            mainLayer.addSublayer(imageLayer)
+        }
+    }
+    
     /**
      Create horizontal lines (grid lines) and show the value of each line
      */
@@ -361,7 +432,33 @@ class AGPChart: UIView {
         tenToNinetyDataLayer.sublayers?.forEach({ $0.removeFromSuperlayer() })
         twentyFiveToSeventyFiveDataLayer.sublayers?.forEach({ $0.removeFromSuperlayer() })
         medianDataLayer.sublayers?.forEach({ $0.removeFromSuperlayer() })
+        firstOvalImage.sublayers?.forEach({ $0.removeFromSuperlayer() })
+        secondOvalImage.sublayers?.forEach({ $0.removeFromSuperlayer() })
+        thirdOvalImage.sublayers?.forEach({ $0.removeFromSuperlayer() })
+        fourthOvalImage.sublayers?.forEach({ $0.removeFromSuperlayer() })
         gridLayer.sublayers?.forEach({ $0.removeFromSuperlayer() })
+    }
+    
+    // function which is triggered when handleTap is called
+    @objc func handleTap(_ sender: UITapGestureRecognizer) {
+        let anchorPoint = Float(sender.location(in: self).x)
+        
+        let leftPadding = Float(leftPaddingSpace)
+        let symbolViewWidth = Float(mainLayer.frame.width - leftPaddingSpace - rightPaddingSpace) / 4
+        let showAreaOne = anchorPoint > leftPadding && anchorPoint < (leftPadding + symbolViewWidth)
+        let showAreaTwo = anchorPoint > (leftPadding + symbolViewWidth) && anchorPoint < (leftPadding + symbolViewWidth * 2)
+        let showAreaThree = anchorPoint > (leftPadding + symbolViewWidth * 2) && anchorPoint < (leftPadding + symbolViewWidth * 3)
+        let showAreaFour = anchorPoint > (leftPadding + symbolViewWidth * 3) && anchorPoint < Float(mainLayer.frame.width) - Float(rightPaddingSpace)
+
+        if showAreaOne {
+            symbolView.frame = CGRect(x: leftPaddingSpace, y: 0, width: CGFloat(symbolViewWidth), height: mainLayer.frame.height - bottomSpace)
+        } else if showAreaTwo {
+            symbolView.frame = CGRect(x: leftPaddingSpace + CGFloat(symbolViewWidth), y: 0, width: CGFloat(symbolViewWidth), height: mainLayer.frame.height - bottomSpace)
+        } else if showAreaThree {
+            symbolView.frame = CGRect(x: leftPaddingSpace + CGFloat(symbolViewWidth) * 2, y: 0, width: CGFloat(symbolViewWidth), height: mainLayer.frame.height - bottomSpace)
+        } else if showAreaFour {
+            symbolView.frame = CGRect(x: leftPaddingSpace + CGFloat(symbolViewWidth) * 3, y: 0, width: CGFloat(symbolViewWidth), height: mainLayer.frame.height - bottomSpace)
+        }
     }
     
 }
