@@ -13,6 +13,7 @@ enum AGPDataType {
     case median
     case seventyFive
     case ninety
+    case insulin
 }
 
 class AGPTableViewCell: UITableViewCell {
@@ -35,11 +36,11 @@ class AGPTableViewCell: UITableViewCell {
     }
 
     func updateContent() {
-        agpChart.updateChartData(chartModel: AGPChartModel(startInterval: startInterval, tenPercentDatas: generateData(type: .ten), twentyFivePercentDatas: generateData(type: .twentyFive), medianDatas: generateData(type: .median), seventyFivePercentDatas: generateData(type: .seventyFive), ninetyPercentDatas: generateData(type: .ninety), lowestTargetRange: 122, highestTargetRange: 208))
+        agpChart.updateChartData(chartModel: AGPChartModel(startInterval: startInterval, tenPercentDatas: generateData(type: .ten), twentyFivePercentDatas: generateData(type: .twentyFive), medianDatas: generateData(type: .median), seventyFivePercentDatas: generateData(type: .seventyFive), ninetyPercentDatas: generateData(type: .ninety), lowestTargetRange: 122, highestTargetRange: 208, insulinDatas: generateData(type: .insulin)))
     }
     
     private func generateData(type: AGPDataType) -> [PointEntry] {
-        var intRandomRange: Int
+        var intRandomRange: Int = 0
         
         var dataArray: [PointEntry] = []
         let date = Date()
@@ -63,10 +64,18 @@ class AGPTableViewCell: UITableViewCell {
                     intRandomRange = Int.random(in: 175...190)
                 case .ninety:
                     intRandomRange = Int.random(in: 210...230)
+                case .insulin:
+                    if [20, 21, 27, 58, 36].contains(index) {
+                        intRandomRange = Int.random(in: 4...20)
+                        let date = Date(timeIntervalSince1970: startInterval + Double((quarterSecondNumber * index)))
+                        dataArray.append(PointEntry(value: intRandomRange, date: date))
+                    }
                 }
                 
-                let date = Date(timeIntervalSince1970: startInterval + Double((quarterSecondNumber * index)))
-                dataArray.append(PointEntry(value: intRandomRange, date: date))
+                if type != .insulin {
+                    let date = Date(timeIntervalSince1970: startInterval + Double((quarterSecondNumber * index)))
+                    dataArray.append(PointEntry(value: intRandomRange, date: date))
+                }
             }
             
             return dataArray

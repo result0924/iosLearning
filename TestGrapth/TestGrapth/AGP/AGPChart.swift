@@ -37,6 +37,7 @@ struct AGPChartModel {
     let ninetyPercentDatas: [PointEntry]
     let lowestTargetRange: Float
     let highestTargetRange: Float
+    let insulinDatas: [PointEntry]
 }
 
 class AGPChart: UIView {
@@ -72,7 +73,7 @@ class AGPChart: UIView {
     private let thirdOvalImage: CAShapeLayer = CAShapeLayer()
     private let fourthOvalImage: CAShapeLayer = CAShapeLayer()
     private lazy var symbolView: UIView = {
-        let view = UIView(frame: CGRect(x: leftPaddingSpace, y: 0, width: dataLayerFrame.width / 4, height: mainLayer.frame.height - bottomSpace))
+        let view = UIView()
         view.backgroundColor = UIColor(red: 43 / 255, green: 181 / 255, blue: 155 / 255, alpha: 0.1)
         return view
     }()
@@ -86,6 +87,9 @@ class AGPChart: UIView {
     /// Contains horizontal lines
     private let gridLayer: CALayer = CALayer()
     
+    /// Contains insulins
+    private let insulinLayer: CALayer = CALayer()
+    
     /// An array of CGPoint on tenToNinetyDataLayer coordinate system that the main line will go through. These points will be calculated from AGPLineModel tenPercentDatas and ninetyPercentDatas
     private var tenToNinetyDataPoints: AGPAreaData?
     
@@ -95,15 +99,24 @@ class AGPChart: UIView {
     /// An array of CGPoint on medianDataLayer coordinate system that the main line will go through. These points will be calculated from AGPLineModel medianDatas
     private var medianDataPoints:[CGPoint]?
     
-    private lazy var dataLayerFrame: CGRect = {
-        return CGRect(x: leftPaddingSpace, y: topSpace, width: mainLayer.frame.width - (leftPaddingSpace + rightPaddingSpace), height: mainLayer.frame.height - topSpace - bottomSpace)
-    }()
-    
     private lazy var dataCount: Int = {
         guard let chartModel = chartModel else {
             return 0
         }
         return chartModel.tenPercentDatas.count
+    }()
+    
+    private lazy var minMaxRange: CGFloat = {
+        if let max = chartModel?.ninetyPercentDatas.max()?.value,
+           let min = chartModel?.tenPercentDatas.min()?.value {
+            return CGFloat(max - min) * topHorizontalLine
+        }
+
+        return 0
+    }()
+
+    private lazy var yAxisMinValue: CGFloat = {
+        return CGFloat(chartModel?.tenPercentDatas.min()?.value ?? 0)
     }()
 
     override init(frame: CGRect) {
@@ -124,12 +137,14 @@ class AGPChart: UIView {
     
     func updateChartData(chartModel: AGPChartModel) {
         self.chartModel = chartModel
+        reloadAGPChartView()
     }
     
     private func setupView() {
         mainLayer.addSublayer(tenToNinetyDataLayer)
         mainLayer.addSublayer(twentyFiveToSeventyFiveDataLayer)
         mainLayer.addSublayer(medianDataLayer)
+        mainLayer.addSublayer(insulinLayer)
         scrollView.layer.addSublayer(mainLayer)
         
         self.layer.addSublayer(gridLayer)
@@ -145,20 +160,26 @@ class AGPChart: UIView {
         reloadAGPChartView()
     }
     
+    private func dataLayerFrame() -> CGRect {
+        return CGRect(x: leftPaddingSpace, y: topSpace, width: mainLayer.frame.width - (leftPaddingSpace + rightPaddingSpace), height: mainLayer.frame.height - topSpace - bottomSpace)
+    }
+    
     private func reloadAGPChartView() {
         guard let chartModel = chartModel else {
             return
         }
+        
         let mainFrame = CGRect(x: 0, y: 0, width: self.frame.size.width, height: self.frame.size.height)
         
         scrollView.frame = mainFrame
-        scrollView.contentSize = CGSize(width: self.frame.size.width, height: self.frame.size.height)
+        scrollView.contentSize = mainFrame.size
         mainLayer.frame = mainFrame
         
-        tenToNinetyDataLayer.frame = dataLayerFrame
-        twentyFiveToSeventyFiveDataLayer.frame = dataLayerFrame
-        medianDataLayer.frame = dataLayerFrame
-        gridLayer.frame = CGRect(x: 0, y: topSpace, width: self.frame.width, height: mainLayer.frame.height - topSpace - bottomSpace)
+        tenToNinetyDataLayer.frame = dataLayerFrame()
+        twentyFiveToSeventyFiveDataLayer.frame = dataLayerFrame()
+        medianDataLayer.frame = dataLayerFrame()
+        insulinLayer.frame = dataLayerFrame()
+        gridLayer.frame = CGRect(x: 0, y: topSpace, width: mainLayer.frame.width, height: mainLayer.frame.height - topSpace - bottomSpace)
         
         tenToNinetyDataPoints = convertAreaDataEntriesToPoints(entries: chartModel.ninetyPercentDatas, entries2: chartModel.tenPercentDatas)
         twentyFiveToSeventyFiveDataPoints = convertAreaDataEntriesToPoints(entries: chartModel.seventyFivePercentDatas, entries2: chartModel.twentyFivePercentDatas)
@@ -169,6 +190,7 @@ class AGPChart: UIView {
         drawTenToNinetyCurvedChart()
         drawTwentyFiveToSeventyFiveCurvedChart()
         drawMedianCurvedChart()
+        drawInsulinChart()
         drawSymbols()
         drawLabels()
     }
@@ -177,21 +199,16 @@ class AGPChart: UIView {
      Convert an array of PointEntry to an array of CGPoint on dataLayer coordinate system
      */
     private func convertDataEntriesToPoints(entries: [PointEntry]) -> [CGPoint] {
-        if let max = chartModel?.ninetyPercentDatas.max()?.value,
-           let min = chartModel?.tenPercentDatas.min()?.value {
-            
-            var result: [CGPoint] = []
-            let minMaxRange: CGFloat = CGFloat(max - min) * topHorizontalLine
-            
-            for i in 0..<entries.count {
-                let height = dataLayerFrame.height * (1 - ((CGFloat(entries[i].value) - CGFloat(min)) / minMaxRange))
-                let startInterVal: TimeInterval = chartModel?.startInterval ?? 0
-                let point = CGPoint(x: dataLayerFrame.width / 86400 * CGFloat(entries[Int(i)].date.timeIntervalSince1970 - startInterVal), y: height)
-                result.append(point)
-            }
-            return result
+        var result: [CGPoint] = []
+        
+        for i in 0..<entries.count {
+            let height = dataLayerFrame().height * (1 - ((CGFloat(entries[i].value) - CGFloat(yAxisMinValue)) / minMaxRange))
+            let startInterVal: TimeInterval = chartModel?.startInterval ?? 0
+            let point = CGPoint(x: dataLayerFrame().width / 86400 * CGFloat(entries[Int(i)].date.timeIntervalSince1970 - startInterVal), y: height)
+            result.append(point)
         }
-        return []
+        
+        return result
     }
     
     
@@ -199,30 +216,23 @@ class AGPChart: UIView {
      Convert an array of PointEntry to an array of CGPoint on dataLayer coordinate system
      */
     private func convertAreaDataEntriesToPoints(entries: [PointEntry], entries2: [PointEntry]) -> AGPAreaData {
-        if let max = chartModel?.ninetyPercentDatas.max()?.value,
-           let min = chartModel?.tenPercentDatas.min()?.value {
-            
-            var leftToRight: [CGPoint] = []
-            var rightToLeft: [CGPoint] = []
-            let minMaxRange: CGFloat = CGFloat(max - min) * topHorizontalLine
-            
-            for i in 0..<entries.count {
-                let height = dataLayerFrame.height * (1 - ((CGFloat(entries[i].value) - CGFloat(min)) / minMaxRange))
-                let startInterVal: TimeInterval = chartModel?.startInterval ?? 0
-                let point = CGPoint(x: dataLayerFrame.width / 86400 * CGFloat(entries[Int(i)].date.timeIntervalSince1970 - startInterVal), y: height)
-                leftToRight.append(point)
-            }
-            
-            for i in stride(from: entries2.count - 1, through: 0, by: -1) {
-                let height = dataLayerFrame.height * (1 - ((CGFloat(entries2[i].value) - CGFloat(min)) / minMaxRange))
-                let startInterVal: TimeInterval = chartModel?.startInterval ?? 0
-                let point = CGPoint(x: dataLayerFrame.width / 86400 * CGFloat(entries2[Int(i)].date.timeIntervalSince1970 - startInterVal), y: height)
-                rightToLeft.append(point)
-            }
-            return AGPAreaData(leftToRight: leftToRight, rightToLeft: rightToLeft)
+        var leftToRight: [CGPoint] = []
+        var rightToLeft: [CGPoint] = []
+        
+        for i in 0..<entries.count {
+            let height = dataLayerFrame().height * (1 - ((CGFloat(entries[i].value) - CGFloat(yAxisMinValue)) / minMaxRange))
+            let startInterVal: TimeInterval = chartModel?.startInterval ?? 0
+            let point = CGPoint(x: dataLayerFrame().width / 86400 * CGFloat(entries[Int(i)].date.timeIntervalSince1970 - startInterVal), y: height)
+            leftToRight.append(point)
         }
         
-        return AGPAreaData(leftToRight: [], rightToLeft: [])
+        for i in stride(from: entries2.count - 1, through: 0, by: -1) {
+            let height = dataLayerFrame().height * (1 - ((CGFloat(entries2[i].value) - CGFloat(yAxisMinValue)) / minMaxRange))
+            let startInterVal: TimeInterval = chartModel?.startInterval ?? 0
+            let point = CGPoint(x: dataLayerFrame().width / 86400 * CGFloat(entries2[Int(i)].date.timeIntervalSince1970 - startInterVal), y: height)
+            rightToLeft.append(point)
+        }
+        return AGPAreaData(leftToRight: leftToRight, rightToLeft: rightToLeft)
     }
     
     /**
@@ -286,6 +296,35 @@ class AGPChart: UIView {
         drawCurvedChart(dataPoints: dataPoints)
     }
     
+    private func drawInsulinChart() {
+        guard let chartModel = chartModel else {
+            return
+        }
+        
+        let insulinDatas = chartModel.insulinDatas
+        
+        if let insulinAxisMin = insulinDatas.min()?.value,
+           let insulinAxisMax = insulinDatas.max()?.value {
+            let insulinMinMaxRange = CGFloat(insulinAxisMax - insulinAxisMin) * topHorizontalLine
+            
+            for index in 0..<insulinDatas.count {
+                let height = dataLayerFrame().height * (1 - ((CGFloat(insulinDatas[index].value) - CGFloat(insulinAxisMin)) / insulinMinMaxRange))
+                
+                let startInterVal: TimeInterval = chartModel.startInterval
+                let point = CGPoint(x: dataLayerFrame().width / 86400 * CGFloat(insulinDatas[Int(index)].date.timeIntervalSince1970 - startInterVal), y: height)
+                
+                let circleLayer = CAShapeLayer()
+                circleLayer.frame = CGRect(x: 0, y: 0, width: 4, height: 4)
+                circleLayer.fillColor = UIColor(red: 64 / 255, green: 99 / 255, blue: 189 / 255, alpha: 1).cgColor
+                let path = UIBezierPath(arcCenter: circleLayer.position, radius: 2, startAngle: 0, endAngle: CGFloat(2 * Float.pi), clockwise: true)
+                circleLayer.path = path.cgPath
+                circleLayer.position = point
+                
+                insulinLayer.addSublayer(circleLayer)
+            }
+        }
+    }
+    
     /**
      Create titles at the bottom for all entries showed in the chart
      */
@@ -294,7 +333,7 @@ class AGPChart: UIView {
             let textLayer = CATextLayer()
             let textArray = ["00:00", "6:00", "12:00", "18:00", "24:00"]
             
-            let widthPoint = dataLayerFrame.width / CGFloat(textArray.count - 1)
+            let widthPoint = dataLayerFrame().width / CGFloat(textArray.count - 1)
             let textLayerWidth: CGFloat = 60
             
             textLayer.frame = CGRect(x: leftPaddingSpace + widthPoint * CGFloat(i) - textLayerWidth / 2, y: mainLayer.frame.size.height - bottomSpace / 2 - 8, width: textLayerWidth, height: 16)
@@ -310,14 +349,15 @@ class AGPChart: UIView {
     }
     
     private func drawSymbols() {
+        symbolView.frame = CGRect(x: leftPaddingSpace, y: 0, width: dataLayerFrame().width / 4, height: mainLayer.frame.height - bottomSpace)
         self.addSubview(symbolView)
         
         for i in 1...4 {
             let pointArray: [Float] = [1, 3, 5, 7]
-            let xPoint: CGFloat = CGFloat(Float(dataLayerFrame.width) / 86400 * (86400 / 8) * pointArray[i - 1]) + leftPaddingSpace
+            let xPoint: CGFloat = CGFloat(Float(dataLayerFrame().width) / 86400 * (86400 / 8) * pointArray[i - 1]) + leftPaddingSpace
             
             let padding: CGFloat = 9
-            let width = dataLayerFrame.width / 4 - (padding * 2)
+            let width = dataLayerFrame().width / 4 - (padding * 2)
             
             let imageFrame = CGRect(x: 0, y: 0, width: width, height: 24)
             let imageColor = UIColor(red: 204 / 255, green: 204 / 255, blue: 204 / 255, alpha: 1).cgColor
@@ -389,37 +429,85 @@ class AGPChart: UIView {
                 lineLayer.fillColor = UIColor.clear.cgColor
                 lineLayer.strokeColor = UIColor(red: 204 / 255, green: 204 / 255, blue: 204 / 255, alpha: 1).cgColor
                 lineLayer.lineWidth = 0.5
-//                if (value > 0.0 && value < 1.0) {
-//                    lineLayer.lineDashPattern = [4, 4]
-//                }
                 
                 gridLayer.addSublayer(lineLayer)
                 
-                var minMaxGap:CGFloat = 0
-                var lineValue:Int = 0
-                if let max = chartModel.ninetyPercentDatas.max()?.value,
-                   let min = chartModel.tenPercentDatas.min()?.value {
-                    if max - min > 0 {
-                        minMaxGap = CGFloat(max - min) * topHorizontalLine
-                        lineValue = Int((1-value) * minMaxGap) + Int(min)
+                var minMaxGap: CGFloat = 0
+                var leftLineValue: Int = 0
+                
+                // draw left label
+                if let leftMax = chartModel.ninetyPercentDatas.max()?.value,
+                   let leftMin = chartModel.tenPercentDatas.min()?.value {
+                    if leftMax - leftMin > 0 {
+                        minMaxGap = CGFloat(leftMax - leftMin) * topHorizontalLine
+                        leftLineValue = Int((1 - value) * minMaxGap) + Int(leftMin)
                     } else {
-                        lineValue = Int((1-value) * 4 * 100)
+                        leftLineValue = Int((1 - value) * 4 * 100)
                     }
                 }
                 
-                let textLayer = CATextLayer()
+                let leftTextLayer = CATextLayer()
                 let textLayerHeight: CGFloat = 16
-                textLayer.frame = CGRect(x: 4, y: height - (textLayerHeight / 2), width: 50, height: textLayerHeight)
-                textLayer.foregroundColor = UIColor(red: 115 / 255, green: 115 / 255, blue: 115 / 255, alpha: 1).cgColor
-                textLayer.backgroundColor = UIColor.clear.cgColor
-                textLayer.contentsScale = UIScreen.main.scale
-                textLayer.font = CTFontCreateWithName(UIFont.systemFont(ofSize: 0).fontName as CFString, 0, nil)
-                textLayer.fontSize = 12
-                textLayer.string = "\(lineValue)"
+                let textLayerFrame = CGRect(x: 4, y: height - (textLayerHeight / 2), width: 20, height: textLayerHeight)
+                let textLayerColor = UIColor(red: 115 / 255, green: 115 / 255, blue: 115 / 255, alpha: 1).cgColor
+                leftTextLayer.frame = textLayerFrame
+                leftTextLayer.foregroundColor = textLayerColor
+                leftTextLayer.backgroundColor = UIColor.clear.cgColor
+                leftTextLayer.contentsScale = UIScreen.main.scale
+                leftTextLayer.font = CTFontCreateWithName(UIFont.systemFont(ofSize: 0).fontName as CFString, 0, nil)
+                leftTextLayer.fontSize = 12
+                leftTextLayer.alignmentMode = .right
+                leftTextLayer.string = "\(leftLineValue)"
                 
-                gridLayer.addSublayer(textLayer)
+                gridLayer.addSublayer(leftTextLayer)
+                
+                // draw right label
+                var rightLineValue: Int = 0
+                
+                if let rightMax = chartModel.insulinDatas.max()?.value,
+                   let rightMin = chartModel.insulinDatas.min()?.value {
+                    if rightMax - rightMin > 0 {
+                        minMaxGap = CGFloat(rightMax - rightMin) * topHorizontalLine
+                        rightLineValue = Int((1 - value) * minMaxGap) + Int(rightMin)
+                    } else {
+                        rightLineValue = Int((1 - value) * 4 * 100)
+                    }
+                }
+                
+                let rightTextLayer = CATextLayer()
+                rightTextLayer.frame = CGRect(x: mainLayer.frame.width - rightPaddingSpace + 10, y: height - (textLayerHeight / 2), width: 20, height: textLayerHeight)
+                rightTextLayer.foregroundColor = textLayerColor
+                rightTextLayer.backgroundColor = UIColor.clear.cgColor
+                rightTextLayer.contentsScale = UIScreen.main.scale
+                rightTextLayer.font = CTFontCreateWithName(UIFont.systemFont(ofSize: 0).fontName as CFString, 0, nil)
+                rightTextLayer.fontSize = 12
+                rightTextLayer.alignmentMode = .left
+                rightTextLayer.string = "\(rightLineValue)"
+                
+                gridLayer.addSublayer(rightTextLayer)
             }
         }
+        
+        // draw target range
+        
+        gridLayer.addSublayer(drawTargetRangeLine(value: chartModel.lowestTargetRange))
+        gridLayer.addSublayer(drawTargetRangeLine(value: chartModel.highestTargetRange))
+    }
+    
+    private func drawTargetRangeLine(value: Float) -> CAShapeLayer {
+        let targetRangePath = UIBezierPath()
+        let targetRangeHeight = dataLayerFrame().height * (1 - ((CGFloat(value) - CGFloat(yAxisMinValue)) / minMaxRange))
+        targetRangePath.move(to: CGPoint(x: leftPaddingSpace, y: targetRangeHeight))
+        targetRangePath.addLine(to: CGPoint(x: gridLayer.frame.size.width - rightPaddingSpace, y: targetRangeHeight))
+        
+        let targetRangeLineLayer = CAShapeLayer()
+        targetRangeLineLayer.path = targetRangePath.cgPath
+        targetRangeLineLayer.fillColor = UIColor.clear.cgColor
+        targetRangeLineLayer.strokeColor = UIColor(red: 43 / 255, green: 181 / 255, blue: 155 / 255, alpha: 1).cgColor
+        targetRangeLineLayer.lineWidth = 0.5
+        targetRangeLineLayer.lineDashPattern = [4, 4]
+        
+        return targetRangeLineLayer
     }
     
     private func clean() {
@@ -436,6 +524,7 @@ class AGPChart: UIView {
         secondOvalImage.sublayers?.forEach({ $0.removeFromSuperlayer() })
         thirdOvalImage.sublayers?.forEach({ $0.removeFromSuperlayer() })
         fourthOvalImage.sublayers?.forEach({ $0.removeFromSuperlayer() })
+        insulinLayer.sublayers?.forEach({ $0.removeFromSuperlayer() })
         gridLayer.sublayers?.forEach({ $0.removeFromSuperlayer() })
     }
     
