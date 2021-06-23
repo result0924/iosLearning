@@ -18,6 +18,10 @@
 - [in app debug](https://github.com/FLEXTool/FLEX)
 - [Xcode Tips](https://github.com/Xcode-Tips/xcode-tips.github.io)
 
+### Core Data
+- [repository pattern](https://www.userdesk.io/blog/repository-pattern-using-core-data-and-swift/)
+- [transformable](https://danielbernal.co/coredata-transformable-and-nssecurecoding-in-ios-13/)
+
 ### Some thing
 - [Bash腳本資料教學](https://wangdoc.com/bash/intro.html)
 - [Use string print Data](https://gist.github.com/jkereako/606cda72f3f8aa5c6c8eb5ec8ce227a1)
