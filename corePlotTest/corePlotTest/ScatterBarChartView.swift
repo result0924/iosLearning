@@ -214,7 +214,6 @@ class ScatterBarChartView: UIView {
             for index in 0..<dateArray.count {
                 let scatterObject = dateArray[index]
                 let location = kLengthDistanceFromYAxis + CGFloat(index) * widthPoint
-                print("idx2: \(index) location:\(location)")
                 let label = CPTAxisLabel(text: scatterObject, textStyle: textStyle)
                 label.tickLocation = NSNumber(value: Float(location))
                 label.alignment = .center

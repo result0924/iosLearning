@@ -147,7 +147,6 @@ class BarChartView: UIView {
         let count: CGFloat = CGFloat(dateArray.count)
         let xWidth: CGFloat = (hostViewWidth - kLengthDistanceFromYAxis) * (count / chartRange) + kLengthDistanceFromYAxis
         let xMax = max(hostViewWidth, xWidth)
-        print("max:\(xMax) min:\(xMin) hostViewWidth:\(hostViewWidth)")
         space.globalXRange = CPTPlotRange(locationDecimal: CPTDecimalFromCGFloat(xMin), lengthDecimal: CPTDecimalFromCGFloat(xMax - xMin))
         space.xRange = CPTPlotRange(locationDecimal: CPTDecimalFromCGFloat(xMax - hostViewWidth), lengthDecimal: CPTDecimalFromCGFloat(hostViewWidth))
         
@@ -169,7 +168,6 @@ class BarChartView: UIView {
             for index in 0..<dateArray.count {
                 let scatterObject = dateArray[index]
                 let location = kLengthDistanceFromYAxis + CGFloat(index) * widthPoint
-                print("idx2: \(index) location:\(location)")
                 let label = CPTAxisLabel(text: scatterObject, textStyle: textStyle)
                 label.tickLocation = NSNumber(value: Float(location))
                 label.alignment = .center

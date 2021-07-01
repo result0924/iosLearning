@@ -19,7 +19,7 @@ class GraphViewController: UIViewController {
 
 extension GraphViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return 4
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -32,8 +32,10 @@ extension GraphViewController: UITableViewDataSource {
             cell.updateScatterCell()
         } else if indexPath.section == 1 {
             cell.updateBarCell()
-        } else {
+        } else if indexPath.section == 2 {
             cell.updateScatterBarCell()
+        } else if indexPath.section == 3 {
+            cell.updateScaleScatterCell()
         }
         
         return cell

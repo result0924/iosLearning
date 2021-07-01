@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="oq1-SG-PJu">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="oq1-SG-PJu">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -136,12 +136,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="MEn-pn-1aQ">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="MEn-pn-1aQ">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" systemColor="opaqueSeparatorColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ScatterTableViewCell" id="OZJ-3h-ART" customClass="ScatterTableViewCell" customModule="corePlotTest" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="55.5" width="375" height="300"/>
+                                        <rect key="frame" x="0.0" y="49.5" width="375" height="300"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="OZJ-3h-ART" id="9Rr-zj-tPe">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
@@ -169,6 +169,10 @@
                                                                 <constraint firstAttribute="bottom" secondItem="9Uf-bF-t8R" secondAttribute="bottom" id="mS6-bH-WLZ"/>
                                                             </constraints>
                                                         </view>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sVm-uZ-ctg" customClass="ScaleScatterChartView" customModule="corePlotTest" customModuleProvider="target">
+                                                            <rect key="frame" x="0.0" y="50" width="355" height="250"/>
+                                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                        </view>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yps-Et-w7b" customClass="ScatterChartView" customModule="corePlotTest" customModuleProvider="target">
                                                             <rect key="frame" x="0.0" y="50" width="355" height="250"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -184,6 +188,8 @@
                                                     </subviews>
                                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                     <constraints>
+                                                        <constraint firstItem="sVm-uZ-ctg" firstAttribute="leading" secondItem="Idv-0V-0kf" secondAttribute="leading" id="1Kb-kn-czr"/>
+                                                        <constraint firstAttribute="bottom" secondItem="sVm-uZ-ctg" secondAttribute="bottom" id="3jL-LF-idF"/>
                                                         <constraint firstItem="hrc-9L-F2d" firstAttribute="leading" secondItem="Idv-0V-0kf" secondAttribute="leading" id="52r-re-NXs"/>
                                                         <constraint firstItem="Q7I-GI-2Je" firstAttribute="leading" secondItem="Idv-0V-0kf" secondAttribute="leading" id="5XY-nM-HfP"/>
                                                         <constraint firstAttribute="bottom" secondItem="Q7I-GI-2Je" secondAttribute="bottom" id="E5h-NW-Bef"/>
@@ -196,7 +202,9 @@
                                                         <constraint firstAttribute="bottom" secondItem="Yps-Et-w7b" secondAttribute="bottom" id="eix-WX-Qzj"/>
                                                         <constraint firstItem="Yps-Et-w7b" firstAttribute="leading" secondItem="Idv-0V-0kf" secondAttribute="leading" id="gKC-AM-9t6"/>
                                                         <constraint firstItem="Q7I-GI-2Je" firstAttribute="top" secondItem="hrc-9L-F2d" secondAttribute="bottom" id="ieD-mD-dXw"/>
+                                                        <constraint firstItem="sVm-uZ-ctg" firstAttribute="top" secondItem="hrc-9L-F2d" secondAttribute="bottom" id="qKh-WC-kgb"/>
                                                         <constraint firstAttribute="trailing" secondItem="hrc-9L-F2d" secondAttribute="trailing" id="qqo-mx-7hS"/>
+                                                        <constraint firstAttribute="trailing" secondItem="sVm-uZ-ctg" secondAttribute="trailing" id="qu9-Wx-f5U"/>
                                                         <constraint firstAttribute="trailing" secondItem="Xoc-pi-m0B" secondAttribute="trailing" id="qwP-tq-4j2"/>
                                                         <constraint firstAttribute="trailing" secondItem="Yps-Et-w7b" secondAttribute="trailing" id="u6V-ax-2SZ"/>
                                                         <constraint firstItem="Xoc-pi-m0B" firstAttribute="top" secondItem="hrc-9L-F2d" secondAttribute="bottom" id="vwo-we-1o3"/>
@@ -215,6 +223,7 @@
                                         <connections>
                                             <outlet property="barChartView" destination="Xoc-pi-m0B" id="QYy-n2-D2O"/>
                                             <outlet property="baseView" destination="Idv-0V-0kf" id="q6O-yp-wxy"/>
+                                            <outlet property="scaleScatterChartView" destination="sVm-uZ-ctg" id="Xqs-EM-sCh"/>
                                             <outlet property="scatterBarChartView" destination="Q7I-GI-2Je" id="iI0-Fg-XaQ"/>
                                             <outlet property="scatterChartView" destination="Yps-Et-w7b" id="Kcq-7B-VNw"/>
                                         </connections>

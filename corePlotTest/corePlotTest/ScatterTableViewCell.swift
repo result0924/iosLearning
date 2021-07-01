@@ -14,6 +14,7 @@ class ScatterTableViewCell: UITableViewCell {
     @IBOutlet weak var scatterChartView: ScatterChartView!
     @IBOutlet weak var barChartView: BarChartView!
     @IBOutlet weak var scatterBarChartView: ScatterBarChartView!
+    @IBOutlet weak var scaleScatterChartView: ScaleScatterChartView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -26,6 +27,7 @@ class ScatterTableViewCell: UITableViewCell {
         scatterChartView.isHidden = false
         barChartView.isHidden = true
         scatterBarChartView.isHidden = true
+        scaleScatterChartView.isHidden = true
         scatterChartView.reloadCharts()
     }
     
@@ -33,6 +35,7 @@ class ScatterTableViewCell: UITableViewCell {
         scatterChartView.isHidden = true
         barChartView.isHidden = false
         scatterBarChartView.isHidden = true
+        scaleScatterChartView.isHidden = true
         barChartView.reloadCharts()
     }
     
@@ -40,7 +43,16 @@ class ScatterTableViewCell: UITableViewCell {
         scatterChartView.isHidden = true
         barChartView.isHidden = true
         scatterBarChartView.isHidden = false
+        scaleScatterChartView.isHidden = true
         scatterBarChartView.reloadCharts()
+    }
+    
+    func updateScaleScatterCell() {
+        scatterChartView.isHidden = true
+        barChartView.isHidden = true
+        scatterBarChartView.isHidden = true
+        scaleScatterChartView.isHidden = false
+        scaleScatterChartView.reloadCharts()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

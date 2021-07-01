@@ -21,4 +21,8 @@ extension UIColor {
     class func chartYAxisTextColor() -> CPTColor {
         return CPTColor(cgColor: UIColor(red: 166 / 255, green: 166 / 255, blue: 166 / 255, alpha: 1).cgColor)
     }
+    
+    class func paleGrayColor() -> UIColor {
+        return UIColor(red: 250 / 255, green: 250 / 255, blue: 250 / 255, alpha: 1)
+    }
 }
