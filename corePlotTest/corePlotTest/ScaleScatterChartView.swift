@@ -46,6 +46,7 @@ class ScaleScatterChartView: UIView {
     var chartCountInView: CGFloat = 0
     private var isDrag: Bool = false
     private let yAxisCount = 4
+    private var scaleXRange: CPTPlotRange = CPTPlotRange()
 
     // create chart
     lazy var scatterChart: CPTScatterPlot = {
@@ -89,7 +90,7 @@ class ScaleScatterChartView: UIView {
     private func configureHost() {
         hostView = CPTGraphHostingView(frame: bounds)
         hostView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        hostView.allowPinchScaling = false
+        hostView.allowPinchScaling = true
         hostView.backgroundColor = UIColor.paleGrayColor()
         addSubview(hostView)
     }
@@ -150,19 +151,17 @@ class ScaleScatterChartView: UIView {
     }
 
     func reloadCharts() {
-        minDataArray = generateFakeData(isMin: true)
-        print("minDataArray:\(minDataArray)")
-        maxDataArray = generateFakeData(isMin: false)
-        print("maxDataArray:\(maxDataArray)")
+        minDataArray = generateFakeData(isMin: true).reversed()
+        maxDataArray = generateFakeData(isMin: false).reversed()
         chartCountInView = CGFloat(minDataArray.count)
 
-        widthPoint = hostViewWidth / 6
+        widthPoint = hostViewWidth / CGFloat(minDataArray.count)
         kLengthDistanceFromYAxis = widthPoint / 2
         let normalLineStyle = CPTMutableLineStyle.makeLineStyle(lineWidth: 2, lineColor: CPTColor.dashboardNormal())
         scatterChart.dataLineStyle = normalLineStyle
         let secondScatterLineStyle = CPTMutableLineStyle.makeLineStyle(lineWidth: 2, lineColor: CPTColor.gray500())
         secondScatterChart.dataLineStyle = secondScatterLineStyle
-
+        recoveryOriginScaleXRange()
         configureAxisLabels()
         hostView.hostedGraph?.reloadData()
     }
@@ -203,44 +202,17 @@ class ScaleScatterChartView: UIView {
         space.delegate = self
 
         // configure x-axis
-        
         let xMin: CGFloat = 0
-        let count: CGFloat = CGFloat(minDataArray.count)
-
-        let xWidth: CGFloat = count * widthPoint
-        let xMax = max(hostViewWidth, xWidth)
+        let xMax = hostViewWidth
         space.globalXRange = CPTPlotRange(locationDecimal: CPTDecimalFromCGFloat(xMin), lengthDecimal: CPTDecimalFromCGFloat(xMax - xMin))
-        space.xRange = CPTPlotRange(locationDecimal: CPTDecimalFromCGFloat(xMax - hostViewWidth), lengthDecimal: CPTDecimalFromCGFloat(hostViewWidth))
-
-        configureXAxisLabelsWithSpace(space: space)
+        space.xRange = scaleXRange
+        updateXAxisLabels(space: space)
         let minValue = minDataArray.min()?.value ?? 0
         let maxValue = maxDataArray.max()?.value ?? 0
 
         let yAxisModel = fetchAxisRange(min: minValue, max: maxValue, axisCount: 4)
 
         configureYAxisLabelsWithScatter(yMin: yAxisModel.min, majorIncrement: yAxisModel.interval)
-    }
-
-    private func configureXAxisLabelsWithSpace(space: CPTXYPlotSpace) {
-        guard let axisSet = hostView.hostedGraph?.axisSet as? CPTXYAxisSet else {
-            return
-        }
-
-        if let xAxis = axisSet.xAxis {
-            var xLabels = Set<CPTAxisLabel>()
-
-            for index in 0..<minDataArray.count {
-                let records = minDataArray[index]
-                let text = date2String(records.date, dateFormat: "M/dd")
-                let location = kLengthDistanceFromYAxis + CGFloat(index) * widthPoint
-                let label = CPTAxisLabel(text: text, textStyle: CPTMutableTextStyle.dashBoardTextStyle())
-                label.tickLocation = NSNumber(value: Float(location))
-                label.alignment = .center
-                label.offset = 5
-                xLabels.insert(label)
-            }
-            xAxis.axisLabels = xLabels
-        }
     }
 
     private func configureYAxisLabelsWithScatter(yMin: Float, majorIncrement: Float) {
@@ -327,7 +299,65 @@ class ScaleScatterChartView: UIView {
         let date = formatter.string(from: date)
         return date
     }
-
+    
+    private func recoveryOriginScaleXRange() {
+        let xMin: CGFloat = 0
+        let xMax = hostViewWidth
+        scaleXRange = CPTPlotRange(locationDecimal: CPTDecimalFromCGFloat(xMin), lengthDecimal: CPTDecimalFromCGFloat(xMax - xMin))
+    }
+    
+    private func updateXAxisLabels(space: CPTXYPlotSpace) {
+        guard let axisSet = hostView.hostedGraph?.axisSet as? CPTXYAxisSet, let xAxis = axisSet.xAxis else {
+            return
+        }
+        
+        var locations: [Double] = []
+        
+        for (index, _) in maxDataArray.enumerated() {
+            let location = Double(CGFloat(index) * widthPoint + kLengthDistanceFromYAxis)
+            if space.xRange.minLimitDouble < location && location < space.xRange.maxLimitDouble {
+                locations.append(location)
+            }
+        }
+        
+        let pointCount = locations.count
+        print("pointCount:\(pointCount)")
+        var xLabels = Set<CPTAxisLabel>()
+        
+        if pointCount < 7 {
+            for (index, point) in maxDataArray.enumerated() {
+                let dataLocation = Double(CGFloat(index) * widthPoint + kLengthDistanceFromYAxis)
+                let text = date2String(point.date, dateFormat: "M/dd")
+                let label = CPTAxisLabel(text: text, textStyle: CPTMutableTextStyle.dashBoardTextStyle())
+                label.tickLocation = NSNumber(value: Float(dataLocation))
+                label.offset = 5
+                label.alignment = .center
+                xLabels.insert(label)
+            }
+        } else {
+            let widthDivision: Int = pointCount / 5
+            
+            for (locationsIndex, location) in locations.enumerated() {
+                if locationsIndex % widthDivision == 0 {
+                    for (pointIndex, point) in maxDataArray.enumerated() {
+                        let dataLocation = Double(CGFloat(pointIndex) * widthPoint + kLengthDistanceFromYAxis)
+                        if dataLocation == location {
+                            let text = date2String(point.date, dateFormat: "M/dd")
+                            let label = CPTAxisLabel(text: text, textStyle: CPTMutableTextStyle.dashBoardTextStyle())
+                            label.tickLocation = NSNumber(value: Float(dataLocation))
+                            label.offset = 5
+                            label.alignment = .center
+                            xLabels.insert(label)
+                        }
+                    }
+                }
+            }
+            
+        }
+        
+        xAxis.axisLabels = nil
+        xAxis.axisLabels = xLabels
+    }
 }
 
 extension ScaleScatterChartView: CPTPlotDataSource {
@@ -365,18 +395,25 @@ extension ScaleScatterChartView: CPTScatterPlotDataSource {
 
 extension ScaleScatterChartView: CPTPlotSpaceDelegate {
     func plotSpace(_ space: CPTPlotSpace, shouldScaleBy interactionScale: CGFloat, aboutPoint interactionPoint: CGPoint) -> Bool {
-        return false
+        return true
     }
-
+    
     func plotSpace(_ space: CPTPlotSpace, willChangePlotRangeTo newRange: CPTPlotRange, for coordinate: CPTCoordinate) -> CPTPlotRange? {
         switch coordinate {
         case .X:
+            scaleXRange = newRange
             return newRange
         case .Y:
             let space = space as? CPTXYPlotSpace
             return space?.globalYRange
         default:
             return nil
+        }
+    }
+    
+    func plotSpace(_ space: CPTPlotSpace, didChangePlotRangeFor coordinate: CPTCoordinate) {
+        if let space = space as? CPTXYPlotSpace {
+            updateXAxisLabels(space: space)
         }
     }
 
@@ -409,6 +446,6 @@ extension ScaleScatterChartView: CPTPlotSpaceDelegate {
 
 extension Float {
     var clean: String {
-           return self.truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", self) : String(self)
-        }
+        return self.truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", self) : String(self)
+    }
 }
