@@ -14,6 +14,8 @@
 		D06BD7BE26B15D1900E73A6F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D06BD7BD26B15D1900E73A6F /* Assets.xcassets */; };
 		D06BD7C126B15D1900E73A6F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D06BD7BF26B15D1900E73A6F /* LaunchScreen.storyboard */; };
 		D06BD7CA26B165A800E73A6F /* NibOwnerLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06BD7C926B165A700E73A6F /* NibOwnerLoadable.swift */; };
+		D06BD7CD26B1666000E73A6F /* CustomTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06BD7CC26B1666000E73A6F /* CustomTextView.swift */; };
+		D06BD7CF26B1668200E73A6F /* CustomTextView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D06BD7CE26B1668200E73A6F /* CustomTextView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,8 @@
 		D06BD7C026B15D1900E73A6F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D06BD7C226B15D1900E73A6F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D06BD7C926B165A700E73A6F /* NibOwnerLoadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NibOwnerLoadable.swift; sourceTree = "<group>"; };
+		D06BD7CC26B1666000E73A6F /* CustomTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextView.swift; sourceTree = "<group>"; };
+		D06BD7CE26B1668200E73A6F /* CustomTextView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomTextView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +62,7 @@
 		D06BD7B326B15D1600E73A6F /* VerifyTextFieldTest */ = {
 			isa = PBXGroup;
 			children = (
+				D06BD7CB26B1663500E73A6F /* CustomTextView */,
 				D06BD7C826B1659300E73A6F /* Helper */,
 				D06BD7B426B15D1600E73A6F /* AppDelegate.swift */,
 				D06BD7B626B15D1600E73A6F /* SceneDelegate.swift */,
@@ -76,6 +81,15 @@
 				D06BD7C926B165A700E73A6F /* NibOwnerLoadable.swift */,
 			);
 			path = Helper;
+			sourceTree = "<group>";
+		};
+		D06BD7CB26B1663500E73A6F /* CustomTextView */ = {
+			isa = PBXGroup;
+			children = (
+				D06BD7CC26B1666000E73A6F /* CustomTextView.swift */,
+				D06BD7CE26B1668200E73A6F /* CustomTextView.xib */,
+			);
+			path = CustomTextView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,6 +151,7 @@
 			files = (
 				D06BD7C126B15D1900E73A6F /* LaunchScreen.storyboard in Resources */,
 				D06BD7BE26B15D1900E73A6F /* Assets.xcassets in Resources */,
+				D06BD7CF26B1668200E73A6F /* CustomTextView.xib in Resources */,
 				D06BD7BC26B15D1600E73A6F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -149,6 +164,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D06BD7B926B15D1600E73A6F /* ViewController.swift in Sources */,
+				D06BD7CD26B1666000E73A6F /* CustomTextView.swift in Sources */,
 				D06BD7CA26B165A800E73A6F /* NibOwnerLoadable.swift in Sources */,
 				D06BD7B526B15D1600E73A6F /* AppDelegate.swift in Sources */,
 				D06BD7B726B15D1600E73A6F /* SceneDelegate.swift in Sources */,
