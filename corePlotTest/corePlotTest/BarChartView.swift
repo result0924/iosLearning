@@ -18,8 +18,9 @@ class BarChartView: UIView {
     var chartRange: CGFloat = 6 // 在不滑動chart view的情況下、當下畫面x座標的總數
     var hostViewWidth: CGFloat = 0
     let kLengthDistanceFromYAxis: CGFloat = 20
-    let insulinScatterArray: [NSNumber] = [7.2, 8, 7.2, 6.5, 8, 7.6]
-    let dateArray:[String] = ["9/10", "9/11", "9/14", "9/14", "9/14", "9/15", "9/16"]
+    let barDataArray: [[NSNumber]] = [[7.2, 8, 7.2, 6.5, 8, 7.6], [3, 4, 5, 4, 5, 5], [1, 2, 3, 2, 1, 1]]
+    let dateArray:[String] = ["9/10", "9/11", "9/14", "9/14", "9/15", "9/16"]
+    private let barTitlePrefix = "bar"
     
     var textStyle: CPTMutableTextStyle {
         let textStyle = CPTMutableTextStyle()
@@ -28,7 +29,6 @@ class BarChartView: UIView {
         textStyle.textAlignment = .center
         return textStyle
     }
-
     
     private func initPlot() {
         let chartViewToBorder: CGFloat = 24 // |-12-chartView-12-|
@@ -78,11 +78,33 @@ class BarChartView: UIView {
             return
         }
         
-        // create chart
-        let barPlot = CPTBarPlot.tubularBarPlot(with: .red(), horizontalBars: false)
-        barPlot.baseValue = 0
-        barPlot.dataSource = self
-        hostGraph.add(barPlot, to: plotSpace)
+        let barChartCount = hostGraph.allPlots().filter { $0.title?.contains(barTitlePrefix) ?? false }.count
+
+        // avoid add duplicate bar
+        if barChartCount > barDataArray.count {
+            return
+        }
+        
+        func createBarChart(title: String) -> CPTBarPlot {
+            // create chart
+            let barPlot = CPTBarPlot.tubularBarPlot(with: .red(), horizontalBars: false)
+            let barPlotLineStyle = CPTMutableLineStyle()
+            barPlotLineStyle.lineColor = CPTColor.init(cgColor: UIColor.clear.cgColor)
+            barPlotLineStyle.lineWidth = 0
+            barPlot.lineStyle = barPlotLineStyle
+            barPlot.baseValue = 0
+            barPlot.dataSource = self
+            barPlot.title = title
+            barPlot.barWidth = 10
+            barPlot.cornerRadius = 2
+            
+            return barPlot
+        }
+        
+        for index in barDataArray.indices {
+            let bar = createBarChart(title: barTitlePrefix + "\(index)")
+            hostGraph.add(bar, to: plotSpace)
+        }
     }
     
     private func configureAxes() {
@@ -151,7 +173,7 @@ class BarChartView: UIView {
         space.xRange = CPTPlotRange(locationDecimal: CPTDecimalFromCGFloat(xMax - hostViewWidth), lengthDecimal: CPTDecimalFromCGFloat(hostViewWidth))
         
         configureXAxisLabelsWithSpace(space: space)
-        configureYAxisLabelsWithMin(min: 6.5, max: 8, numTicks: 5)
+        configureYAxisLabelsWithMin(min: 0, max: 8, numTicks: 5)
     }
     
     private func configureXAxisLabelsWithSpace(space: CPTXYPlotSpace) {
@@ -268,9 +290,28 @@ class BarChartView: UIView {
     
 }
 
+extension BarChartView: CPTBarPlotDataSource {
+    func barFill(for barPlot: CPTBarPlot, record idx: UInt) -> CPTFill? {
+        if barPlot.title == "bar0" {
+            return CPTFill.init(color: .chartRed(alpha: 1))
+        } else if barPlot.title == "bar1" {
+            return CPTFill.init(color: .chartBlue(alpha: 1))
+        } else {
+            return CPTFill.init(color: .chartGreen(alpha: 1))
+        }
+    }
+}
+
 extension BarChartView: CPTPlotDataSource {
     func numberOfRecords(for plot: CPTPlot) -> UInt {
-        return UInt(insulinScatterArray.count)
+        for (index, data) in barDataArray.enumerated() {
+            let barTitle = barTitlePrefix + "\(index)"
+            if plot.title == barTitle {
+                return UInt(data.count)
+            }
+        }
+
+        return 0
     }
     
     func number(for plot: CPTPlot, field fieldEnum: UInt, record idx: UInt) -> Any? {
@@ -278,27 +319,28 @@ extension BarChartView: CPTPlotDataSource {
             return nil
         }
         
-        let scatter = insulinScatterArray[Int(idx)]
-        
         switch field {
         case .barLocation:
             let hostWidth = hostViewWidth - kLengthDistanceFromYAxis
             let widthPoint = hostWidth / CGFloat(dateArray.count)
-            var location = kLengthDistanceFromYAxis + CGFloat(idx) * widthPoint
-            if idx > 3 {
-                location = kLengthDistanceFromYAxis + CGFloat(idx + 1) * widthPoint
-            }
-            
+            let location = kLengthDistanceFromYAxis + CGFloat(idx) * widthPoint
+
             return location
         case .barTip:
-            return scatter
+            for (index, data) in barDataArray.enumerated() {
+                let barTitle = barTitlePrefix + "\(index)"
+                if plot.title == barTitle {
+                    return data[Int(idx)]
+                }
+            }
+            
+            return nil
         case .barBase:
             return nil
         @unknown default:
             return nil
         }
     }
-    
 }
 
 extension BarChartView: CPTPlotSpaceDelegate {
