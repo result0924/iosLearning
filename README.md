@@ -23,6 +23,9 @@
 - [repository pattern](https://www.userdesk.io/blog/repository-pattern-using-core-data-and-swift/)
 - [transformable](https://danielbernal.co/coredata-transformable-and-nssecurecoding-in-ios-13/)
 
+### GCD
+- [GCD 教學](https://github.com/ming1016/study/wiki/%E7%BB%86%E8%AF%B4GCD%EF%BC%88Grand-Central-Dispatch%EF%BC%89%E5%A6%82%E4%BD%95%E7%94%A8)
+
 ### Some thing
 - [Bash腳本資料教學](https://wangdoc.com/bash/intro.html)
 - [Use string print Data](https://gist.github.com/jkereako/606cda72f3f8aa5c6c8eb5ec8ce227a1)
