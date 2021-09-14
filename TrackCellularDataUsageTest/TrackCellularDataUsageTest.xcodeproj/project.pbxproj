@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -14,6 +14,7 @@
 		D0D3CF8E26F04919008F906C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0D3CF8C26F04919008F906C /* Main.storyboard */; };
 		D0D3CF9026F0491A008F906C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0D3CF8F26F0491A008F906C /* Assets.xcassets */; };
 		D0D3CF9326F0491A008F906C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0D3CF9126F0491A008F906C /* LaunchScreen.storyboard */; };
+		D0D3CF9B26F07891008F906C /* SystemDataUsage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D3CF9A26F07891008F906C /* SystemDataUsage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		D0D3CF8F26F0491A008F906C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D0D3CF9226F0491A008F906C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D0D3CF9426F0491A008F906C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D0D3CF9A26F07891008F906C /* SystemDataUsage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemDataUsage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,7 +58,6 @@
 				404B70A54ACF4B3899A86453 /* Pods-TrackCellularDataUsageTest.debug.xcconfig */,
 				60E2976DE0F4D0F4A759F14C /* Pods-TrackCellularDataUsageTest.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -88,6 +89,7 @@
 				D0D3CF8F26F0491A008F906C /* Assets.xcassets */,
 				D0D3CF9126F0491A008F906C /* LaunchScreen.storyboard */,
 				D0D3CF9426F0491A008F906C /* Info.plist */,
+				D0D3CF9A26F07891008F906C /* SystemDataUsage.swift */,
 			);
 			path = TrackCellularDataUsageTest;
 			sourceTree = "<group>";
@@ -206,6 +208,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0D3CF9B26F07891008F906C /* SystemDataUsage.swift in Sources */,
 				D0D3CF8B26F04919008F906C /* ViewController.swift in Sources */,
 				D0D3CF8726F04919008F906C /* AppDelegate.swift in Sources */,
 				D0D3CF8926F04919008F906C /* SceneDelegate.swift in Sources */,

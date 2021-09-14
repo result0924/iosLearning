@@ -15,10 +15,16 @@ class ViewController: UIViewController {
     @IBOutlet weak private var imageView: UIImageView!
     @IBOutlet weak private var downloadDataByteLabel: UILabel!
     @IBOutlet weak private var cellularDataUsageLabel: UILabel!
+    @IBOutlet weak private var wifiDataUsageLabel: UILabel!
     var currentIndex = 0
+    var originWifiUsage: UInt64 = 0
+    var originWwanUsage: UInt64 = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        originWifiUsage = SystemDataUsage.wifiComplete
+        originWwanUsage = SystemDataUsage.wwanComplete
+        
         // Do any additional setup after loading the view.
         downloadImageAndReload()
     }
@@ -30,10 +36,14 @@ class ViewController: UIViewController {
     private func downloadImageAndReload() {
         let imageUrl = imageUrls[currentIndex]
 
-        Alamofire.request(imageUrl).responseData(completionHandler: { response in
+        Alamofire.request(imageUrl).responseData(completionHandler: { [weak self] response in
+            guard let self = self else { return }
             if let imageData = response.data {
-                self.downloadDataByteLabel.text = "\(imageData)"
+                self.downloadDataByteLabel.text = "\(ByteCountFormatter.string(fromByteCount: Int64(imageData.count), countStyle: .binary))"
                 self.imageView.image = UIImage(data: imageData)
+                self.cellularDataUsageLabel.text = "cellular data usage :\(ByteCountFormatter.string(fromByteCount: Int64(SystemDataUsage.wwanComplete - self.originWwanUsage), countStyle: .binary))"
+                self.wifiDataUsageLabel.text = "wifi data usage: \(ByteCountFormatter.string(fromByteCount: Int64(SystemDataUsage.wifiComplete - self.originWifiUsage), countStyle: .binary))"
+                
                 // increment the index to cycle through items
                 self.currentIndex = (self.currentIndex + 1) % self.imageUrls.count
             }

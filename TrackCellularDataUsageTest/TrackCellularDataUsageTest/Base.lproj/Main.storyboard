@@ -34,6 +34,12 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V5b-Ta-jkV">
+                                <rect key="frame" x="10" y="511.5" width="394" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fq1-3f-awh">
                                 <rect key="frame" x="10" y="374" width="394" height="36"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
@@ -46,10 +52,13 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="V5b-Ta-jkV" firstAttribute="top" secondItem="B5y-cg-Lip" secondAttribute="bottom" constant="20" id="5Td-Go-tNM"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="V5b-Ta-jkV" secondAttribute="trailing" constant="10" id="CWy-Ia-omG"/>
                             <constraint firstItem="fq1-3f-awh" firstAttribute="top" secondItem="MDA-jA-vim" secondAttribute="bottom" constant="30" id="FkS-Wn-vY5"/>
                             <constraint firstItem="MDA-jA-vim" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="Jd6-GM-i4Q"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="MDA-jA-vim" secondAttribute="trailing" id="L9v-ND-XKF"/>
                             <constraint firstItem="MDA-jA-vim" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="MoV-uK-q0l"/>
+                            <constraint firstItem="V5b-Ta-jkV" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="UPm-wm-cZO"/>
                             <constraint firstItem="Qj7-j5-yMQ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="VPL-M0-DsB"/>
                             <constraint firstItem="B5y-cg-Lip" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="Wmy-SX-j7Z"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="B5y-cg-Lip" secondAttribute="trailing" constant="10" id="k3I-DJ-G3K"/>
@@ -65,6 +74,7 @@
                         <outlet property="changeImageButton" destination="fq1-3f-awh" id="Ffv-7a-son"/>
                         <outlet property="downloadDataByteLabel" destination="Qj7-j5-yMQ" id="i2U-lS-QMk"/>
                         <outlet property="imageView" destination="MDA-jA-vim" id="VKp-6x-2TO"/>
+                        <outlet property="wifiDataUsageLabel" destination="V5b-Ta-jkV" id="S8P-lu-LJU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
