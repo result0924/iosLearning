@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C46E887290B3808BAC9BE5C4 /* Pods_TrackCellularDataUsageTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1594681FE544BB429559A4E0 /* Pods_TrackCellularDataUsageTest.framework */; };
 		D0D3CF8726F04919008F906C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D3CF8626F04919008F906C /* AppDelegate.swift */; };
 		D0D3CF8926F04919008F906C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D3CF8826F04919008F906C /* SceneDelegate.swift */; };
 		D0D3CF8B26F04919008F906C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D3CF8A26F04919008F906C /* ViewController.swift */; };
@@ -16,6 +17,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1594681FE544BB429559A4E0 /* Pods_TrackCellularDataUsageTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrackCellularDataUsageTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		404B70A54ACF4B3899A86453 /* Pods-TrackCellularDataUsageTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackCellularDataUsageTest.debug.xcconfig"; path = "Target Support Files/Pods-TrackCellularDataUsageTest/Pods-TrackCellularDataUsageTest.debug.xcconfig"; sourceTree = "<group>"; };
+		60E2976DE0F4D0F4A759F14C /* Pods-TrackCellularDataUsageTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackCellularDataUsageTest.release.xcconfig"; path = "Target Support Files/Pods-TrackCellularDataUsageTest/Pods-TrackCellularDataUsageTest.release.xcconfig"; sourceTree = "<group>"; };
 		D0D3CF8326F04919008F906C /* TrackCellularDataUsageTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrackCellularDataUsageTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0D3CF8626F04919008F906C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D0D3CF8826F04919008F906C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -31,17 +35,38 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C46E887290B3808BAC9BE5C4 /* Pods_TrackCellularDataUsageTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1824A5AFD45AD9FF9733B1E7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1594681FE544BB429559A4E0 /* Pods_TrackCellularDataUsageTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8B089CB3B1C831FB7D0F0E6F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				404B70A54ACF4B3899A86453 /* Pods-TrackCellularDataUsageTest.debug.xcconfig */,
+				60E2976DE0F4D0F4A759F14C /* Pods-TrackCellularDataUsageTest.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		D0D3CF7A26F04919008F906C = {
 			isa = PBXGroup;
 			children = (
 				D0D3CF8526F04919008F906C /* TrackCellularDataUsageTest */,
 				D0D3CF8426F04919008F906C /* Products */,
+				8B089CB3B1C831FB7D0F0E6F /* Pods */,
+				1824A5AFD45AD9FF9733B1E7 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -74,9 +99,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D0D3CF9726F0491A008F906C /* Build configuration list for PBXNativeTarget "TrackCellularDataUsageTest" */;
 			buildPhases = (
+				6CC3EBC6C2C3FD58E7C8F003 /* [CP] Check Pods Manifest.lock */,
 				D0D3CF7F26F04919008F906C /* Sources */,
 				D0D3CF8026F04919008F906C /* Frameworks */,
 				D0D3CF8126F04919008F906C /* Resources */,
+				85BD2DACF0A2F97B915060B5 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -131,6 +158,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		6CC3EBC6C2C3FD58E7C8F003 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TrackCellularDataUsageTest-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		85BD2DACF0A2F97B915060B5 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TrackCellularDataUsageTest/Pods-TrackCellularDataUsageTest-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TrackCellularDataUsageTest/Pods-TrackCellularDataUsageTest-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TrackCellularDataUsageTest/Pods-TrackCellularDataUsageTest-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D0D3CF7F26F04919008F906C /* Sources */ = {
@@ -283,6 +352,7 @@
 		};
 		D0D3CF9826F0491A008F906C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 404B70A54ACF4B3899A86453 /* Pods-TrackCellularDataUsageTest.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -302,6 +372,7 @@
 		};
 		D0D3CF9926F0491A008F906C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 60E2976DE0F4D0F4A759F14C /* Pods-TrackCellularDataUsageTest.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
