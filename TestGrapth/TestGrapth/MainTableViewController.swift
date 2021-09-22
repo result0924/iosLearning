@@ -20,7 +20,7 @@ class MainTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return 3
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -34,6 +34,10 @@ class MainTableViewController: UITableViewController {
             navigationController?.pushViewController(vc, animated: true)
         } else if 1 == indexPath.row, let vc = storyboard?.instantiateViewController(withIdentifier: "AGPGraphViewController") as? AGPGraphViewController {
             navigationController?.pushViewController(vc, animated: true)
+        } else if 2 == indexPath.row, let vc = storyboard?.instantiateViewController(withIdentifier: "CircleProgressViewController") as? CircleProgressViewController {
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
 }
+
+
