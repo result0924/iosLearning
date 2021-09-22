@@ -238,7 +238,7 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="414" height="216.5"/>
                                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="216" id="B1q-98-PyW"/>
+                                                        <constraint firstAttribute="height" priority="750" constant="216" id="B1q-98-PyW"/>
                                                     </constraints>
                                                 </view>
                                             </subviews>
