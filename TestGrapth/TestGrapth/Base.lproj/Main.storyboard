@@ -207,9 +207,26 @@
                     <view key="view" contentMode="scaleToFill" id="mPU-9X-V7n">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pbm-eg-kFB" customClass="DonutChartView" customModule="TestGrapth" customModuleProvider="target">
+                                <rect key="frame" x="167" y="144" width="80" height="80"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="80" id="Ylc-hS-wD1"/>
+                                    <constraint firstAttribute="width" constant="80" id="nfa-6l-KRi"/>
+                                </constraints>
+                            </view>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="Qqc-OG-jZR"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Pbm-eg-kFB" firstAttribute="centerX" secondItem="mPU-9X-V7n" secondAttribute="centerX" id="d2E-1l-9cI"/>
+                            <constraint firstItem="Pbm-eg-kFB" firstAttribute="top" secondItem="Qqc-OG-jZR" secondAttribute="top" constant="100" id="piD-C7-oMT"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="donutChartView" destination="Pbm-eg-kFB" id="VDl-E1-Jv6"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wlB-Gw-Zkt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

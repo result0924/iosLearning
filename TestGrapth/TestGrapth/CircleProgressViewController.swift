@@ -8,22 +8,17 @@
 import UIKit
 
 class CircleProgressViewController: UIViewController {
-
+    @IBOutlet weak var donutChartView: DonutChartView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        let twentyPercentModel = PercentagesModel(percentages: 20, percentageLayerColor: UIColor.init(red: CGFloat.random(in: 0...1), green: CGFloat.random(in: 0...1), blue: CGFloat.random(in: 0...1), alpha: 1).cgColor)
+        let thirtyPercentModel = PercentagesModel(percentages: 30, percentageLayerColor: UIColor.init(red: CGFloat.random(in: 0...1), green: CGFloat.random(in: 0...1), blue: CGFloat.random(in: 0...1), alpha: 1).cgColor)
+        let fiftyPercentModel = PercentagesModel(percentages: 50, percentageLayerColor: UIColor.init(red: CGFloat.random(in: 0...1), green: CGFloat.random(in: 0...1), blue: CGFloat.random(in: 0...1), alpha: 1).cgColor)
+        let viewModel = DonutChartViewModel(lineWidth: 8, percentagesModel: [twentyPercentModel, thirtyPercentModel, fiftyPercentModel])
+        donutChartView.setupView(viewModel: viewModel)
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
