@@ -5,7 +5,7 @@
 - [OneV's Den](https://onevcat.com/)
 - [老司機週報](https://github.com/SwiftOldDriver/iOS-Weekly/releases)
 - [13的開發者週報](https://ethanhuang13.substack.com/)
-- [iOS摸魚週報](https://github.com/zhangferry/iOSWeeklyLearning)
+- [iOS摸魚週報](https://zhangferry.com/)
 - [戴銘的博客](https://ming1016.github.io/)
 - [肘子的Swift記事本](https://www.fatbobman.com/)
 - [SwfitGG](https://swift.gg/)
