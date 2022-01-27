@@ -29,6 +29,9 @@
 ### GCD
 - [GCD 教學](https://github.com/ming1016/study/wiki/%E7%BB%86%E8%AF%B4GCD%EF%BC%88Grand-Central-Dispatch%EF%BC%89%E5%A6%82%E4%BD%95%E7%94%A8)
 
+### Memory
+- [檢測和診斷應用程序內存問題](https://mp.weixin.qq.com/s?__biz=MzI2NTAxMzg2MA==&mid=2247492779&idx=1&sn=a371a10a3bcf58acd5593a1a38d6f1db&scene=21#wechat_redirect)
+
 ### Some thing
 - [Bash腳本資料教學](https://wangdoc.com/bash/intro.html)
 - [Use string print Data](https://gist.github.com/jkereako/606cda72f3f8aa5c6c8eb5ec8ce227a1)
