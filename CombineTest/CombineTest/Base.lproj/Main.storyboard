@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="wXA-Sj-hIj">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="wXA-Sj-hIj">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -23,7 +23,53 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8tY-yL-s55" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="444.92753623188412" y="26.785714285714285"/>
+            <point key="canvasLocation" x="552" y="-367"/>
+        </scene>
+        <!--Root View Controller-->
+        <scene sceneID="j8m-th-Z9L">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wBp-Kj-UJG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <tableViewController id="gic-Zh-MC3" customClass="UITestViewController" customModule="CombineTest" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="OZe-th-JnW">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="2kD-MS-Crs">
+                                <rect key="frame" x="0.0" y="49" width="414" height="43.666667938232422"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2kD-MS-Crs" id="zis-H2-cTk">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.666667938232422"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="gic-Zh-MC3" id="a3x-gY-A1h"/>
+                            <outlet property="delegate" destination="gic-Zh-MC3" id="yxG-6r-8NU"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Root View Controller" id="OLm-zw-hTm"/>
+                </tableViewController>
+            </objects>
+            <point key="canvasLocation" x="203" y="1009"/>
+        </scene>
+        <!--UITest-->
+        <scene sceneID="jhn-Gz-62s">
+            <objects>
+                <navigationController id="0ht-3f-qmG" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="UITest" image="paperplane.circle.fill" catalog="system" id="Tn3-EG-WHg"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="1zb-Rv-cFY">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="gic-Zh-MC3" kind="relationship" relationship="rootViewController" id="sI6-1V-gsp"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bti-nf-Es7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-690" y="1009"/>
         </scene>
         <!--TOS-->
         <scene sceneID="hgS-ga-gQy">
@@ -202,7 +248,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus nec posuere nul
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ri8-Av-5wq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="444.92753623188412" y="839.73214285714278"/>
+            <point key="canvasLocation" x="586" y="312"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="7li-GH-JnH">
@@ -216,6 +262,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus nec posuere nul
                     <connections>
                         <segue destination="vX6-BS-4P6" kind="relationship" relationship="viewControllers" id="pgA-q8-5Mh"/>
                         <segue destination="fgH-vs-17c" kind="relationship" relationship="viewControllers" id="ezH-Mz-CgN"/>
+                        <segue destination="0ht-3f-qmG" kind="relationship" relationship="viewControllers" id="0t2-i6-Rw2"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Knw-Ut-RRC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -226,6 +273,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus nec posuere nul
     <resources>
         <image name="disabledButton" width="21" height="21"/>
         <image name="doc" catalog="system" width="115" height="128"/>
+        <image name="paperplane.circle.fill" catalog="system" width="128" height="121"/>
         <image name="scribble" catalog="system" width="128" height="118"/>
         <image name="selectedSubmit" width="21" height="21"/>
         <image name="submitButton" width="21" height="25"/>
