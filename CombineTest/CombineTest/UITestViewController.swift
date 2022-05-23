@@ -7,6 +7,20 @@
 
 import UIKit
 
+enum UITestViewCase: CaseIterable {
+    case slider
+    case alertView
+    
+    var text: String {
+        switch self {
+        case .slider:
+            return "slider"
+        case .alertView:
+            return "alertView"
+        }
+    }
+}
+
 class UITestViewController: UITableViewController {
 
     override func viewDidLoad() {
@@ -21,19 +35,27 @@ class UITestViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return UITestViewCase.allCases.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell.init(style: .default, reuseIdentifier: "cell")
-        cell.textLabel?.text = "slider"
+        cell.textLabel?.text = UITestViewCase.allCases[indexPath.row].text
         
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let sliderVC = SliderViewController()
-        navigationController?.pushViewController(sliderVC, animated: true)
+        let uiCase = UITestViewCase.allCases[indexPath.row]
+        
+        switch uiCase {
+        case .slider:
+            let sliderVC = SliderViewController()
+            navigationController?.pushViewController(sliderVC, animated: true)
+        case .alertView:
+            print("alert view")
+        }
+        
     }
 }
 
