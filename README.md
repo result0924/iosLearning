@@ -13,6 +13,7 @@
 - [想成為iOS高階開發者](https://www.gushiciku.cn/pl/a6wC/zh-tw)
 - [iOS coder review](https://newsletter.ioscodereview.com/)
 - [swiftlyrushy](https://swiftlyrush.curated.co/)
+- [圖解方式、教學使用XCode快速鍵](https://xcode.tips/)
 ### Unit Test
 - [UIView test](https://benoitpasquier.com/unit-testing-uiview-action-gesture-swift/)
 - [Unit testing asynchronous Swift code](https://www.swiftbysundell.com/articles/unit-testing-asynchronous-swift-code/)
