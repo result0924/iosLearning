@@ -9,14 +9,17 @@ import UIKit
 
 enum UITestViewCase: CaseIterable {
     case slider
-    case alertView
+    case uiTextField
+    case notification
     
     var text: String {
         switch self {
         case .slider:
             return "slider"
-        case .alertView:
-            return "alertView"
+        case .uiTextField:
+            return "uiTextField"
+        case .notification:
+            return "notification"
         }
     }
 }
@@ -52,8 +55,12 @@ class UITestViewController: UITableViewController {
         case .slider:
             let sliderVC = SliderViewController()
             navigationController?.pushViewController(sliderVC, animated: true)
-        case .alertView:
-            print("alert view")
+        case .uiTextField:
+            let textFieldVC = TextFieldViewController()
+            navigationController?.pushViewController(textFieldVC, animated: true)
+        case .notification:
+            let notificationVC = NotificationCenterSampleViewController()
+            navigationController?.pushViewController(notificationVC, animated: true)
         }
         
     }
