@@ -40,6 +40,9 @@
 ### Memory
 - [檢測和診斷應用程序內存問題](https://mp.weixin.qq.com/s?__biz=MzI2NTAxMzg2MA==&mid=2247492779&idx=1&sn=a371a10a3bcf58acd5593a1a38d6f1db&scene=21#wechat_redirect)
 
+### Design Patteren
+- https://daddycoding.com/design-pattern/
+
 ### Some thing
 - [Bash腳本資料教學](https://wangdoc.com/bash/intro.html)
 - [Use string print Data](https://gist.github.com/jkereako/606cda72f3f8aa5c6c8eb5ec8ce227a1)
