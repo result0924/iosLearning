@@ -23,6 +23,7 @@
 - [iOS inter-view-question](https://github.com/onthecodepath/iOS-Interview-Questions)
 - [linkedin-quizzes-swift](https://github.com/Ebazhanov/linkedin-skill-assessments-quizzes/blob/master/swift/swift-quiz.md)
 - [iOS inter-view-question-and-answer](https://www.raywenderlich.com/762435-swift-interview-questions-and-answers)
+- [interview the best](https://lazarevzubov.medium.com/interviewing-the-best-5da59e7176b2)
 
 ### Git Hub
 - [AR 100 Days](https://github.com/satoshi0212/AR_100Days)
