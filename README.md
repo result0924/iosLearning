@@ -68,10 +68,6 @@ if let url = URL(string:UIApplicationOpenSettingsURLString) {
         }
 ```
 
-### Symbols
-- [Apple SF Symbols](https://developer.apple.com/sf-symbols/)
-- [Google Material Icon](https://fonts.google.com/icons)
-
 ### reinstall
 - [Terminal open vscode](https://stackoverflow.com/questions/30065227/run-open-vscode-from-mac-terminal)
 - [Terminal open gitx](https://stackoverflow.com/questions/11625836/make-gitx-open-via-terminal-for-the-repo-laying-at-the-current-path)
