@@ -6,5 +6,6 @@
         <page name='KeyPathProtocol'/>
         <page name='Practise'/>
         <page name='Answer'/>
+        <page name='KeyPathOperator'/>
     </pages>
 </playground>
