@@ -26,6 +26,8 @@
 - [iOS inter-view-question-and-answer](https://www.raywenderlich.com/762435-swift-interview-questions-and-answers)
 - [interview the best](https://lazarevzubov.medium.com/interviewing-the-best-5da59e7176b2)
 
+- [2022 awesome newsletters](https://blog.eidinger.info/awesome-newsletters-for-ios-and-swift-developers-in-2022?utm_campaign=SwiftlyRush%2BMonthly&utm_medium=web&utm_source=SwiftlyRush_Monthly_34)
+
 ### Git Hub
 - [AR 100 Days](https://github.com/satoshi0212/AR_100Days)
 - [Combine Playground](https://github.com/AvdLee/CombineSwiftPlayground)
