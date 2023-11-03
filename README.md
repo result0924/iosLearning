@@ -74,6 +74,8 @@ if let url = URL(string:UIApplicationOpenSettingsURLString) {
 ### reinstall
 - [Terminal open vscode](https://stackoverflow.com/questions/30065227/run-open-vscode-from-mac-terminal)
 - [Terminal open gitx](https://stackoverflow.com/questions/11625836/make-gitx-open-via-terminal-for-the-repo-laying-at-the-current-path)
+- [beter display教學](https://macuknow.com/2022/10/17/4833/betterdisplay/)
+接2k營幕需要
 - zsh add alias
 ```
 vim ~/.zshrc
