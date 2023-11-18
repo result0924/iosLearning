@@ -76,6 +76,8 @@ if let url = URL(string:UIApplicationOpenSettingsURLString) {
 - [Terminal open gitx](https://stackoverflow.com/questions/11625836/make-gitx-open-via-terminal-for-the-repo-laying-at-the-current-path)
 - [beter display教學](https://macuknow.com/2022/10/17/4833/betterdisplay/)
 接2k營幕需要
+- [sublime-merge](https://formulae.brew.sh/cask/sublime-merge)
+看git軟體
 - zsh add alias
 ```
 vim ~/.zshrc
