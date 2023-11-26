@@ -8,6 +8,7 @@
 - [iOS摸魚週報](https://zhangferry.com/)
 - [戴銘的博客](https://ming1016.github.io/)
 - [肘子的Swift記事本](https://www.fatbobman.com/)
+- [Fatbobman's Swift weekly](https://fatbobman.substack.com/)
 - [SwfitGG](https://swift.gg/)
 - [整理XCode空間](https://medium.com/%E5%BD%BC%E5%BE%97%E6%BD%98%E7%9A%84-swift-ios-app-%E9%96%8B%E7%99%BC%E6%95%99%E5%AE%A4/%E5%88%AA%E9%99%A4xcode%E4%BD%94%E6%93%9A%E7%A1%AC%E7%A2%9F%E5%A4%A7%E9%87%8F%E7%A9%BA%E9%96%93%E7%9A%84derived-data-190c85eba79)
 - [想成為iOS高階開發者](https://www.gushiciku.cn/pl/a6wC/zh-tw)
@@ -16,18 +17,6 @@
 - [圖解方式、教學使用XCode快速鍵](https://xcode.tips/)
 - [swift new](https://theswiftdev.com/news/)
 - [swift vincent](https://www.swiftwithvincent.com/tips)
-### Unit Test
-- [UIView test](https://benoitpasquier.com/unit-testing-uiview-action-gesture-swift/)
-- [Unit testing asynchronous Swift code](https://www.swiftbysundell.com/articles/unit-testing-asynchronous-swift-code/)
-- [MVVM + Dependency Injection + test](https://www.youtube.com/watch?v=Q1sjLDQMNzU&ab_channel=iCode)
-- [A complete list of articles on Unit Testing with Swift from 2017](https://medium.com/@koromikoneo/a-complete-list-of-articles-on-unit-testing-with-swift-from-2017-9be8f046ef25)
-### Inter View
-- [iOS inter-view-question](https://github.com/onthecodepath/iOS-Interview-Questions)
-- [linkedin-quizzes-swift](https://github.com/Ebazhanov/linkedin-skill-assessments-quizzes/blob/master/swift/swift-quiz.md)
-- [iOS inter-view-question-and-answer](https://www.raywenderlich.com/762435-swift-interview-questions-and-answers)
-- [interview the best](https://lazarevzubov.medium.com/interviewing-the-best-5da59e7176b2)
-
-- [2022 awesome newsletters](https://blog.eidinger.info/awesome-newsletters-for-ios-and-swift-developers-in-2022?utm_campaign=SwiftlyRush%2BMonthly&utm_medium=web&utm_source=SwiftlyRush_Monthly_34)
 
 ### Git Hub
 - [AR 100 Days](https://github.com/satoshi0212/AR_100Days)
@@ -38,9 +27,6 @@
 ### Core Data
 - [repository pattern](https://www.userdesk.io/blog/repository-pattern-using-core-data-and-swift/)
 - [transformable](https://danielbernal.co/coredata-transformable-and-nssecurecoding-in-ios-13/)
-
-### GCD
-- [GCD 教學](https://github.com/ming1016/study/wiki/%E7%BB%86%E8%AF%B4GCD%EF%BC%88Grand-Central-Dispatch%EF%BC%89%E5%A6%82%E4%BD%95%E7%94%A8)
 
 ### Memory
 - [檢測和診斷應用程序內存問題](https://mp.weixin.qq.com/s?__biz=MzI2NTAxMzg2MA==&mid=2247492779&idx=1&sn=a371a10a3bcf58acd5593a1a38d6f1db&scene=21#wechat_redirect)
