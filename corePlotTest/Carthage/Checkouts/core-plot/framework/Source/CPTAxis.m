@@ -1,13 +1,14 @@
 #import "CPTAxis.h"
 
-#import "CPTAxisLabelGroup.h"
+#import "_CPTAxisLabelGroup.h"
+#import "_CPTGridLineGroup.h"
+#import "_CPTGridLines.h"
+#import "_NSCoderExtensions.h"
 #import "CPTAxisSet.h"
 #import "CPTAxisTitle.h"
 #import "CPTColor.h"
 #import "CPTExceptions.h"
 #import "CPTGradient.h"
-#import "CPTGridLineGroup.h"
-#import "CPTGridLines.h"
 #import "CPTImage.h"
 #import "CPTLineCap.h"
 #import "CPTLineStyle.h"
@@ -17,7 +18,6 @@
 #import "CPTShadow.h"
 #import "CPTTextLayer.h"
 #import "CPTUtilities.h"
-#import "NSCoderExtensions.h"
 
 /** @defgroup axisAnimation Axes
  *  @brief Axis properties that can be animated using Core Animation.
@@ -68,6 +68,7 @@ NSDecimal CPTNiceLength(NSDecimal length);
  *  @nil, the axis and grid lines will extend the full width of the plot area.
  *  @image html "axis ranges.png" "Axis Ranges"
  *  @see See @ref axisAnimation "Axes" for a list of animatable properties.
+ *  @see @ref "CPTAxis(AbstractMethods)"
  **/
 @implementation CPTAxis
 
@@ -490,8 +491,8 @@ NSDecimal CPTNiceLength(NSDecimal length);
  *  - @ref majorTickLength = @num{5.0}
  *  - @ref labelOffset = @num{2.0}
  *  - @ref minorTickLabelOffset = @num{2.0}
- *  - @ref labelRotation= @num{0.0}
- *  - @ref minorTickLabelRotation= @num{0.0}
+ *  - @ref labelRotation = @num{0.0}
+ *  - @ref minorTickLabelRotation = @num{0.0}
  *  - @ref labelAlignment = #CPTAlignmentCenter
  *  - @ref minorTickLabelAlignment = #CPTAlignmentCenter
  *  - @ref title = @nil
@@ -503,7 +504,7 @@ NSDecimal CPTNiceLength(NSDecimal length);
  *  - @ref tickLabelDirection = #CPTSignNone
  *  - @ref minorTickLabelDirection = #CPTSignNone
  *  - @ref majorGridLineStyle = @nil
- *  - @ref minorGridLineStyle= @nil
+ *  - @ref minorGridLineStyle = @nil
  *  - @ref axisLineCapMin = @nil
  *  - @ref axisLineCapMax = @nil
  *  - @ref labelingOrigin = @num{0}
@@ -535,8 +536,8 @@ NSDecimal CPTNiceLength(NSDecimal length);
  *  - @ref majorGridLines = @nil
  *  - @ref needsDisplayOnBoundsChange = @YES
  *
- *  @param newFrame The frame rectangle.
- *  @return The initialized CPTAxis object.
+ *  @param  newFrame The frame rectangle.
+ *  @return          The initialized CPTAxis object.
  **/
 -(nonnull instancetype)initWithFrame:(CGRect)newFrame
 {
@@ -808,7 +809,7 @@ NSDecimal CPTNiceLength(NSDecimal length);
                                               forKey:@"CPTAxis.axisLineCapMax"] copy];
         NSNumber *origin = [coder decodeObjectOfClass:[NSNumber class]
                                                forKey:@"CPTAxis.labelingOrigin"];
-        labelingOrigin      = origin ? origin : @0.0;
+        labelingOrigin      = origin != nil ? origin : @0.0;
         majorIntervalLength = [coder decodeObjectOfClass:[NSNumber class]
                                                   forKey:@"CPTAxis.majorIntervalLength"];
         minorTicksPerInterval       = (NSUInteger)[coder decodeIntegerForKey:@"CPTAxis.minorTicksPerInterval"];
@@ -931,7 +932,7 @@ NSDecimal CPTNiceLength(NSDecimal length);
  *  @brief Generate major and minor tick locations using the fixed interval labeling policy.
  *  @param newMajorLocations A new NSSet containing the major tick locations.
  *  @param newMinorLocations A new NSSet containing the minor tick locations.
- */
+ **/
 -(void)generateFixedIntervalMajorTickLocations:(CPTNumberSet *__autoreleasing *)newMajorLocations minorTickLocations:(CPTNumberSet *__autoreleasing *)newMinorLocations
 {
     CPTMutableNumberSet *majorLocations = [NSMutableSet set];
@@ -1011,7 +1012,7 @@ NSDecimal CPTNiceLength(NSDecimal length);
  *  @brief Generate major and minor tick locations using the automatic labeling policy.
  *  @param newMajorLocations A new NSSet containing the major tick locations.
  *  @param newMinorLocations A new NSSet containing the minor tick locations.
- */
+ **/
 -(void)autoGenerateMajorTickLocations:(CPTNumberSet *__autoreleasing *)newMajorLocations minorTickLocations:(CPTNumberSet *__autoreleasing *)newMinorLocations
 {
     // Create sets for locations
@@ -1142,8 +1143,8 @@ NSDecimal CPTNiceLength(NSDecimal length);
                     }
                     [majorLocations addObject:[NSDecimalNumber decimalNumberWithDecimal:pointLocation]];
                 }
+                break;
             }
-            break;
 
             case CPTScaleTypeLog:
             {
@@ -1188,8 +1189,8 @@ NSDecimal CPTNiceLength(NSDecimal length);
                         [majorLocations addObject:@(pointLocation)];
                     }
                 }
+                break;
             }
-            break;
 
             case CPTScaleTypeLogModulus:
             {
@@ -1288,8 +1289,8 @@ NSDecimal CPTNiceLength(NSDecimal length);
                         [majorLocations addObject:@(pointLocation)];
                     }
                 }
+                break;
             }
-            break;
 
             default:
                 break;
@@ -1306,7 +1307,7 @@ NSDecimal CPTNiceLength(NSDecimal length);
  *  @brief Generate major and minor tick locations using the equal divisions labeling policy.
  *  @param newMajorLocations A new NSSet containing the major tick locations.
  *  @param newMinorLocations A new NSSet containing the minor tick locations.
- */
+ **/
 -(void)generateEqualMajorTickLocations:(CPTNumberSet *__autoreleasing *)newMajorLocations minorTickLocations:(CPTNumberSet *__autoreleasing *)newMinorLocations
 {
     CPTMutableNumberSet *majorLocations = [NSMutableSet set];
@@ -1377,7 +1378,7 @@ NSDecimal CPTNiceLength(NSDecimal length);
  *  @internal
  *  @brief Determines a @quote{nice} number (a multiple of @num{2}, @num{5}, or @num{10}) near the given number.
  *  @param x The number to round.
- */
+ **/
 NSDecimal CPTNiceNum(NSDecimal x)
 {
     NSDecimal zero = CPTDecimalFromInteger(0);
@@ -1430,7 +1431,7 @@ NSDecimal CPTNiceNum(NSDecimal x)
  *  @internal
  *  @brief Determines a @quote{nice} range length (a multiple of @num{2}, @num{5}, or @num{10}) less than or equal to the given length.
  *  @param length The length to round.
- */
+ **/
 NSDecimal CPTNiceLength(NSDecimal length)
 {
     NSDecimal zero = CPTDecimalFromInteger(0);
@@ -1467,9 +1468,9 @@ NSDecimal CPTNiceLength(NSDecimal length)
 /**
  *  @internal
  *  @brief Removes any tick locations falling inside the label exclusion ranges from a set of tick locations.
- *  @param allLocations A set of tick locations.
- *  @return The filtered set of tick locations.
- */
+ *  @param  allLocations A set of tick locations.
+ *  @return              The filtered set of tick locations.
+ **/
 -(nullable CPTNumberSet *)filteredTickLocations:(nullable CPTNumberSet *)allLocations
 {
     CPTPlotRangeArray *exclusionRanges = self.labelExclusionRanges;
@@ -1493,8 +1494,8 @@ NSDecimal CPTNiceLength(NSDecimal length)
 /// @endcond
 
 /** @brief Removes any major ticks falling inside the label exclusion ranges from the set of tick locations.
- *  @param allLocations A set of major tick locations.
- *  @return The filtered set.
+ *  @param  allLocations A set of major tick locations.
+ *  @return              The filtered set.
  **/
 -(nullable CPTNumberSet *)filteredMajorTickLocations:(nullable CPTNumberSet *)allLocations
 {
@@ -1502,8 +1503,8 @@ NSDecimal CPTNiceLength(NSDecimal length)
 }
 
 /** @brief Removes any minor ticks falling inside the label exclusion ranges from the set of tick locations.
- *  @param allLocations A set of minor tick locations.
- *  @return The filtered set.
+ *  @param  allLocations A set of minor tick locations.
+ *  @return              The filtered set.
  **/
 -(nullable CPTNumberSet *)filteredMinorTickLocations:(nullable CPTNumberSet *)allLocations
 {
@@ -1537,8 +1538,8 @@ NSDecimal CPTNiceLength(NSDecimal length)
  *  @internal
  *  @brief Updates the set of axis labels using the given locations.
  *  Existing axis label objects and content layers are reused where possible.
- *  @param locations A set of NSDecimalNumber label locations.
- *  @param labeledRange A plot range used to filter the generated labels. If @nil, no filtering is done.
+ *  @param locations          A set of NSDecimalNumber label locations.
+ *  @param labeledRange       A plot range used to filter the generated labels. If @nil, no filtering is done.
  *  @param useMajorAxisLabels If @YES, label the major ticks, otherwise label the minor ticks.
  **/
 -(void)updateAxisLabelsAtLocations:(nullable CPTNumberSet *)locations inRange:(nullable CPTPlotRange *)labeledRange useMajorAxisLabels:(BOOL)useMajorAxisLabels
@@ -1800,8 +1801,8 @@ NSDecimal CPTNiceLength(NSDecimal length)
             [self updateAxisLabelsAtLocations:self.minorTickLocations
                                       inRange:labeledRange
                            useMajorAxisLabels:NO];
+            break;
         }
-        break;
 
         default:
             [self updateAxisLabelsAtLocations:self.majorTickLocations
@@ -1830,7 +1831,7 @@ NSDecimal CPTNiceLength(NSDecimal length)
 /**
  *  @internal
  *  @brief Updates the position of all custom labels, hiding the ones that are outside the visible range.
- */
+ **/
 -(void)updateCustomTickLabels
 {
     CPTMutablePlotRange *range = [[self.plotSpace plotRangeForCoordinate:self.coordinate] mutableCopy];
@@ -2073,9 +2074,9 @@ NSDecimal CPTNiceLength(NSDecimal length)
  *
  *  This method returns @NO if the @par{interactionPoint} is outside all of the labels.
  *
- *  @param event The OS event.
- *  @param interactionPoint The coordinates of the interaction.
- *  @return Whether the event was handled or not.
+ *  @param  event            The OS event.
+ *  @param  interactionPoint The coordinates of the interaction.
+ *  @return                  Whether the event was handled or not.
  **/
 -(BOOL)pointingDeviceDownEvent:(nonnull CPTNativeEvent *)event atPoint:(CGPoint)interactionPoint
 {
@@ -2178,9 +2179,9 @@ NSDecimal CPTNiceLength(NSDecimal length)
  *
  *  This method returns @NO if the @par{interactionPoint} is outside all of the labels.
  *
- *  @param event The OS event.
- *  @param interactionPoint The coordinates of the interaction.
- *  @return Whether the event was handled or not.
+ *  @param  event            The OS event.
+ *  @param  interactionPoint The coordinates of the interaction.
+ *  @return                  Whether the event was handled or not.
  **/
 -(BOOL)pointingDeviceUpEvent:(nonnull CPTNativeEvent *)event atPoint:(CGPoint)interactionPoint
 {
@@ -2566,7 +2567,7 @@ NSDecimal CPTNiceLength(NSDecimal length)
 {
     BOOL needsUpdate = YES;
 
-    if ( newLocation ) {
+    if ( newLocation != nil ) {
         NSNumber *location = newLocation;
         needsUpdate = ![titleLocation isEqualToNumber:location];
     }
@@ -2873,7 +2874,7 @@ NSDecimal CPTNiceLength(NSDecimal length)
 {
     BOOL needsUpdate = YES;
 
-    if ( newLabelingOrigin ) {
+    if ( newLabelingOrigin != nil ) {
         needsUpdate = ![labelingOrigin isEqualToNumber:newLabelingOrigin];
     }
 
@@ -2888,7 +2889,7 @@ NSDecimal CPTNiceLength(NSDecimal length)
 {
     BOOL needsUpdate = YES;
 
-    if ( newIntervalLength ) {
+    if ( newIntervalLength != nil ) {
         NSNumber *interval = newIntervalLength;
         needsUpdate = ![majorIntervalLength isEqualToNumber:interval];
     }
@@ -3266,11 +3267,16 @@ NSDecimal CPTNiceLength(NSDecimal length)
 
 #pragma mark -
 
+/**
+ *  @brief CPTAxis abstract methods—must be overridden by subclasses
+ *
+ *  @see CPTAxis
+ **/
 @implementation CPTAxis(AbstractMethods)
 
 /** @brief Converts a position on the axis to drawing coordinates.
- *  @param coordinateValue The axis value in data coordinate space.
- *  @return The drawing coordinates of the point.
+ *  @param  coordinateValue The axis value in data coordinate space.
+ *  @return                 The drawing coordinates of the point.
  **/
 -(CGPoint)viewPointForCoordinateValue:(nullable NSNumber *__unused)coordinateValue
 {
@@ -3279,7 +3285,7 @@ NSDecimal CPTNiceLength(NSDecimal length)
 
 /** @brief Draws grid lines into the provided graphics context.
  *  @param context The graphics context to draw into.
- *  @param major Draw the major grid lines If @YES, minor grid lines otherwise.
+ *  @param major   Draw the major grid lines If @YES, minor grid lines otherwise.
  **/
 -(void)drawGridLinesInContext:(nonnull CGContextRef __unused)context isMajor:(BOOL __unused)major
 {

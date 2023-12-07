@@ -1,5 +1,7 @@
 #import "CPTRangePlot.h"
 
+#import "_NSCoderExtensions.h"
+#import "_NSNumberExtensions.h"
 #import "CPTExceptions.h"
 #import "CPTFill.h"
 #import "CPTLegend.h"
@@ -12,8 +14,6 @@
 #import "CPTPlotSpaceAnnotation.h"
 #import "CPTUtilities.h"
 #import "CPTXYPlotSpace.h"
-#import "NSCoderExtensions.h"
-#import "NSNumberExtensions.h"
 #import <tgmath.h>
 
 /** @defgroup plotAnimationRangePlot Range Plot
@@ -149,7 +149,7 @@ typedef struct CGPointError CGPointError;
 
 /// @cond
 
-#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE || TARGET_OS_MACCATALYST
 #else
 +(void)initialize
 {
@@ -184,8 +184,8 @@ typedef struct CGPointError CGPointError;
  *  - @ref gapWidth = 0.0
  *  - @ref labelField = #CPTRangePlotFieldX
  *
- *  @param newFrame The frame rectangle.
- *  @return The initialized CPTRangePlot object.
+ *  @param  newFrame The frame rectangle.
+ *  @return          The initialized CPTRangePlot object.
  **/
 -(nonnull instancetype)initWithFrame:(CGRect)newFrame
 {
@@ -487,46 +487,30 @@ typedef struct CGPointError CGPointError;
 {
     // Align to device pixels if there is a data line.
     // Otherwise, align to view space, so fills are sharp at edges.
+    CPTAlignPointFunction alignmentFunction = CPTAlignIntegralPointToUserSpace;
+
     if ( self.barLineStyle.lineWidth > CPTFloat(0.0)) {
-        dispatch_apply(dataCount, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(size_t i) {
-            if ( drawPointFlags[i] ) {
-                CGFloat x       = viewPoints[i].x;
-                CGFloat y       = viewPoints[i].y;
-                CGPoint pos     = CPTAlignPointToUserSpace(context, CPTPointMake(viewPoints[i].x, viewPoints[i].y));
-                viewPoints[i].x = pos.x;
-                viewPoints[i].y = pos.y;
-
-                pos                 = CPTAlignPointToUserSpace(context, CPTPointMake(x, viewPoints[i].high));
-                viewPoints[i].high  = pos.y;
-                pos                 = CPTAlignPointToUserSpace(context, CPTPointMake(x, viewPoints[i].low));
-                viewPoints[i].low   = pos.y;
-                pos                 = CPTAlignPointToUserSpace(context, CPTPointMake(viewPoints[i].left, y));
-                viewPoints[i].left  = pos.x;
-                pos                 = CPTAlignPointToUserSpace(context, CPTPointMake(viewPoints[i].right, y));
-                viewPoints[i].right = pos.x;
-            }
-        });
+        alignmentFunction = CPTAlignPointToUserSpace;
     }
-    else {
-        dispatch_apply(dataCount, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(size_t i) {
-            if ( drawPointFlags[i] ) {
-                CGFloat x       = viewPoints[i].x;
-                CGFloat y       = viewPoints[i].y;
-                CGPoint pos     = CPTAlignIntegralPointToUserSpace(context, CPTPointMake(viewPoints[i].x, viewPoints[i].y));
-                viewPoints[i].x = pos.x;
-                viewPoints[i].y = pos.y;
 
-                pos                 = CPTAlignIntegralPointToUserSpace(context, CPTPointMake(x, viewPoints[i].high));
-                viewPoints[i].high  = pos.y;
-                pos                 = CPTAlignIntegralPointToUserSpace(context, CPTPointMake(x, viewPoints[i].low));
-                viewPoints[i].low   = pos.y;
-                pos                 = CPTAlignIntegralPointToUserSpace(context, CPTPointMake(viewPoints[i].left, y));
-                viewPoints[i].left  = pos.x;
-                pos                 = CPTAlignIntegralPointToUserSpace(context, CPTPointMake(viewPoints[i].right, y));
-                viewPoints[i].right = pos.x;
-            }
-        });
-    }
+    dispatch_apply(dataCount, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(size_t i) {
+        if ( drawPointFlags[i] ) {
+            CGFloat x       = viewPoints[i].x;
+            CGFloat y       = viewPoints[i].y;
+            CGPoint pos     = alignmentFunction(context, CPTPointMake(viewPoints[i].x, viewPoints[i].y));
+            viewPoints[i].x = pos.x;
+            viewPoints[i].y = pos.y;
+
+            pos                 = alignmentFunction(context, CPTPointMake(x, viewPoints[i].high));
+            viewPoints[i].high  = pos.y;
+            pos                 = alignmentFunction(context, CPTPointMake(x, viewPoints[i].low));
+            viewPoints[i].low   = pos.y;
+            pos                 = alignmentFunction(context, CPTPointMake(viewPoints[i].left, y));
+            viewPoints[i].left  = pos.x;
+            pos                 = alignmentFunction(context, CPTPointMake(viewPoints[i].right, y));
+            viewPoints[i].right = pos.x;
+        }
+    });
 }
 
 -(NSInteger)extremeDrawnPointIndexForFlags:(nonnull BOOL *)pointDrawFlags numberOfPoints:(NSUInteger)dataCount extremeNumIsLowerBound:(BOOL)isLowerBound
@@ -680,7 +664,7 @@ typedef struct CGPointError CGPointError;
 
         for ( NSUInteger idx = indexRange.location; idx < maxIndex; idx++ ) {
             NSNumber *width = [theDataSource barWidthForRangePlot:self recordIndex:idx];
-            if ( width ) {
+            if ( width != nil ) {
                 [array addObject:width];
             }
             else {
@@ -710,7 +694,7 @@ typedef struct CGPointError CGPointError;
     CPTMutableNumericData *xValueData = [self cachedNumbersForField:CPTRangePlotFieldX];
     CPTMutableNumericData *yValueData = [self cachedNumbersForField:CPTRangePlotFieldY];
 
-    if ((xValueData == nil) || (yValueData == nil)) {
+    if ( !xValueData || !yValueData ) {
         return;
     }
     NSUInteger dataCount = self.cachedDataCount;
@@ -1026,7 +1010,7 @@ typedef struct CGPointError CGPointError;
 {
     CPTLineStyle *theBarLineStyle = [self cachedValueForKey:CPTRangePlotBindingBarLineStyles recordIndex:idx];
 
-    if ((theBarLineStyle == nil) || (theBarLineStyle == [CPTPlot nilData])) {
+    if ( !theBarLineStyle || (theBarLineStyle == [CPTPlot nilData])) {
         theBarLineStyle = self.barLineStyle;
     }
 
@@ -1241,9 +1225,9 @@ typedef struct CGPointError CGPointError;
  *  index where the @par{interactionPoint} is inside a bar.
  *  This method returns @NO if the @par{interactionPoint} is outside all of the bars.
  *
- *  @param event The OS event.
- *  @param interactionPoint The coordinates of the interaction.
- *  @return Whether the event was handled or not.
+ *  @param  event            The OS event.
+ *  @param  interactionPoint The coordinates of the interaction.
+ *  @return                  Whether the event was handled or not.
  **/
 -(BOOL)pointingDeviceDownEvent:(nonnull CPTNativeEvent *)event atPoint:(CGPoint)interactionPoint
 {
@@ -1307,9 +1291,9 @@ typedef struct CGPointError CGPointError;
  *  @link CPTRangePlotDelegate::rangePlot:rangeWasSelectedAtRecordIndex:withEvent: -rangePlot:rangeWasSelectedAtRecordIndex:withEvent: @endlink
  *  methods, these will be called.
  *
- *  @param event The OS event.
- *  @param interactionPoint The coordinates of the interaction.
- *  @return Whether the event was handled or not.
+ *  @param  event            The OS event.
+ *  @param  interactionPoint The coordinates of the interaction.
+ *  @return                  Whether the event was handled or not.
  **/
 -(BOOL)pointingDeviceUpEvent:(nonnull CPTNativeEvent *)event atPoint:(CGPoint)interactionPoint
 {

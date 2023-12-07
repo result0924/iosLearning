@@ -1,9 +1,9 @@
 #import "CPTColor.h"
 
+#import "_NSCoderExtensions.h"
 #import "CPTColorSpace.h"
 #import "CPTDefinitions.h"
 #import "CPTPlatformSpecificCategories.h"
-#import "NSCoderExtensions.h"
 
 /// @cond
 
@@ -11,7 +11,7 @@
 
 #if TARGET_OS_OSX
 @property (nonatomic, readonly, nullable) NSColor *nsColorCache;
-#elif TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
+#elif TARGET_OS_SIMULATOR || TARGET_OS_IPHONE || TARGET_OS_MACCATALYST
 @property (nonatomic, readonly, nullable) UIColor *uiColorCache;
 #endif
 
@@ -55,7 +55,7 @@
     }
 }
 
-#elif TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
+#elif TARGET_OS_SIMULATOR || TARGET_OS_IPHONE || TARGET_OS_MACCATALYST
 
 /** @internal
  *  @property nullable UIColor *uiColorCache
@@ -91,7 +91,7 @@
 {
 #if TARGET_OS_OSX
     return self.nsColor;
-#elif TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
+#elif TARGET_OS_SIMULATOR || TARGET_OS_IPHONE || TARGET_OS_MACCATALYST
     return self.uiColor;
 #endif
 }
@@ -108,7 +108,7 @@
     if ( theNSColor ) {
         return theNSColor.CGColor;
     }
-#elif TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
+#elif TARGET_OS_SIMULATOR || TARGET_OS_IPHONE || TARGET_OS_MACCATALYST
     UIColor *theUIColor = self.uiColorCache;
     if ( theUIColor ) {
         return theUIColor.CGColor;
@@ -119,7 +119,7 @@
 
 /** @property BOOL opaque
  *  @brief If @YES, the color is completely opaque.
- */
+ **/
 @dynamic opaque;
 
 #pragma mark -
@@ -385,8 +385,8 @@
 #pragma mark Factory Methods
 
 /** @brief Creates and returns a new CPTColor instance initialized with the provided @ref CGColorRef.
- *  @param newCGColor The color to wrap.
- *  @return A new CPTColor instance initialized with the provided @ref CGColorRef.
+ *  @param  newCGColor The color to wrap.
+ *  @return            A new CPTColor instance initialized with the provided @ref CGColorRef.
  **/
 +(nonnull instancetype)colorWithCGColor:(nonnull CGColorRef)newCGColor
 {
@@ -394,11 +394,11 @@
 }
 
 /** @brief Creates and returns a new CPTColor instance initialized with the provided RGBA color components.
- *  @param red The red component (@num{0} ≤ @par{red} ≤ @num{1}).
- *  @param green The green component (@num{0} ≤ @par{green} ≤ @num{1}).
- *  @param blue The blue component (@num{0} ≤ @par{blue} ≤ @num{1}).
- *  @param alpha The alpha component (@num{0} ≤ @par{alpha} ≤ @num{1}).
- *  @return A new CPTColor instance initialized with the provided RGBA color components.
+ *  @param  red   The red component (@num{0} ≤ @par{red} ≤ @num{1}).
+ *  @param  green The green component (@num{0} ≤ @par{green} ≤ @num{1}).
+ *  @param  blue  The blue component (@num{0} ≤ @par{blue} ≤ @num{1}).
+ *  @param  alpha The alpha component (@num{0} ≤ @par{alpha} ≤ @num{1}).
+ *  @return       A new CPTColor instance initialized with the provided RGBA color components.
  **/
 +(nonnull instancetype)colorWithComponentRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha
 {
@@ -406,8 +406,8 @@
 }
 
 /** @brief Creates and returns a new CPTColor instance initialized with the provided gray level.
- *  @param gray The gray level (@num{0} ≤ @par{gray} ≤ @num{1}).
- *  @return A new CPTColor instance initialized with the provided gray level.
+ *  @param  gray The gray level (@num{0} ≤ @par{gray} ≤ @num{1}).
+ *  @return      A new CPTColor instance initialized with the provided gray level.
  **/
 +(nonnull instancetype)colorWithGenericGray:(CGFloat)gray
 {
@@ -425,22 +425,22 @@
  *
  *  The NSColor can be a dynamic system color or catalog color. This adds support for Dark Mode in macOS 10.14.
  *
- *  @param newNSColor The color to wrap.
- *  @return A new CPTColor instance initialized with the provided NSColor.
+ *  @param  newNSColor The color to wrap.
+ *  @return            A new CPTColor instance initialized with the provided NSColor.
  **/
 +(nonnull instancetype)colorWithNSColor:(nonnull NSColor *)newNSColor
 {
     return [[self alloc] initWithNSColor:newNSColor];
 }
 
-#elif TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
+#elif TARGET_OS_SIMULATOR || TARGET_OS_IPHONE || TARGET_OS_MACCATALYST
 
 /** @brief Creates and returns a new CPTColor instance initialized with the provided UIColor.
  *
  *  The UIColor can be a dynamic system color or catalog color. This adds support for Dark Mode in iOS 13.
  *
- *  @param newUIColor The color to wrap.
- *  @return A new CPTColor instance initialized with the provided UIColor.
+ *  @param  newUIColor The color to wrap.
+ *  @return            A new CPTColor instance initialized with the provided UIColor.
  **/
 +(nonnull instancetype)colorWithUIColor:(nonnull UIColor *)newUIColor
 {
@@ -451,16 +451,16 @@
 
 /** @brief Creates and returns a new CPTColor instance initialized with the provided platform-native color.
  *
- *  The color can be a dynamic system color or catalog color. This adds support for Dark Mode in iOS13.
+ *  The color can be a dynamic system color or catalog color. This adds support for Dark Mode in iOS 13.
  *
- *  @param newColor The color to wrap.
- *  @return A new CPTColor instance initialized with the provided platform-native color.
+ *  @param  newColor The color to wrap.
+ *  @return          A new CPTColor instance initialized with the provided platform-native color.
  **/
 +(nonnull instancetype)colorWithNativeColor:(nonnull CPTNativeColor *)newColor
 {
 #if TARGET_OS_OSX
     return [[self alloc] initWithNSColor:newColor];
-#elif TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
+#elif TARGET_OS_SIMULATOR || TARGET_OS_IPHONE || TARGET_OS_MACCATALYST
     return [[self alloc] initWithUIColor:newColor];
 #endif
 }
@@ -470,8 +470,8 @@
 
 /** @brief Initializes a newly allocated CPTColor object with the provided @ref CGColorRef.
  *
- *  @param newCGColor The color to wrap.
- *  @return The initialized CPTColor object.
+ *  @param  newCGColor The color to wrap.
+ *  @return            The initialized CPTColor object.
  **/
 -(nonnull instancetype)initWithCGColor:(nonnull CGColorRef)newCGColor
 {
@@ -484,11 +484,11 @@
 
 /** @brief Initializes a newly allocated CPTColor object with the provided RGBA color components.
  *
- *  @param red The red component (@num{0} ≤ @par{red} ≤ @num{1}).
- *  @param green The green component (@num{0} ≤ @par{green} ≤ @num{1}).
- *  @param blue The blue component (@num{0} ≤ @par{blue} ≤ @num{1}).
- *  @param alpha The alpha component (@num{0} ≤ @par{alpha} ≤ @num{1}).
- *  @return The initialized CPTColor object.
+ *  @param  red   The red component (@num{0} ≤ @par{red} ≤ @num{1}).
+ *  @param  green The green component (@num{0} ≤ @par{green} ≤ @num{1}).
+ *  @param  blue  The blue component (@num{0} ≤ @par{blue} ≤ @num{1}).
+ *  @param  alpha The alpha component (@num{0} ≤ @par{alpha} ≤ @num{1}).
+ *  @return       The initialized CPTColor object.
  **/
 -(nonnull instancetype)initWithComponentRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha
 {
@@ -511,8 +511,8 @@
  *
  *  The NSColor can be a dynamic system color or catalog color. This adds support for Dark Mode in macOS 10.14.
  *
- *  @param newNSColor The color to wrap.
- *  @return The initialized CPTColor object.
+ *  @param  newNSColor The color to wrap.
+ *  @return            The initialized CPTColor object.
  **/
 -(nonnull instancetype)initWithNSColor:(nonnull NSColor *)newNSColor
 {
@@ -522,14 +522,14 @@
     return self;
 }
 
-#elif TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
+#elif TARGET_OS_SIMULATOR || TARGET_OS_IPHONE || TARGET_OS_MACCATALYST
 
 /** @brief Initializes a newly allocated CPTColor object with the provided UIColor.
  *
  *  The UIColor can be a dynamic system color or catalog color. This adds support for Dark Mode in iOS 13.
  *
- *  @param newUIColor The color to wrap.
- *  @return The initialized CPTColor object.
+ *  @param  newUIColor The color to wrap.
+ *  @return            The initialized CPTColor object.
  **/
 -(nonnull instancetype)initWithUIColor:(nonnull UIColor *)newUIColor
 {
@@ -545,14 +545,14 @@
  *
  *  The color can be a dynamic system color or catalog color. This adds support for Dark Mode in macOS 10.14 and iOS 13.
  *
- *  @param newColor The color to wrap.
- *  @return The initialized CPTColor object.
+ *  @param  newColor The color to wrap.
+ *  @return          The initialized CPTColor object.
  **/
 -(nonnull instancetype)initWithNativeColor:(nonnull CPTNativeColor *)newColor
 {
 #if TARGET_OS_OSX
     return [self initWithNSColor:newColor];
-#elif TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
+#elif TARGET_OS_SIMULATOR || TARGET_OS_IPHONE || TARGET_OS_MACCATALYST
     return [self initWithUIColor:newColor];
 #endif
 }
@@ -576,8 +576,8 @@
 
 /** @brief Creates and returns a new CPTColor instance having color components identical to the current object
  *  but having the provided alpha component.
- *  @param alpha The alpha component (@num{0} ≤ @par{alpha} ≤ @num{1}).
- *  @return A new CPTColor instance having the provided alpha component.
+ *  @param  alpha The alpha component (@num{0} ≤ @par{alpha} ≤ @num{1}).
+ *  @return       A new CPTColor instance having the provided alpha component.
  **/
 -(nonnull instancetype)colorWithAlphaComponent:(CGFloat)alpha
 {
@@ -587,7 +587,7 @@
         NSColor *newNSColor = [theNSColor colorWithAlphaComponent:alpha];
         return [[self class] colorWithNSColor:newNSColor];
     }
-#elif TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
+#elif TARGET_OS_SIMULATOR || TARGET_OS_IPHONE || TARGET_OS_MACCATALYST
     UIColor *theUIColor = self.uiColorCache;
     if ( theUIColor ) {
         UIColor *newUIColor = [theUIColor colorWithAlphaComponent:alpha];
@@ -622,7 +622,7 @@
 {
 #if TARGET_OS_OSX
     [coder encodeConditionalObject:self.nsColorCache forKey:@"CPTColor.nsColorCache"];
-#elif TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
+#elif TARGET_OS_SIMULATOR || TARGET_OS_IPHONE || TARGET_OS_MACCATALYST
     [coder encodeConditionalObject:self.uiColorCache forKey:@"CPTColor.uiColorCache"];
 #endif
 
@@ -644,9 +644,9 @@
 /// @endcond
 
 /** @brief Returns an object initialized from data in a given unarchiver.
- *  @param coder An unarchiver object.
- *  @return An object initialized from data in a given unarchiver.
- */
+ *  @param  coder An unarchiver object.
+ *  @return       An object initialized from data in a given unarchiver.
+ **/
 -(nullable instancetype)initWithCoder:(nonnull NSCoder *)coder
 {
     if ((self = [super init])) {
@@ -656,7 +656,7 @@
         if ( decodedNSColor ) {
             nsColorCache = decodedNSColor;
         }
-#elif TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
+#elif TARGET_OS_SIMULATOR || TARGET_OS_IPHONE || TARGET_OS_MACCATALYST
         UIColor *decodedUIColor = [coder decodeObjectOfClass:[UIColor class]
                                                       forKey:@"CPTColor.uiColorCache"];
         if ( decodedUIColor ) {
@@ -708,7 +708,7 @@
         CPTColor *colorCopy = [[[self class] allocWithZone:zone] initWithNSColor:nsColorCopy];
         return colorCopy;
     }
-#elif TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
+#elif TARGET_OS_SIMULATOR || TARGET_OS_IPHONE || TARGET_OS_MACCATALYST
     UIColor *uiColorCopy = [self.uiColorCache copyWithZone:zone];
     if ( uiColorCopy ) {
         CPTColor *colorCopy = [[[self class] allocWithZone:zone] initWithUIColor:uiColorCopy];
@@ -740,8 +740,8 @@
 
 /** @brief Returns a boolean value that indicates whether the received is equal to the given object.
  *  Colors are equal if they have equal @ref cgColor properties.
- *  @param object The object to be compared with the receiver.
- *  @return @YES if @par{object} is equal to the receiver, @NO otherwise.
+ *  @param  object The object to be compared with the receiver.
+ *  @return        @YES if @par{object} is equal to the receiver, @NO otherwise.
  **/
 -(BOOL)isEqual:(nullable id)object
 {
@@ -787,7 +787,7 @@
 
 -(nullable id)debugQuickLookObject
 {
-#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE || TARGET_OS_MACCATALYST
     return self.uiColor;
 #else
     return self.nsColor;

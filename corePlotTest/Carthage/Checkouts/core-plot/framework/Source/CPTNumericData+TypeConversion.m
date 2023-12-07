@@ -3,13 +3,18 @@
 #import "complex.h"
 #import "CPTUtilities.h"
 
+/**
+ *  @brief Type conversion methods for CPTNumericData.
+ *
+ *  @see CPTNumericData
+ **/
 @implementation CPTNumericData(TypeConversion)
 
 /** @brief Copies the current numeric data and converts the data to a new data type.
- *  @param newDataType The new data type format.
- *  @param newSampleBytes The number of bytes used to store each sample.
- *  @param newByteOrder The new byte order.
- *  @return A copy of the current numeric data converted to the new data type.
+ *  @param  newDataType    The new data type format.
+ *  @param  newSampleBytes The number of bytes used to store each sample.
+ *  @param  newByteOrder   The new byte order.
+ *  @return                A copy of the current numeric data converted to the new data type.
  **/
 -(nonnull CPTNumericData *)dataByConvertingToType:(CPTDataTypeFormat)newDataType
                                       sampleBytes:(size_t)newSampleBytes
@@ -19,8 +24,8 @@
 }
 
 /** @brief Copies the current numeric data and converts the data to a new data type.
- *  @param newDataType The new data type.
- *  @return A copy of the current numeric data converted to the new data type.
+ *  @param  newDataType The new data type.
+ *  @return             A copy of the current numeric data converted to the new data type.
  **/
 -(nonnull CPTNumericData *)dataByConvertingToDataType:(CPTNumericDataType)newDataType
 {
@@ -76,10 +81,10 @@
 /** @brief Copies a data buffer and converts the data to a new data type without changing the byte order.
  *
  *  The data is assumed to be in host byte order and no byte order conversion is performed.
- *  @param sourceData The source data buffer.
+ *  @param sourceData     The source data buffer.
  *  @param sourceDataType The data type of the source.
- *  @param destData The destination data buffer.
- *  @param destDataType The new data type.
+ *  @param destData       The destination data buffer.
+ *  @param destDataType   The new data type.
  **/
 -(void)convertData:(nonnull NSData *)sourceData
           dataType:(nonnull CPTNumericDataType *)sourceDataType
@@ -105,10 +110,9 @@
                         case CPTIntegerDataType:
                             switch ( destDataType->sampleBytes ) {
                                 case sizeof(int8_t):
-                                { // int8_t -> int8_t
+                                    // int8_t -> int8_t
                                     memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(int8_t));
-                                }
-                                break;
+                                    break;
 
                                 case sizeof(int16_t):
                                 { // int8_t -> int16_t
@@ -118,8 +122,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int16_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(int32_t):
                                 { // int8_t -> int32_t
@@ -129,8 +133,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int32_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(int64_t):
                                 { // int8_t -> int64_t
@@ -140,8 +144,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int64_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -155,8 +159,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint8_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(uint16_t):
                                 { // int8_t -> uint16_t
@@ -166,8 +170,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint16_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(uint32_t):
                                 { // int8_t -> uint32_t
@@ -177,8 +181,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint32_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(uint64_t):
                                 { // int8_t -> uint64_t
@@ -188,8 +192,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint64_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -203,8 +207,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (float)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(double):
                                 { // int8_t -> double
@@ -214,8 +218,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (double)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -229,8 +233,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (float complex)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(double complex):
                                 { // int8_t -> double complex
@@ -240,8 +244,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (double complex)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -255,8 +259,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = CPTDecimalFromChar(*fromBytes++);
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
                     }
@@ -277,14 +281,13 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int8_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(int16_t):
-                                { // int16_t -> int16_t
+                                    // int16_t -> int16_t
                                     memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(int16_t));
-                                }
-                                break;
+                                    break;
 
                                 case sizeof(int32_t):
                                 { // int16_t -> int32_t
@@ -294,8 +297,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int32_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(int64_t):
                                 { // int16_t -> int64_t
@@ -305,8 +308,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int64_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -320,8 +323,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint8_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(uint16_t):
                                 { // int16_t -> uint16_t
@@ -331,8 +334,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint16_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(uint32_t):
                                 { // int16_t -> uint32_t
@@ -342,8 +345,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint32_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(uint64_t):
                                 { // int16_t -> uint64_t
@@ -353,8 +356,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint64_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -368,8 +371,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (float)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(double):
                                 { // int16_t -> double
@@ -379,8 +382,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (double)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -394,8 +397,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (float complex)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(double complex):
                                 { // int16_t -> double complex
@@ -405,8 +408,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (double complex)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -420,8 +423,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = CPTDecimalFromShort(*fromBytes++);
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
                     }
@@ -442,8 +445,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int8_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(int16_t):
                                 { // int32_t -> int16_t
@@ -453,14 +456,13 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int16_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(int32_t):
-                                { // int32_t -> int32_t
+                                    // int32_t -> int32_t
                                     memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(int32_t));
-                                }
-                                break;
+                                    break;
 
                                 case sizeof(int64_t):
                                 { // int32_t -> int64_t
@@ -470,8 +472,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int64_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -485,8 +487,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint8_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(uint16_t):
                                 { // int32_t -> uint16_t
@@ -496,8 +498,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint16_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(uint32_t):
                                 { // int32_t -> uint32_t
@@ -507,8 +509,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint32_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(uint64_t):
                                 { // int32_t -> uint64_t
@@ -518,8 +520,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint64_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -533,8 +535,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (float)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(double):
                                 { // int32_t -> double
@@ -544,8 +546,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (double)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -559,8 +561,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (float complex)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(double complex):
                                 { // int32_t -> double complex
@@ -570,8 +572,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (double complex)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -585,8 +587,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = CPTDecimalFromLong(*fromBytes++);
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
                     }
@@ -607,8 +609,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int8_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(int16_t):
                                 { // int64_t -> int16_t
@@ -618,8 +620,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int16_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(int32_t):
                                 { // int64_t -> int32_t
@@ -629,14 +631,13 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int32_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(int64_t):
-                                { // int64_t -> int64_t
+                                    // int64_t -> int64_t
                                     memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(int64_t));
-                                }
-                                break;
+                                    break;
                             }
                             break;
 
@@ -650,8 +651,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint8_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(uint16_t):
                                 { // int64_t -> uint16_t
@@ -661,8 +662,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint16_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(uint32_t):
                                 { // int64_t -> uint32_t
@@ -672,8 +673,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint32_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(uint64_t):
                                 { // int64_t -> uint64_t
@@ -683,8 +684,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint64_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -698,8 +699,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (float)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(double):
                                 { // int64_t -> double
@@ -709,8 +710,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (double)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -724,8 +725,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (float complex)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(double complex):
                                 { // int64_t -> double complex
@@ -735,8 +736,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (double complex)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -750,8 +751,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = CPTDecimalFromLongLong(*fromBytes++);
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
                     }
@@ -776,8 +777,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int8_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(int16_t):
                                 { // uint8_t -> int16_t
@@ -787,8 +788,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int16_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(int32_t):
                                 { // uint8_t -> int32_t
@@ -798,8 +799,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int32_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(int64_t):
                                 { // uint8_t -> int64_t
@@ -809,18 +810,17 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int64_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
                         case CPTUnsignedIntegerDataType:
                             switch ( destDataType->sampleBytes ) {
                                 case sizeof(uint8_t):
-                                { // uint8_t -> uint8_t
+                                    // uint8_t -> uint8_t
                                     memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(uint8_t));
-                                }
-                                break;
+                                    break;
 
                                 case sizeof(uint16_t):
                                 { // uint8_t -> uint16_t
@@ -830,8 +830,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint16_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(uint32_t):
                                 { // uint8_t -> uint32_t
@@ -841,8 +841,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint32_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(uint64_t):
                                 { // uint8_t -> uint64_t
@@ -852,8 +852,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint64_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -867,8 +867,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (float)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(double):
                                 { // uint8_t -> double
@@ -878,8 +878,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (double)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -893,8 +893,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (float complex)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(double complex):
                                 { // uint8_t -> double complex
@@ -904,8 +904,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (double complex)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -919,8 +919,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = CPTDecimalFromUnsignedChar(*fromBytes++);
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
                     }
@@ -941,8 +941,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int8_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(int16_t):
                                 { // uint16_t -> int16_t
@@ -952,8 +952,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int16_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(int32_t):
                                 { // uint16_t -> int32_t
@@ -963,8 +963,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int32_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(int64_t):
                                 { // uint16_t -> int64_t
@@ -974,8 +974,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int64_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -989,14 +989,13 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint8_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(uint16_t):
-                                { // uint16_t -> uint16_t
+                                    // uint16_t -> uint16_t
                                     memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(uint16_t));
-                                }
-                                break;
+                                    break;
 
                                 case sizeof(uint32_t):
                                 { // uint16_t -> uint32_t
@@ -1006,8 +1005,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint32_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(uint64_t):
                                 { // uint16_t -> uint64_t
@@ -1017,8 +1016,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint64_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -1032,8 +1031,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (float)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(double):
                                 { // uint16_t -> double
@@ -1043,8 +1042,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (double)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -1058,8 +1057,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (float complex)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(double complex):
                                 { // uint16_t -> double complex
@@ -1069,8 +1068,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (double complex)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -1084,8 +1083,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = CPTDecimalFromUnsignedShort(*fromBytes++);
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
                     }
@@ -1106,8 +1105,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int8_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(int16_t):
                                 { // uint32_t -> int16_t
@@ -1117,8 +1116,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int16_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(int32_t):
                                 { // uint32_t -> int32_t
@@ -1128,8 +1127,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int32_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(int64_t):
                                 { // uint32_t -> int64_t
@@ -1139,8 +1138,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int64_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -1154,8 +1153,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint8_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(uint16_t):
                                 { // uint32_t -> uint16_t
@@ -1165,14 +1164,13 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint16_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(uint32_t):
-                                { // uint32_t -> uint32_t
+                                    // uint32_t -> uint32_t
                                     memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(uint32_t));
-                                }
-                                break;
+                                    break;
 
                                 case sizeof(uint64_t):
                                 { // uint32_t -> uint64_t
@@ -1182,8 +1180,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint64_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -1197,8 +1195,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (float)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(double):
                                 { // uint32_t -> double
@@ -1208,8 +1206,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (double)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -1223,8 +1221,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (float complex)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(double complex):
                                 { // uint32_t -> double complex
@@ -1234,8 +1232,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (double complex)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -1249,8 +1247,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = CPTDecimalFromUnsignedLong(*fromBytes++);
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
                     }
@@ -1271,8 +1269,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int8_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(int16_t):
                                 { // uint64_t -> int16_t
@@ -1282,8 +1280,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int16_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(int32_t):
                                 { // uint64_t -> int32_t
@@ -1293,8 +1291,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int32_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(int64_t):
                                 { // uint64_t -> int64_t
@@ -1304,8 +1302,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int64_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -1319,8 +1317,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint8_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(uint16_t):
                                 { // uint64_t -> uint16_t
@@ -1330,8 +1328,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint16_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(uint32_t):
                                 { // uint64_t -> uint32_t
@@ -1341,14 +1339,13 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint32_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(uint64_t):
-                                { // uint64_t -> uint64_t
+                                    // uint64_t -> uint64_t
                                     memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(uint64_t));
-                                }
-                                break;
+                                    break;
                             }
                             break;
 
@@ -1362,8 +1359,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (float)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(double):
                                 { // uint64_t -> double
@@ -1373,8 +1370,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (double)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -1388,8 +1385,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (float complex)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(double complex):
                                 { // uint64_t -> double complex
@@ -1399,8 +1396,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (double complex)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -1414,8 +1411,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = CPTDecimalFromUnsignedLongLong(*fromBytes++);
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
                     }
@@ -1440,8 +1437,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int8_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(int16_t):
                                 { // float -> int16_t
@@ -1451,8 +1448,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int16_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(int32_t):
                                 { // float -> int32_t
@@ -1462,8 +1459,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int32_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(int64_t):
                                 { // float -> int64_t
@@ -1473,8 +1470,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int64_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -1488,8 +1485,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint8_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(uint16_t):
                                 { // float -> uint16_t
@@ -1499,8 +1496,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint16_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(uint32_t):
                                 { // float -> uint32_t
@@ -1510,8 +1507,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint32_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(uint64_t):
                                 { // float -> uint64_t
@@ -1521,18 +1518,17 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint64_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
                         case CPTFloatingPointDataType:
                             switch ( destDataType->sampleBytes ) {
                                 case sizeof(float):
-                                { // float -> float
+                                    // float -> float
                                     memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(float));
-                                }
-                                break;
+                                    break;
 
                                 case sizeof(double):
                                 { // float -> double
@@ -1542,8 +1538,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (double)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -1557,8 +1553,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (float complex)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(double complex):
                                 { // float -> double complex
@@ -1568,8 +1564,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (double complex)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -1583,8 +1579,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = CPTDecimalFromFloat(*fromBytes++);
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
                     }
@@ -1605,8 +1601,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int8_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(int16_t):
                                 { // double -> int16_t
@@ -1616,8 +1612,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int16_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(int32_t):
                                 { // double -> int32_t
@@ -1627,8 +1623,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int32_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(int64_t):
                                 { // double -> int64_t
@@ -1638,8 +1634,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int64_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -1653,8 +1649,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint8_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(uint16_t):
                                 { // double -> uint16_t
@@ -1664,8 +1660,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint16_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(uint32_t):
                                 { // double -> uint32_t
@@ -1675,8 +1671,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint32_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(uint64_t):
                                 { // double -> uint64_t
@@ -1686,8 +1682,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint64_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -1701,14 +1697,13 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (float)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(double):
-                                { // double -> double
+                                    // double -> double
                                     memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(double));
-                                }
-                                break;
+                                    break;
                             }
                             break;
 
@@ -1722,8 +1717,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (float complex)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(double complex):
                                 { // double -> double complex
@@ -1733,8 +1728,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (double complex)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -1748,8 +1743,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = CPTDecimalFromDouble(*fromBytes++);
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
                     }
@@ -1774,8 +1769,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int8_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(int16_t):
                                 { // float complex -> int16_t
@@ -1785,8 +1780,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int16_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(int32_t):
                                 { // float complex -> int32_t
@@ -1796,8 +1791,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int32_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(int64_t):
                                 { // float complex -> int64_t
@@ -1807,8 +1802,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int64_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -1822,8 +1817,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint8_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(uint16_t):
                                 { // float complex -> uint16_t
@@ -1833,8 +1828,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint16_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(uint32_t):
                                 { // float complex -> uint32_t
@@ -1844,8 +1839,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint32_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(uint64_t):
                                 { // float complex -> uint64_t
@@ -1855,8 +1850,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint64_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -1870,8 +1865,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (float)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(double):
                                 { // float complex -> double
@@ -1881,18 +1876,17 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (double)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
                         case CPTComplexFloatingPointDataType:
                             switch ( destDataType->sampleBytes ) {
                                 case sizeof(float complex):
-                                { // float complex -> float complex
+                                    // float complex -> float complex
                                     memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(float complex));
-                                }
-                                break;
+                                    break;
 
                                 case sizeof(double complex):
                                 { // float complex -> double complex
@@ -1902,8 +1896,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (double complex)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -1917,8 +1911,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = CPTDecimalFromFloat(crealf(*fromBytes++));
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
                     }
@@ -1939,8 +1933,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int8_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(int16_t):
                                 { // double complex -> int16_t
@@ -1950,8 +1944,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int16_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(int32_t):
                                 { // double complex -> int32_t
@@ -1961,8 +1955,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int32_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(int64_t):
                                 { // double complex -> int64_t
@@ -1972,8 +1966,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (int64_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -1987,8 +1981,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint8_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(uint16_t):
                                 { // double complex -> uint16_t
@@ -1998,8 +1992,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint16_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(uint32_t):
                                 { // double complex -> uint32_t
@@ -2009,8 +2003,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint32_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(uint64_t):
                                 { // double complex -> uint64_t
@@ -2020,8 +2014,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (uint64_t)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -2035,8 +2029,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (float)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(double):
                                 { // double complex -> double
@@ -2046,8 +2040,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (double)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -2061,14 +2055,13 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = (float complex)*fromBytes++;
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(double complex):
-                                { // double complex -> double complex
+                                    // double complex -> double complex
                                     memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(double complex));
-                                }
-                                break;
+                                    break;
                             }
                             break;
 
@@ -2082,8 +2075,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = CPTDecimalFromDouble(creal(*fromBytes++));
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
                     }
@@ -2108,8 +2101,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = CPTDecimalCharValue(*fromBytes++);
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(int16_t):
                                 { // NSDecimal -> int16_t
@@ -2119,8 +2112,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = CPTDecimalShortValue(*fromBytes++);
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(int32_t):
                                 { // NSDecimal -> int32_t
@@ -2130,8 +2123,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = CPTDecimalLongValue(*fromBytes++);
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(int64_t):
                                 { // NSDecimal -> int64_t
@@ -2141,8 +2134,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = CPTDecimalLongLongValue(*fromBytes++);
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -2156,8 +2149,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = CPTDecimalUnsignedCharValue(*fromBytes++);
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(uint16_t):
                                 { // NSDecimal -> uint16_t
@@ -2167,8 +2160,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = CPTDecimalUnsignedShortValue(*fromBytes++);
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(uint32_t):
                                 { // NSDecimal -> uint32_t
@@ -2178,8 +2171,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = CPTDecimalUnsignedLongValue(*fromBytes++);
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(uint64_t):
                                 { // NSDecimal -> uint64_t
@@ -2189,8 +2182,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = CPTDecimalUnsignedLongLongValue(*fromBytes++);
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -2204,8 +2197,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = CPTDecimalFloatValue(*fromBytes++);
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(double):
                                 { // NSDecimal -> double
@@ -2215,8 +2208,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = CPTDecimalDoubleValue(*fromBytes++);
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
@@ -2230,8 +2223,8 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = CPTDecimalFloatValue(*fromBytes++);
                                     }
+                                    break;
                                 }
-                                break;
 
                                 case sizeof(double complex):
                                 { // NSDecimal -> double complex
@@ -2241,18 +2234,17 @@
                                     while ( fromBytes < lastSample ) {
                                         *toBytes++ = CPTDecimalDoubleValue(*fromBytes++);
                                     }
+                                    break;
                                 }
-                                break;
                             }
                             break;
 
                         case CPTDecimalDataType:
                             switch ( destDataType->sampleBytes ) {
                                 case sizeof(NSDecimal):
-                                { // NSDecimal -> NSDecimal
+                                    // NSDecimal -> NSDecimal
                                     memcpy(destData.mutableBytes, sourceData.bytes, sampleCount * sizeof(NSDecimal));
-                                }
-                                break;
+                                    break;
                             }
                             break;
                     }
@@ -2284,8 +2276,8 @@
                 uint16_t swapped = CFSwapInt16(*samples);
                 *samples++ = swapped;
             }
+            break;
         }
-        break;
 
         case sizeof(uint32_t):
         {
@@ -2297,8 +2289,8 @@
                 uint32_t swapped = CFSwapInt32(*samples);
                 *samples++ = swapped;
             }
+            break;
         }
-        break;
 
         case sizeof(uint64_t):
         {
@@ -2310,8 +2302,8 @@
                 uint64_t swapped = CFSwapInt64(*samples);
                 *samples++ = swapped;
             }
+            break;
         }
-        break;
 
         default:
             // do nothing

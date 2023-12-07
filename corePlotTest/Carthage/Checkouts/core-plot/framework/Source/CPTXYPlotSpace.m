@@ -1,10 +1,11 @@
 #import "CPTXYPlotSpace.h"
 
+#import "_CPTDebugQuickLook.h"
+#import "_NSCoderExtensions.h"
 #import "CPTAnimation.h"
 #import "CPTAnimationOperation.h"
 #import "CPTAnimationPeriod.h"
 #import "CPTAxisSet.h"
-#import "CPTDebugQuickLook.h"
 #import "CPTExceptions.h"
 #import "CPTGraph.h"
 #import "CPTGraphHostingView.h"
@@ -13,7 +14,6 @@
 #import "CPTPlotArea.h"
 #import "CPTPlotAreaFrame.h"
 #import "CPTUtilities.h"
-#import "NSCoderExtensions.h"
 #import <tgmath.h>
 
 /// @cond
@@ -531,14 +531,27 @@ CGFloat CPTFirstPositiveRoot(CGFloat a, CGFloat b, CGFloat c);
 
     CPTPlotRange *theGlobalRange = globalRange;
 
-    if ( CPTDecimalGreaterThanOrEqualTo(existingRange.lengthDecimal, theGlobalRange.lengthDecimal)) {
-        return [theGlobalRange copy];
+    if ( CPTDecimalGreaterThanOrEqualTo(existingRange.lengthDecimal, CPTDecimalFromInteger(0))) {
+        if ( CPTDecimalGreaterThanOrEqualTo(existingRange.lengthDecimal, theGlobalRange.lengthDecimal)) {
+            return [theGlobalRange copy];
+        }
+        else {
+            CPTMutablePlotRange *newRange = [existingRange mutableCopy];
+            [newRange shiftEndToFitInRange:theGlobalRange];
+            [newRange shiftLocationToFitInRange:theGlobalRange];
+            return newRange;
+        }
     }
     else {
-        CPTMutablePlotRange *newRange = [existingRange mutableCopy];
-        [newRange shiftEndToFitInRange:theGlobalRange];
-        [newRange shiftLocationToFitInRange:theGlobalRange];
-        return newRange;
+        if ( CPTDecimalLessThanOrEqualTo(existingRange.lengthDecimal, theGlobalRange.lengthDecimal)) {
+            return [theGlobalRange copy];
+        }
+        else {
+            CPTMutablePlotRange *newRange = [existingRange mutableCopy];
+            [newRange shiftEndToFitInRange:theGlobalRange];
+            [newRange shiftLocationToFitInRange:theGlobalRange];
+            return newRange;
+        }
     }
 }
 
@@ -1037,16 +1050,12 @@ CGFloat CPTFirstPositiveRoot(CGFloat a, CGFloat b, CGFloat c)
             break;
 
         case CPTScaleTypeLog:
-        {
             viewPoint.x = [self viewCoordinateForViewLength:layerSize.width logPlotRange:self.xRange doublePrecisionPlotCoordinateValue:plotPoint[CPTCoordinateX].doubleValue];
-        }
-        break;
+            break;
 
         case CPTScaleTypeLogModulus:
-        {
             viewPoint.x = [self viewCoordinateForViewLength:layerSize.width logModulusPlotRange:self.xRange doublePrecisionPlotCoordinateValue:plotPoint[CPTCoordinateX].doubleValue];
-        }
-        break;
+            break;
 
         default:
             [NSException raise:CPTException format:@"Scale type not supported in CPTXYPlotSpace"];
@@ -1059,16 +1068,12 @@ CGFloat CPTFirstPositiveRoot(CGFloat a, CGFloat b, CGFloat c)
             break;
 
         case CPTScaleTypeLog:
-        {
             viewPoint.y = [self viewCoordinateForViewLength:layerSize.height logPlotRange:self.yRange doublePrecisionPlotCoordinateValue:plotPoint[CPTCoordinateY].doubleValue];
-        }
-        break;
+            break;
 
         case CPTScaleTypeLogModulus:
-        {
             viewPoint.y = [self viewCoordinateForViewLength:layerSize.height logModulusPlotRange:self.yRange doublePrecisionPlotCoordinateValue:plotPoint[CPTCoordinateY].doubleValue];
-        }
-        break;
+            break;
 
         default:
             [NSException raise:CPTException format:@"Scale type not supported in CPTXYPlotSpace"];
@@ -1102,15 +1107,15 @@ CGFloat CPTFirstPositiveRoot(CGFloat a, CGFloat b, CGFloat c)
         {
             double x = CPTDecimalDoubleValue(plotPoint[CPTCoordinateX]);
             viewPoint.x = [self viewCoordinateForViewLength:layerSize.width logPlotRange:self.xRange doublePrecisionPlotCoordinateValue:x];
+            break;
         }
-        break;
 
         case CPTScaleTypeLogModulus:
         {
             double x = CPTDecimalDoubleValue(plotPoint[CPTCoordinateX]);
             viewPoint.x = [self viewCoordinateForViewLength:layerSize.width logModulusPlotRange:self.xRange doublePrecisionPlotCoordinateValue:x];
+            break;
         }
-        break;
 
         default:
             [NSException raise:CPTException format:@"Scale type not supported in CPTXYPlotSpace"];
@@ -1126,15 +1131,15 @@ CGFloat CPTFirstPositiveRoot(CGFloat a, CGFloat b, CGFloat c)
         {
             double y = CPTDecimalDoubleValue(plotPoint[CPTCoordinateY]);
             viewPoint.y = [self viewCoordinateForViewLength:layerSize.height logPlotRange:self.yRange doublePrecisionPlotCoordinateValue:y];
+            break;
         }
-        break;
 
         case CPTScaleTypeLogModulus:
         {
             double y = CPTDecimalDoubleValue(plotPoint[CPTCoordinateY]);
             viewPoint.y = [self viewCoordinateForViewLength:layerSize.height logModulusPlotRange:self.yRange doublePrecisionPlotCoordinateValue:y];
+            break;
         }
-        break;
 
         default:
             [NSException raise:CPTException format:@"Scale type not supported in CPTXYPlotSpace"];
@@ -1379,7 +1384,7 @@ CGFloat CPTFirstPositiveRoot(CGFloat a, CGFloat b, CGFloat c)
     CPTPlotArea *thePlotArea            = theGraph.plotAreaFrame.plotArea;
 
     if ( theHostingView && thePlotArea ) {
-#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE || TARGET_OS_MACCATALYST
         CGPoint interactionPoint = [[[event touchesForView:theHostingView] anyObject] locationInView:theHostingView];
         if ( theHostingView.collapsesLayers ) {
             interactionPoint.y = theHostingView.frame.size.height - interactionPoint.y;
@@ -1524,9 +1529,9 @@ CGFloat CPTFirstPositiveRoot(CGFloat a, CGFloat b, CGFloat c)
  *  @link CPTPlotAreaFrame::plotArea plotArea @endlink, a drag operation starts and
  *  this method returns @YES.
  *
- *  @param event The OS event.
- *  @param interactionPoint The coordinates of the interaction.
- *  @return Whether the event was handled or not.
+ *  @param  event            The OS event.
+ *  @param  interactionPoint The coordinates of the interaction.
+ *  @return                  Whether the event was handled or not.
  **/
 -(BOOL)pointingDeviceDownEvent:(nonnull CPTNativeEvent *)event atPoint:(CGPoint)interactionPoint
 {
@@ -1581,9 +1586,9 @@ CGFloat CPTFirstPositiveRoot(CGFloat a, CGFloat b, CGFloat c)
  *  Otherwise, if a drag operation is in progress, it ends and
  *  this method returns @YES.
  *
- *  @param event The OS event.
- *  @param interactionPoint The coordinates of the interaction.
- *  @return Whether the event was handled or not.
+ *  @param  event            The OS event.
+ *  @param  interactionPoint The coordinates of the interaction.
+ *  @return                  Whether the event was handled or not.
  **/
 -(BOOL)pointingDeviceUpEvent:(nonnull CPTNativeEvent *)event atPoint:(CGPoint)interactionPoint
 {
@@ -1680,9 +1685,9 @@ CGFloat CPTFirstPositiveRoot(CGFloat a, CGFloat b, CGFloat c)
  *  and @ref yRange are shifted to follow the drag and
  *  this method returns @YES.
  *
- *  @param event The OS event.
- *  @param interactionPoint The coordinates of the interaction.
- *  @return Whether the event was handled or not.
+ *  @param  event            The OS event.
+ *  @param  interactionPoint The coordinates of the interaction.
+ *  @return                  Whether the event was handled or not.
  **/
 -(BOOL)pointingDeviceDraggedEvent:(nonnull CPTNativeEvent *)event atPoint:(CGPoint)interactionPoint
 {
@@ -1792,7 +1797,7 @@ CGFloat CPTFirstPositiveRoot(CGFloat a, CGFloat b, CGFloat c)
 
 /// @endcond
 
-#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE || TARGET_OS_MACCATALYST
 #else
 
 /**
@@ -1805,10 +1810,10 @@ CGFloat CPTFirstPositiveRoot(CGFloat a, CGFloat b, CGFloat c)
  *  delegate method is called. If it returns @NO, this method returns @YES
  *  to indicate that the event has been handled and no further processing should occur.
  *
- *  @param event The OS event.
- *  @param fromPoint The starting coordinates of the interaction.
- *  @param toPoint The ending coordinates of the interaction.
- *  @return Whether the event was handled or not.
+ *  @param  event     The OS event.
+ *  @param  fromPoint The starting coordinates of the interaction.
+ *  @param  toPoint   The ending coordinates of the interaction.
+ *  @return           Whether the event was handled or not.
  **/
 -(BOOL)scrollWheelEvent:(nonnull CPTNativeEvent *)event fromPoint:(CGPoint)fromPoint toPoint:(CGPoint)toPoint
 {

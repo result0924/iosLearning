@@ -1,4 +1,10 @@
+/// @file
+
+#ifdef CPT_IS_FRAMEWORK
+#import <CorePlot/CPTShadow.h>
+#else
 #import "CPTShadow.h"
+#endif
 
 @class CPTColor;
 

@@ -1,4 +1,10 @@
+/// @file
+
+#ifdef CPT_IS_FRAMEWORK
+#import <CorePlot/CPTDefinitions.h>
+#else
 #import "CPTDefinitions.h"
+#endif
 
 /**
  *  @brief Theme name type.
@@ -25,7 +31,6 @@ extern CPTThemeName __nonnull const kCPTStocksTheme;       ///< A graph theme wi
 
 /// @name Theme Management
 /// @{
-+(void)registerTheme:(nonnull Class)themeClass;
 +(nullable NSArray<Class> *)themeClasses;
 +(nullable instancetype)themeNamed:(nullable CPTThemeName)themeName;
 +(nonnull CPTThemeName)name;
@@ -38,9 +43,6 @@ extern CPTThemeName __nonnull const kCPTStocksTheme;       ///< A graph theme wi
 
 @end
 
-/** @category CPTTheme(AbstractMethods)
- *  @brief CPTTheme abstract methods—must be overridden by subclasses
- **/
 @interface CPTTheme(AbstractMethods)
 
 /// @name Theme Usage

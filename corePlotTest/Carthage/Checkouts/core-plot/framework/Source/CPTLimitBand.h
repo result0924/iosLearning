@@ -1,5 +1,7 @@
 /// @file
 
+#import <Foundation/Foundation.h>
+
 @class CPTFill;
 @class CPTLimitBand;
 @class CPTPlotRange;

@@ -1,7 +1,11 @@
 /// @file
 
+#import <CoreGraphics/CoreGraphics.h>
+
+#ifdef __cplusplus
 #if __cplusplus
 extern "C" {
+#endif
 #endif
 
 CF_IMPLICIT_BRIDGING_ENABLED
@@ -12,6 +16,8 @@ CF_IMPLICIT_BRIDGING_DISABLED
 
 void CPTAddRoundedRectPath(__nonnull CGContextRef context, CGRect rect, CGFloat cornerRadius);
 
+#ifdef __cplusplus
 #if __cplusplus
 }
+#endif
 #endif

@@ -54,8 +54,8 @@
  *  This is the designated initializer. The initialized layer will be anchored to
  *  #CPTRectAnchorTop by default.
  *
- *  @param newAnchorLayer The reference layer. Must be non-@nil.
- *  @return The initialized CPTLayerAnnotation object.
+ *  @param  newAnchorLayer The reference layer. Must be non-@nil.
+ *  @return                The initialized CPTLayerAnnotation object.
  **/
 -(nonnull instancetype)initWithAnchorLayer:(nonnull CPTLayer *)newAnchorLayer
 {
@@ -113,9 +113,9 @@
 /// @endcond
 
 /** @brief Returns an object initialized from data in a given unarchiver.
- *  @param coder An unarchiver object.
- *  @return An object initialized from data in a given unarchiver.
- */
+ *  @param  coder An unarchiver object.
+ *  @return       An object initialized from data in a given unarchiver.
+ **/
 -(nullable instancetype)initWithCoder:(nonnull NSCoder *)coder
 {
     if ((self = [super initWithCoder:coder])) {

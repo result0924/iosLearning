@@ -62,8 +62,8 @@
 /// @}
 
 /** @brief Initializes new instance with the date formatter passed.
- *  @param aDateFormatter The date formatter.
- *  @return The new instance.
+ *  @param  aDateFormatter The date formatter.
+ *  @return                The new instance.
  **/
 -(nonnull instancetype)initWithDateFormatter:(nullable NSDateFormatter *)aDateFormatter
 {
@@ -94,19 +94,34 @@
 /// @endcond
 
 /** @brief Returns an object initialized from data in a given unarchiver.
- *  @param coder An unarchiver object.
- *  @return An object initialized from data in a given unarchiver.
- */
+ *  @param  coder An unarchiver object.
+ *  @return       An object initialized from data in a given unarchiver.
+ **/
 -(nullable instancetype)initWithCoder:(nonnull NSCoder *)coder
 {
     if ((self = [super init])) {
-        dateFormatter         = [coder decodeObjectForKey:@"CPTCalendarFormatter.dateFormatter"];
-        referenceDate         = [[coder decodeObjectForKey:@"CPTCalendarFormatter.referenceDate"] copy];
-        referenceCalendar     = [[coder decodeObjectForKey:@"CPTCalendarFormatter.referenceCalendar"] copy];
+        dateFormatter = [coder decodeObjectOfClass:[NSDateFormatter class]
+                                            forKey:@"CPTCalendarFormatter.dateFormatter"];
+        referenceDate = [[coder decodeObjectOfClass:[NSDate class]
+                                             forKey:@"CPTCalendarFormatter.referenceDate"] copy];
+        referenceCalendar = [[coder decodeObjectOfClass:[NSCalendar class]
+                                                 forKey:@"CPTCalendarFormatter.referenceCalendar"] copy];
         referenceCalendarUnit = (NSCalendarUnit)[coder decodeIntegerForKey:@"CPTCalendarFormatter.referenceCalendarUnit"];
     }
     return self;
 }
+
+#pragma mark -
+#pragma mark NSSecureCoding Methods
+
+/// @cond
+
++(BOOL)supportsSecureCoding
+{
+    return YES;
+}
+
+/// @endcond
 
 #pragma mark -
 #pragma mark NSCopying Methods
@@ -139,8 +154,8 @@
  *  Uses the date formatter to do the conversion. Conversions are relative to the
  *  reference date, unless it is @nil, in which case the standard reference date
  *  of 1 January 2001, GMT is used.
- *  @param coordinateValue The time value.
- *  @return The date string.
+ *  @param  coordinateValue The time value.
+ *  @return                 The date string.
  **/
 -(nullable NSString *)stringForObjectValue:(nullable id)coordinateValue
 {

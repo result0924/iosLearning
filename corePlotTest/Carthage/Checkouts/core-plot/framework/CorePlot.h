@@ -1,6 +1,12 @@
+#ifdef __has_include
+#if __has_include(<CorePlot/CPTAnimation.h>)
+#define CPT_IS_FRAMEWORK
+#endif
+#endif
+
 #import <TargetConditionals.h>
 
-#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE || TARGET_OS_MACCATALYST
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
@@ -9,8 +15,9 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import <CorePlot/CPTDecimalNumberValueTransformer.h>
 #endif
+
+#ifdef CPT_IS_FRAMEWORK
 
 #import <CorePlot/CPTAnimation.h>
 #import <CorePlot/CPTAnimationOperation.h>
@@ -27,6 +34,7 @@
 #import <CorePlot/CPTColor.h>
 #import <CorePlot/CPTColorSpace.h>
 #import <CorePlot/CPTConstraints.h>
+#import <CorePlot/CPTDecimalNumberValueTransformer.h>
 #import <CorePlot/CPTDefinitions.h>
 #import <CorePlot/CPTExceptions.h>
 #import <CorePlot/CPTFill.h>
@@ -77,3 +85,74 @@
 #import <CorePlot/CPTXYAxisSet.h>
 #import <CorePlot/CPTXYGraph.h>
 #import <CorePlot/CPTXYPlotSpace.h>
+
+#else
+
+#import "CPTAnimation.h"
+#import "CPTAnimationOperation.h"
+#import "CPTAnimationPeriod.h"
+#import "CPTAnnotation.h"
+#import "CPTAnnotationHostLayer.h"
+#import "CPTAxis.h"
+#import "CPTAxisLabel.h"
+#import "CPTAxisSet.h"
+#import "CPTAxisTitle.h"
+#import "CPTBarPlot.h"
+#import "CPTBorderedLayer.h"
+#import "CPTCalendarFormatter.h"
+#import "CPTColor.h"
+#import "CPTColorSpace.h"
+#import "CPTConstraints.h"
+#import "CPTDecimalNumberValueTransformer.h"
+#import "CPTDefinitions.h"
+#import "CPTExceptions.h"
+#import "CPTFill.h"
+#import "CPTFunctionDataSource.h"
+#import "CPTGradient.h"
+#import "CPTGraph.h"
+#import "CPTGraphHostingView.h"
+#import "CPTImage.h"
+#import "CPTLayer.h"
+#import "CPTLayerAnnotation.h"
+#import "CPTLegend.h"
+#import "CPTLegendEntry.h"
+#import "CPTLimitBand.h"
+#import "CPTLineCap.h"
+#import "CPTLineStyle.h"
+#import "CPTMutableLineStyle.h"
+#import "CPTMutableNumericData+TypeConversion.h"
+#import "CPTMutableNumericData.h"
+#import "CPTMutablePlotRange.h"
+#import "CPTMutableShadow.h"
+#import "CPTMutableTextStyle.h"
+#import "CPTNumericData+TypeConversion.h"
+#import "CPTNumericData.h"
+#import "CPTNumericDataType.h"
+#import "CPTPathExtensions.h"
+#import "CPTPieChart.h"
+#import "CPTPlatformSpecificCategories.h"
+#import "CPTPlatformSpecificDefines.h"
+#import "CPTPlatformSpecificFunctions.h"
+#import "CPTPlot.h"
+#import "CPTPlotArea.h"
+#import "CPTPlotAreaFrame.h"
+#import "CPTPlotRange.h"
+#import "CPTPlotSpace.h"
+#import "CPTPlotSpaceAnnotation.h"
+#import "CPTPlotSymbol.h"
+#import "CPTRangePlot.h"
+#import "CPTResponder.h"
+#import "CPTScatterPlot.h"
+#import "CPTShadow.h"
+#import "CPTTextLayer.h"
+#import "CPTTextStyle.h"
+#import "CPTTheme.h"
+#import "CPTTimeFormatter.h"
+#import "CPTTradingRangePlot.h"
+#import "CPTUtilities.h"
+#import "CPTXYAxis.h"
+#import "CPTXYAxisSet.h"
+#import "CPTXYGraph.h"
+#import "CPTXYPlotSpace.h"
+
+#endif

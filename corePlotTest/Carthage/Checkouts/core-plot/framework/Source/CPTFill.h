@@ -1,5 +1,8 @@
 /// @file
 
+#import <CoreGraphics/CoreGraphics.h>
+#import <Foundation/Foundation.h>
+
 @class CPTGradient;
 @class CPTImage;
 @class CPTColor;
@@ -33,9 +36,6 @@ typedef NSMutableArray<CPTFill *> CPTMutableFillArray;
 
 @end
 
-/** @category CPTFill(AbstractMethods)
- *  @brief CPTFill abstract methods—must be overridden by subclasses
- **/
 @interface CPTFill(AbstractMethods)
 
 @property (nonatomic, readonly, getter = isOpaque) BOOL opaque;

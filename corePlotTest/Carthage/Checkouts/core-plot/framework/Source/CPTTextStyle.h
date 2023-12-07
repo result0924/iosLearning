@@ -1,6 +1,14 @@
+/// @file
+
+#ifdef CPT_IS_FRAMEWORK
+#import <CorePlot/CPTDefinitions.h>
+#import <CorePlot/CPTPlatformSpecificDefines.h>
+#import <CorePlot/CPTTextStylePlatformSpecific.h>
+#else
 #import "CPTDefinitions.h"
 #import "CPTPlatformSpecificDefines.h"
 #import "CPTTextStylePlatformSpecific.h"
+#endif
 
 @class CPTColor;
 @class CPTTextStyle;
@@ -35,9 +43,6 @@ typedef NSMutableArray<CPTTextStyle *> CPTMutableTextStyleArray;
 
 #pragma mark -
 
-/** @category CPTTextStyle(CPTPlatformSpecificTextStyleExtensions)
- *  @brief Platform-specific extensions to CPTTextStyle.
- **/
 @interface CPTTextStyle(CPTPlatformSpecificTextStyleExtensions)
 
 @property (readonly, nonatomic, nonnull) CPTDictionary *attributes;
@@ -51,9 +56,6 @@ typedef NSMutableArray<CPTTextStyle *> CPTMutableTextStyleArray;
 
 #pragma mark -
 
-/** @category NSString(CPTTextStyleExtensions)
- *  @brief NSString extensions for drawing styled text.
- **/
 @interface NSString(CPTTextStyleExtensions)
 
 /// @name Measurement

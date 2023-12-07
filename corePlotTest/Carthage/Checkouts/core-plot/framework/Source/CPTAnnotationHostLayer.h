@@ -1,5 +1,12 @@
+/// @file
+
+#ifdef CPT_IS_FRAMEWORK
+#import <CorePlot/CPTAnnotation.h>
+#import <CorePlot/CPTLayer.h>
+#else
 #import "CPTAnnotation.h"
 #import "CPTLayer.h"
+#endif
 
 @interface CPTAnnotationHostLayer : CPTLayer
 

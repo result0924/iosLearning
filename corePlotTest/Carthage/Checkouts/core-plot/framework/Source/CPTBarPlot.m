@@ -1,5 +1,6 @@
 #import "CPTBarPlot.h"
 
+#import "_NSCoderExtensions.h"
 #import "CPTColor.h"
 #import "CPTExceptions.h"
 #import "CPTGradient.h"
@@ -12,7 +13,6 @@
 #import "CPTPlotSpaceAnnotation.h"
 #import "CPTUtilities.h"
 #import "CPTXYPlotSpace.h"
-#import "NSCoderExtensions.h"
 #import <tgmath.h>
 
 /** @defgroup plotAnimationBarPlot Bar Plot
@@ -168,9 +168,9 @@ CPTBarPlotBinding const CPTBarPlotBindingBarWidths     = @"barWidths";     ///< 
 #pragma mark Convenience Factory Methods
 
 /** @brief Creates and returns a new CPTBarPlot instance initialized with a bar fill consisting of a linear gradient between black and the given color.
- *  @param color The beginning color.
- *  @param horizontal If @YES, the bars will have a horizontal orientation, otherwise they will be vertical.
- *  @return A new CPTBarPlot instance initialized with a linear gradient bar fill.
+ *  @param  color      The beginning color.
+ *  @param  horizontal If @YES, the bars will have a horizontal orientation, otherwise they will be vertical.
+ *  @return            A new CPTBarPlot instance initialized with a linear gradient bar fill.
  **/
 +(nonnull instancetype)tubularBarPlotWithColor:(nonnull CPTColor *)color horizontalBars:(BOOL)horizontal
 {
@@ -200,7 +200,7 @@ CPTBarPlotBinding const CPTBarPlotBindingBarWidths     = @"barWidths";     ///< 
 
 /// @cond
 
-#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE || TARGET_OS_MACCATALYST
 #else
 +(void)initialize
 {
@@ -238,8 +238,8 @@ CPTBarPlotBinding const CPTBarPlotBindingBarWidths     = @"barWidths";     ///< 
  *  - @ref labelOffset = @num{10.0}
  *  - @ref labelField = #CPTBarPlotFieldBarTip
  *
- *  @param newFrame The frame rectangle.
- *  @return The initialized CPTBarPlot object.
+ *  @param  newFrame The frame rectangle.
+ *  @return          The initialized CPTBarPlot object.
  **/
 -(nonnull instancetype)initWithFrame:(CGRect)newFrame
 {
@@ -326,15 +326,15 @@ CPTBarPlotBinding const CPTBarPlotBindingBarWidths     = @"barWidths";     ///< 
                                     forKey:@"CPTBarPlot.fill"] copy];
         num = [coder decodeObjectOfClass:[NSNumber class]
                                   forKey:@"CPTBarPlot.barWidth"];
-        barWidth = num ? num : @0.0;
+        barWidth = num != nil ? num : @0.0;
         num      = [coder decodeObjectOfClass:[NSNumber class]
                                        forKey:@"CPTBarPlot.barOffset"];
-        barOffset           = num ? num : @0.0;
+        barOffset           = num != nil ? num : @0.0;
         barCornerRadius     = [coder decodeCGFloatForKey:@"CPTBarPlot.barCornerRadius"];
         barBaseCornerRadius = [coder decodeCGFloatForKey:@"CPTBarPlot.barBaseCornerRadius"];
         num                 = [coder decodeObjectOfClass:[NSNumber class]
                                                   forKey:@"CPTBarPlot.baseValue"];
-        baseValue                     = num ? num : @0.0;
+        baseValue                     = num != nil ? num : @0.0;
         barsAreHorizontal             = [coder decodeBoolForKey:@"CPTBarPlot.barsAreHorizontal"];
         barBasesVary                  = [coder decodeBoolForKey:@"CPTBarPlot.barBasesVary"];
         barWidthsAreInViewCoordinates = [coder decodeBoolForKey:@"CPTBarPlot.barWidthsAreInViewCoordinates"];
@@ -632,7 +632,7 @@ CPTBarPlotBinding const CPTBarPlotBindingBarWidths     = @"barWidths";     ///< 
 
         for ( NSUInteger idx = indexRange.location; idx < maxIndex; idx++ ) {
             NSNumber *width = [theDataSource barWidthForBarPlot:self recordIndex:idx];
-            if ( width ) {
+            if ( width != nil ) {
                 [array addObject:width];
             }
             else {
@@ -713,8 +713,8 @@ CPTBarPlotBinding const CPTBarPlotBindingBarWidths     = @"barWidths";     ///< 
     double length;
 
     if ( self.barWidthsAreInViewCoordinates ) {
-        CGFloat floatLength = CPTDecimalCGFloatValue(decimalLength);
-        CGPoint originViewPoint = CGPointZero;
+        CGFloat floatLength        = CPTDecimalCGFloatValue(decimalLength);
+        CGPoint originViewPoint    = CGPointZero;
         CGPoint displacedViewPoint = CPTPointMake(floatLength, floatLength);
         double originPlotPoint[2], displacedPlotPoint[2];
         CPTPlotSpace *thePlotSpace = self.plotSpace;
@@ -738,8 +738,8 @@ CPTBarPlotBinding const CPTBarPlotBindingBarWidths     = @"barWidths";     ///< 
     NSDecimal length;
 
     if ( self.barWidthsAreInViewCoordinates ) {
-        CGFloat floatLength = CPTDecimalCGFloatValue(decimalLength);
-        CGPoint originViewPoint = CGPointZero;
+        CGFloat floatLength        = CPTDecimalCGFloatValue(decimalLength);
+        CGPoint originViewPoint    = CGPointZero;
         CGPoint displacedViewPoint = CPTPointMake(floatLength, floatLength);
         NSDecimal originPlotPoint[2], displacedPlotPoint[2];
         CPTPlotSpace *thePlotSpace = self.plotSpace;
@@ -880,14 +880,14 @@ CPTBarPlotBinding const CPTBarPlotBindingBarWidths     = @"barWidths";     ///< 
     CPTMutableNumericData *cachedLocations = [self cachedNumbersForField:CPTBarPlotFieldBarLocation];
     CPTMutableNumericData *cachedLengths   = [self cachedNumbersForField:CPTBarPlotFieldBarTip];
 
-    if ((cachedLocations == nil) || (cachedLengths == nil)) {
+    if ( !cachedLocations || !cachedLengths ) {
         return;
     }
 
     BOOL basesVary                     = self.barBasesVary;
     CPTMutableNumericData *cachedBases = [self cachedNumbersForField:CPTBarPlotFieldBarBase];
 
-    if ( basesVary && (cachedBases == nil)) {
+    if ( basesVary && !cachedBases ) {
         return;
     }
 
@@ -1157,7 +1157,7 @@ CPTBarPlotBinding const CPTBarPlotBindingBarWidths     = @"barWidths";     ///< 
 {
     CPTFill *theBarFill = [self cachedValueForKey:CPTBarPlotBindingBarFills recordIndex:idx];
 
-    if ((theBarFill == nil) || (theBarFill == [CPTPlot nilData])) {
+    if ( !theBarFill || (theBarFill == [CPTPlot nilData])) {
         theBarFill = self.fill;
     }
 
@@ -1168,7 +1168,7 @@ CPTBarPlotBinding const CPTBarPlotBindingBarWidths     = @"barWidths";     ///< 
 {
     CPTLineStyle *theBarLineStyle = [self cachedValueForKey:CPTBarPlotBindingBarLineStyles recordIndex:idx];
 
-    if ((theBarLineStyle == nil) || (theBarLineStyle == [CPTPlot nilData])) {
+    if ( !theBarLineStyle || (theBarLineStyle == [CPTPlot nilData])) {
         theBarLineStyle = self.lineStyle;
     }
 
@@ -1381,8 +1381,8 @@ CPTBarPlotBinding const CPTBarPlotBindingBarWidths     = @"barWidths";     ///< 
 
 /** @internal
  *  @brief The title text of a legend entry.
- *  @param idx The index of the desired title.
- *  @return The title of the legend entry at the requested index.
+ *  @param  idx The index of the desired title.
+ *  @return     The title of the legend entry at the requested index.
  **/
 -(nullable NSString *)titleForLegendEntryAtIndex:(NSUInteger)idx
 {
@@ -1402,8 +1402,8 @@ CPTBarPlotBinding const CPTBarPlotBindingBarWidths     = @"barWidths";     ///< 
 
 /** @internal
  *  @brief The styled title text of a legend entry.
- *  @param idx The index of the desired title.
- *  @return The styled title of the legend entry at the requested index.
+ *  @param  idx The index of the desired title.
+ *  @return     The styled title of the legend entry at the requested index.
  **/
 -(nullable NSAttributedString *)attributedTitleForLegendEntryAtIndex:(NSUInteger)idx
 {
@@ -1468,9 +1468,9 @@ CPTBarPlotBinding const CPTBarPlotBindingBarWidths     = @"barWidths";     ///< 
  *  index where the @par{interactionPoint} is inside a bar.
  *  This method returns @NO if the @par{interactionPoint} is outside all of the bars.
  *
- *  @param event The OS event.
- *  @param interactionPoint The coordinates of the interaction.
- *  @return Whether the event was handled or not.
+ *  @param  event            The OS event.
+ *  @param  interactionPoint The coordinates of the interaction.
+ *  @return                  Whether the event was handled or not.
  **/
 -(BOOL)pointingDeviceDownEvent:(nonnull CPTNativeEvent *)event atPoint:(CGPoint)interactionPoint
 {
@@ -1534,9 +1534,9 @@ CPTBarPlotBinding const CPTBarPlotBindingBarWidths     = @"barWidths";     ///< 
  *  @link CPTBarPlotDelegate::barPlot:barWasSelectedAtRecordIndex:withEvent: -barPlot:barWasSelectedAtRecordIndex:withEvent: @endlink
  *  methods, these will be called.
  *
- *  @param event The OS event.
- *  @param interactionPoint The coordinates of the interaction.
- *  @return Whether the event was handled or not.
+ *  @param  event            The OS event.
+ *  @param  interactionPoint The coordinates of the interaction.
+ *  @return                  Whether the event was handled or not.
  **/
 -(BOOL)pointingDeviceUpEvent:(nonnull CPTNativeEvent *)event atPoint:(CGPoint)interactionPoint
 {

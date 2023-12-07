@@ -1,11 +1,11 @@
 #import "CPTPlotSymbol.h"
 
+#import "_NSCoderExtensions.h"
 #import "CPTDefinitions.h"
 #import "CPTFill.h"
 #import "CPTLineStyle.h"
 #import "CPTPlatformSpecificFunctions.h"
 #import "CPTShadow.h"
-#import "NSCoderExtensions.h"
 #import <tgmath.h>
 
 /// @cond
@@ -25,7 +25,7 @@
 #pragma mark -
 
 /** @brief Plot symbols for CPTScatterPlot.
- */
+**/
 @implementation CPTPlotSymbol
 
 /** @property CGPoint anchorPoint
@@ -422,8 +422,8 @@
 }
 
 /** @brief Creates and returns a new CPTPlotSymbol instance initialized with a symbol type of #CPTPlotSymbolTypeCustom.
- *  @param aPath The bounding path for the custom symbol.
- *  @return A new CPTPlotSymbol instance initialized with a symbol type of #CPTPlotSymbolTypeCustom.
+ *  @param  aPath The bounding path for the custom symbol.
+ *  @return       A new CPTPlotSymbol instance initialized with a symbol type of #CPTPlotSymbolTypeCustom.
  **/
 +(nonnull instancetype)customPlotSymbolWithPath:(nullable CGPathRef)aPath
 {
@@ -467,9 +467,9 @@
 #pragma mark Drawing
 
 /** @brief Draws the plot symbol into the given graphics context centered at the provided point using the cached symbol image.
- *  @param context The graphics context to draw into.
- *  @param center The center point of the symbol.
- *  @param scale The drawing scale factor. Must be greater than zero (@num{0}).
+ *  @param context       The graphics context to draw into.
+ *  @param center        The center point of the symbol.
+ *  @param scale         The drawing scale factor. Must be greater than zero (@num{0}).
  *  @param alignToPixels If @YES, the symbol position is aligned with device pixels to reduce anti-aliasing artifacts.
  **/
 -(void)renderInContext:(nonnull CGContextRef)context atPoint:(CGPoint)center scale:(CGFloat)scale alignToPixels:(BOOL)alignToPixels
@@ -558,8 +558,8 @@
 
 /** @brief Draws the plot symbol into the given graphics context centered at the provided point.
  *  @param context The graphics context to draw into.
- *  @param center The center point of the symbol.
- *  @param scale The drawing scale factor. Must be greater than zero (@num{0}).
+ *  @param center  The center point of the symbol.
+ *  @param scale   The drawing scale factor. Must be greater than zero (@num{0}).
  **/
 -(void)renderAsVectorInContext:(nonnull CGContextRef)context atPoint:(CGPoint)center scale:(CGFloat)scale
 {
@@ -781,8 +781,8 @@
                                                          CGAffineTransformMakeTranslation(-halfSize.width, -halfSize.height));
                 CGPathAddPath(symbolPath, &scaleTransform, customPath);
             }
+            break;
         }
-        break;
     }
 
     return symbolPath;

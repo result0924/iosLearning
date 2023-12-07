@@ -5,36 +5,43 @@ Follow these steps to create a Core Plot release and post it to GitHub:
 1. Ensure the following tools are installed on your development machine:
 
     <ul>
-        <li>Xcode 11</li>
-        <li>[Doxygen](http://www.stack.nl/~dimitri/doxygen/download.html#latestsrc), version 1.8.12 or later, installed in <strong>/Applications</strong></li>
+        <li>Xcode 14 or later</li>
+        <li>[Doxygen](http://www.stack.nl/~dimitri/doxygen/download.html#latestsrc), version 1.9.7 or later, installed in <strong>/Applications</strong></li>
         <li>[Graphviz](http://www.graphviz.org/Download_macos.php), version 2.36.0 or later</li>
+        <li>[Python 3](https://www.python.org/downloads/)</li>
     </ul>
 
 2. Ensure the [change log](https://github.com/core-plot/core-plot/blob/master/documentation/changelog.markdown) and [podspec](https://github.com/core-plot/core-plot/blob/master/CorePlot.podspec) are up-to-date and committed to the Git repository.
 
-3. In the "Core Plot" project build settings, set the "Current Project Version" to the release version. Commit the change in Git.
+3. Merge the development branch into `master`, resolve any merge conflicts, and commit the change.
 
-4. Using Git, ensure your local Core Plot source directory is in sync with the public repository on GitHub.
+4. Remove the branch qualifier from the `source` link in the [podspec](https://github.com/core-plot/core-plot/blob/master/CorePlot.podspec):
 
-5. Open the Terminal application and `cd` to the root directory of your local Core Plot source directory.
+    `s.source = { :git => 'https://github.com/core-plot/core-plot.git' }`
 
-6. Tag the current revision with the release version:
+5. In the **CorePlotModule.xcconfig** configuration file, set the `CURRENT_PROJECT_VERSION` to the release version. Commit the change in Git.
 
-    `$ git tag release_<version>`
+6. Using Git, ensure your local Core Plot source directory is in sync with the public repository on GitHub.
+
+7. Open the Terminal application and `cd` to the root directory of your local Core Plot source directory.
+
+8. Tag the current revision with the release version:
+
+    `$ git tag <version>`
     
-    where **&lt;version&gt;** is the version number for this release.
+    where **&lt;version&gt;** is the semantic version number for this release, e.g., 2.5.0.
 
-7. Change to the **scripts** folder:
+9. Change to the **scripts** folder:
 
     `$ cd scripts`
 
-8. Run the createrelease script:
+10. Run the createrelease script:
 
-    `$ python createrelease.py <version>`
+    `$ python3 createrelease.py <version>`
 
-9. Review the messages printed in the Terminal window and verify that all build steps succeeded.
+11. Review the messages printed in the Terminal window and verify that all build steps succeeded.
 
-10. The release products were placed in a folder called **CorePlot_&lt;version&gt;** and placed on your desktop. Open this folder and verify that the following subfolders and files are present:
+12. The release products were placed in a folder called **CorePlot_&lt;version&gt;** and placed on your desktop. Open this folder and verify that the following subfolders and files are present:
 
     <ul>
         <li><strong>Binaries/iOS/</strong></li>
@@ -46,13 +53,13 @@ Follow these steps to create a Core Plot release and post it to GitHub:
         <li><strong>License.txt</strong></li>
     </ul>
 
-11. Right-click the release folder on your desktop and select **Compress "&lt;filename&gt;"** from the menu.
+13. Right-click the release folder on your desktop and select **Compress "&lt;filename&gt;"** from the menu.
 
-12. Log into GitHub and navigate to the [Releases](https://github.com/core-plot/core-plot/releases) page.
+14. Log into GitHub and navigate to the [Releases](https://github.com/core-plot/core-plot/releases) page.
 
-13. Click **Draft a new release**.
+15. Click **Draft a new release**.
 
-14. Select the tag for the new release (`release_<version>`).
+16. Select the tag for the new release (`<version>`).
 
     Enter the following:
 
@@ -61,7 +68,7 @@ Follow these steps to create a Core Plot release and post it to GitHub:
         <li>Binaries: drag the Core Plot zip file on your desktop to the box</li>
     </ul>
     
-15. Click **Publish release**.
+17. Click **Publish release**.
 
 # Update Documentation
 
@@ -73,7 +80,7 @@ Follow these steps to create a Core Plot release and post it to GitHub:
 
 3. Tag the current documentation revision with the release version:
 
-    `$ git tag release_<version>`
+    `$ git tag <version>`
     
 4. Review the [wiki pages](https://github.com/core-plot/core-plot/wiki) and make any needed updates.
 
@@ -85,10 +92,10 @@ Follow these steps to create a Core Plot release and post it to GitHub:
 
     `s.version  = '<version>'`
 
-3. Add the git tag name (`release_<version>`) under the **source** tag.
+3. Add the git tag name (`<version>`) under the **source** tag.
 
     `s.source   = { :git => 'https://github.com/core-plot/core-plot.git', 
-                    :tag => 'release_<version>'}`
+                    :tag => '<version>'}`
 
 4. Submit the updated podspec to [CocoaPods](https://github.com/CocoaPods/CocoaPods).
 

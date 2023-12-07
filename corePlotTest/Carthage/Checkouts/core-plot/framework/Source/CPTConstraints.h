@@ -1,3 +1,6 @@
+#import <CoreGraphics/CoreGraphics.h>
+#import <Foundation/Foundation.h>
+
 @interface CPTConstraints : NSObject<NSCopying, NSCoding, NSSecureCoding>
 
 /// @name Factory Methods
@@ -16,9 +19,6 @@
 
 @end
 
-/** @category CPTConstraints(AbstractMethods)
- *  @brief CPTConstraints abstract methods—must be overridden by subclasses
- **/
 @interface CPTConstraints(AbstractMethods)
 
 /// @name Comparison

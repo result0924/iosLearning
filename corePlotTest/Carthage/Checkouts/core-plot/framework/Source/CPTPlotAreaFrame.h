@@ -1,4 +1,10 @@
+/// @file
+
+#ifdef CPT_IS_FRAMEWORK
+#import <CorePlot/CPTBorderedLayer.h>
+#else
 #import "CPTBorderedLayer.h"
+#endif
 
 @class CPTAxisSet;
 @class CPTPlotGroup;

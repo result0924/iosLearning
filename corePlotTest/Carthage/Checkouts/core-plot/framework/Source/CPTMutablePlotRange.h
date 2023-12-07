@@ -1,4 +1,10 @@
+/// @file
+
+#ifdef CPT_IS_FRAMEWORK
+#import <CorePlot/CPTPlotRange.h>
+#else
 #import "CPTPlotRange.h"
+#endif
 
 @interface CPTMutablePlotRange : CPTPlotRange
 

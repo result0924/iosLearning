@@ -27,11 +27,6 @@ static NSString *const kSecond = @"Second Derivative";
 @synthesize plotData1;
 @synthesize plotData2;
 
-+(void)load
-{
-    [super registerPlotItem:self];
-}
-
 -(nonnull instancetype)init
 {
     if ((self = [super init])) {
@@ -74,7 +69,7 @@ static NSString *const kSecond = @"Second Derivative";
         self.plotData = contentArray;
     }
 
-    if ( self.plotData1 == nil ) {
+    if ( !self.plotData1 ) {
         NSMutableArray<NSDictionary<NSString *, NSNumber *> *> *contentArray = [NSMutableArray array];
 
         NSArray<NSDictionary<NSString *, NSNumber *> *> *dataArray = self.plotData;
@@ -101,7 +96,7 @@ static NSString *const kSecond = @"Second Derivative";
         self.plotData1 = contentArray;
     }
 
-    if ( self.plotData2 == nil ) {
+    if ( !self.plotData2 ) {
         NSMutableArray<NSDictionary<NSString *, NSNumber *> *> *contentArray = [NSMutableArray array];
 
         NSArray<NSDictionary<NSString *, NSNumber *> *> *dataArray = self.plotData1;

@@ -1,8 +1,12 @@
+<img src="/documentation/Objects%20and%20Layers.graffle/image1.png" alt="Core Plot logo" width="150"/>
+
 # Core Plot
 
 *Cocoa plotting framework for macOS, iOS, and tvOS.*
 
-[![Build Status](https://secure.travis-ci.org/core-plot/core-plot.svg)](https://travis-ci.org/core-plot/core-plot) [![Version Status](https://img.shields.io/cocoapods/v/CorePlot.svg)](https://cocoapods.org/pods/CorePlot) [![license MIT](https://img.shields.io/cocoapods/l/CorePlot.svg)](https://opensource.org/licenses/BSD-3-Clause)  [![Platform](https://img.shields.io/cocoapods/p/CorePlot.svg)](https://core-plot.github.io) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![Cocoapods platforms](https://img.shields.io/cocoapods/p/CorePlot?color=bright-green)](https://core-plot.github.io) [![core-plot CI](https://github.com/core-plot/core-plot/actions/workflows/ci.yml/badge.svg)](https://github.com/core-plot/core-plot/actions/workflows/ci.yml)
+[![Cocoapods](https://img.shields.io/cocoapods/v/CorePlot?color=bright-green)](https://cocoapods.org/pods/CorePlot) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-brightgreen?style=flat)](https://github.com/Carthage/Carthage) [![Swift Package Manager compatible](https://img.shields.io/badge/SPM-compatible-brightgreen)](https://github.com/apple/swift-package-manager)
+[![GitHub license](https://img.shields.io/github/license/core-plot/core-plot?color=bright-green)](https://opensource.org/licenses/BSD-3-Clause)
 
 # Introduction
 
@@ -19,7 +23,7 @@ Documentation of the Core Plot API and high-level architecture can be found in t
   * [Change log](https://github.com/core-plot/core-plot/blob/master/documentation/changelog.markdown)
   * [API documentation](https://core-plot.github.io/MacOS/index.html) for Mac
   * [API documentation](https://core-plot.github.io/iOS/index.html) for iOS and tvOS
-  * API documentation built with [Doxygen](http://www.doxygen.org/) and installed locally in Xcode (see the  [instructions](https://github.com/core-plot/core-plot/blob/master/READMEs/README%20for%20Docs%20Install.md) in the **READMEs** folder for details)
+  * API documentation built with [Doxygen](https://www.doxygen.nl/) and installed locally in Xcode (see the  [instructions](https://github.com/core-plot/core-plot/blob/master/READMEs/README%20for%20Docs%20Install.md) in the **READMEs** folder for details)
   * [Project Wiki](https://github.com/core-plot/core-plot/wiki) on GitHub
   * [Documentation](https://github.com/core-plot/core-plot/tree/master/documentation) folder in the code repository
 
@@ -49,7 +53,3 @@ Core Plot includes a [script](https://github.com/core-plot/core-plot/blob/master
 
 ## Testing
 Core Plot is intended to be applied in scientific, financial, and other domains where correctness is paramount. In order to assure the quality of the framework, unit testing is integrated. Good test coverage protects developers from introducing accidental regressions, and helps them to experiment and refactor without breaking existing code. See the [unit testing](https://github.com/core-plot/core-plot/wiki/Unit-Testing) wiki page for instructions on how to build unit tests for any new code you add to the project.
-
-# Support Core Plot
-
-<a href="https://flattr.com/submit/auto?user_id=CorePlot&url=https%3A%2F%2Fgithub.com%2Fcore-plot" target="_blank"><img src="https://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0"></a>

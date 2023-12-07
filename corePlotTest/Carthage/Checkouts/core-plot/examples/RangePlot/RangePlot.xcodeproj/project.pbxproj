@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 47;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -14,6 +14,8 @@
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		BC8E737D0FC0B3CF00DF8511 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC8E737C0FC0B3CF00DF8511 /* QuartzCore.framework */; };
+		C395048A2AF72821000843D0 /* CorePlotExamplesDebug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = C39504882AF72820000843D0 /* CorePlotExamplesDebug.xcconfig */; };
+		C395048B2AF72821000843D0 /* CorePlotExamplesRelease.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = C39504892AF72820000843D0 /* CorePlotExamplesRelease.xcconfig */; };
 		C3D0A17B20E0179100BA2921 /* RangePlot.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3D0A17D20E0179100BA2921 /* RangePlot.xib */; };
 		C3D3938219FD786F00148319 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C3D3938119FD786F00148319 /* Images.xcassets */; };
 /* End PBXBuildFile section */
@@ -68,20 +70,6 @@
 			remoteGlobalIDString = C38A09821A46185300D45436;
 			remoteInfo = CorePlot_iOSTests;
 		};
-		C3B345CB1B46195900844218 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 076184BC0F3CAD5900A89A76 /* CorePlot.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C38A09BA1A4619A900D45436;
-			remoteInfo = "CorePlot-CocoaTouch";
-		};
-		C3B345CD1B46195900844218 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 076184BC0F3CAD5900A89A76 /* CorePlot.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C38A09C41A4619A900D45436;
-			remoteInfo = "CorePlot-CocoaTouchTests";
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -114,7 +102,8 @@
 		BC8E737C0FC0B3CF00DF8511 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C3564CBC22A2D0E1000A54C9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C37A40C420E0318900C4FF48 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Base; path = Base.lproj/Info.plist; sourceTree = "<group>"; };
-		C37FFB6019E1EEB6003F34C5 /* CorePlotWarnings.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = CorePlotWarnings.xcconfig; path = ../../framework/xcconfig/CorePlotWarnings.xcconfig; sourceTree = "<group>"; };
+		C39504882AF72820000843D0 /* CorePlotExamplesDebug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = CorePlotExamplesDebug.xcconfig; path = ../../framework/xcconfig/CorePlotExamplesDebug.xcconfig; sourceTree = "<group>"; };
+		C39504892AF72820000843D0 /* CorePlotExamplesRelease.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = CorePlotExamplesRelease.xcconfig; path = ../../framework/xcconfig/CorePlotExamplesRelease.xcconfig; sourceTree = "<group>"; };
 		C3D0A18A20E0179F00BA2921 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/RangePlot.xib; sourceTree = "<group>"; };
 		C3D3938119FD786F00148319 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = RangePlot/Images.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -137,11 +126,9 @@
 			isa = PBXGroup;
 			children = (
 				076184C10F3CAD5900A89A76 /* CorePlot.framework */,
-				07E0DF80109C4E9500F108D2 /* UnitTests.xctest */,
+				07E0DF80109C4E9500F108D2 /* UnitTests Mac.xctest */,
 				C3B345C81B46195900844218 /* CorePlot.framework */,
 				C3B345CA1B46195900844218 /* UnitTests iOS.xctest */,
-				C3B345CC1B46195900844218 /* libCorePlot-CocoaTouch.a */,
-				C3B345CE1B46195900844218 /* CorePlot-CocoaTouchTests.xctest */,
 				C310CE881C0A3DF700C4FCB4 /* CorePlot.framework */,
 				C310CE8A1C0A3DF700C4FCB4 /* UnitTests tvOS.xctest */,
 			);
@@ -207,7 +194,8 @@
 			children = (
 				32CA4F630368D1EE00C91783 /* RangePlot_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
-				C37FFB6019E1EEB6003F34C5 /* CorePlotWarnings.xcconfig */,
+				C39504882AF72820000843D0 /* CorePlotExamplesDebug.xcconfig */,
+				C39504892AF72820000843D0 /* CorePlotExamplesRelease.xcconfig */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -261,7 +249,8 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1100;
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1500;
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "RangePlot" */;
 			compatibilityVersion = "Xcode 6.3";
@@ -297,10 +286,10 @@
 			remoteRef = 076184C00F3CAD5900A89A76 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		07E0DF80109C4E9500F108D2 /* UnitTests.xctest */ = {
+		07E0DF80109C4E9500F108D2 /* UnitTests Mac.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = UnitTests.xctest;
+			path = "UnitTests Mac.xctest";
 			remoteRef = 07E0DF7F109C4E9500F108D2 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -332,20 +321,6 @@
 			remoteRef = C3B345C91B46195900844218 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		C3B345CC1B46195900844218 /* libCorePlot-CocoaTouch.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libCorePlot-CocoaTouch.a";
-			remoteRef = C3B345CB1B46195900844218 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C3B345CE1B46195900844218 /* CorePlot-CocoaTouchTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "CorePlot-CocoaTouchTests.xctest";
-			remoteRef = C3B345CD1B46195900844218 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -356,6 +331,8 @@
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				C3D3938219FD786F00148319 /* Images.xcassets in Resources */,
 				C3D0A17B20E0179100BA2921 /* RangePlot.xib in Resources */,
+				C395048A2AF72821000843D0 /* CorePlotExamplesDebug.xcconfig in Resources */,
+				C395048B2AF72821000843D0 /* CorePlotExamplesRelease.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -411,79 +388,47 @@
 /* Begin XCBuildConfiguration section */
 		C01FCF4B08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C37FFB6019E1EEB6003F34C5 /* CorePlotWarnings.xcconfig */;
+			baseConfigurationReference = C39504882AF72820000843D0 /* CorePlotExamplesDebug.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "-";
-				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = RangePlot_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = "";
 				INFOPLIST_FILE = "$(SRCROOT)/Base.lproj/Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.CorePlot.${PRODUCT_NAME:identifier}";
-				PRODUCT_NAME = RangePlot;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@loader_path/../Frameworks",
+				);
 			};
 			name = Debug;
 		};
 		C01FCF4C08A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C37FFB6019E1EEB6003F34C5 /* CorePlotWarnings.xcconfig */;
+			baseConfigurationReference = C39504892AF72820000843D0 /* CorePlotExamplesRelease.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "-";
-				COMBINE_HIDPI_IMAGES = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = RangePlot_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = "";
+				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/Base.lproj/Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.CorePlot.${PRODUCT_NAME:identifier}";
-				PRODUCT_NAME = RangePlot;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@loader_path/../Frameworks",
+				);
 			};
 			name = Release;
 		};
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C37FFB6019E1EEB6003F34C5 /* CorePlotWarnings.xcconfig */;
+			baseConfigurationReference = C39504882AF72820000843D0 /* CorePlotExamplesDebug.xcconfig */;
 			buildSettings = {
-				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
-				ENABLE_TESTABILITY = YES;
-				FRAMEWORK_SEARCH_PATHS = "";
-				GCC_C_LANGUAGE_STANDARD = c99;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
-				SYMROOT = "$(SRCROOT)/../../build";
 			};
 			name = Debug;
 		};
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C37FFB6019E1EEB6003F34C5 /* CorePlotWarnings.xcconfig */;
+			baseConfigurationReference = C39504892AF72820000843D0 /* CorePlotExamplesRelease.xcconfig */;
 			buildSettings = {
-				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
-				GCC_C_LANGUAGE_STANDARD = c99;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_PREPROCESSOR_DEFINITIONS = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				SDKROOT = macosx;
-				SYMROOT = "$(SRCROOT)/../../build";
 			};
 			name = Release;
 		};

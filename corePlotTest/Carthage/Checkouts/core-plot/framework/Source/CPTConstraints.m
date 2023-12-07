@@ -2,12 +2,14 @@
 
 #import "_CPTConstraintsFixed.h"
 #import "_CPTConstraintsRelative.h"
+#import "_NSCoderExtensions.h"
 #import "CPTDefinitions.h"
-#import "NSCoderExtensions.h"
 
 /** @brief Implements a one-dimensional constrained position within a given numeric range.
  *
  *  Supports fixed distance from either end of the range and a proportional fraction of the range.
+ *
+ *  @see @ref "CPTConstraints(AbstractMethods)"
  **/
 @implementation CPTConstraints
 
@@ -15,8 +17,8 @@
 #pragma mark Factory methods
 
 /** @brief Creates and returns a new CPTConstraints instance initialized with a fixed offset from the lower bound.
- *  @param newOffset The offset.
- *  @return A new CPTConstraints instance initialized with the given offset.
+ *  @param  newOffset The offset.
+ *  @return           A new CPTConstraints instance initialized with the given offset.
  **/
 +(nonnull instancetype)constraintWithLowerOffset:(CGFloat)newOffset
 {
@@ -24,8 +26,8 @@
 }
 
 /** @brief Creates and returns a new CPTConstraints instance initialized with a fixed offset from the upper bound.
- *  @param newOffset The offset.
- *  @return A new CPTConstraints instance initialized with the given offset.
+ *  @param  newOffset The offset.
+ *  @return           A new CPTConstraints instance initialized with the given offset.
  **/
 +(nonnull instancetype)constraintWithUpperOffset:(CGFloat)newOffset
 {
@@ -37,8 +39,8 @@
  *  For example, an offset of @num{0.0} will return a position equal to the lower bound, @num{1.0} will return the upper bound,
  *  and @num{0.5} will return a point midway between the two bounds.
  *
- *  @param newOffset The offset.
- *  @return A new CPTConstraints instance initialized with the given offset.
+ *  @param  newOffset The offset.
+ *  @return           A new CPTConstraints instance initialized with the given offset.
  **/
 +(nonnull instancetype)constraintWithRelativeOffset:(CGFloat)newOffset
 {
@@ -49,8 +51,8 @@
 #pragma mark Init/Dealloc
 
 /** @brief Initializes a newly allocated CPTConstraints instance initialized with a fixed offset from the lower bound.
- *  @param newOffset The offset.
- *  @return The initialized CPTConstraints object.
+ *  @param  newOffset The offset.
+ *  @return           The initialized CPTConstraints object.
  **/
 -(nonnull instancetype)initWithLowerOffset:(CGFloat)newOffset
 {
@@ -60,8 +62,8 @@
 }
 
 /** @brief Initializes a newly allocated CPTConstraints instance initialized with a fixed offset from the upper bound.
- *  @param newOffset The offset.
- *  @return The initialized CPTConstraints object.
+ *  @param  newOffset The offset.
+ *  @return           The initialized CPTConstraints object.
  **/
 -(nonnull instancetype)initWithUpperOffset:(CGFloat)newOffset
 {
@@ -75,8 +77,8 @@
  *  For example, an offset of @num{0.0} will return a position equal to the lower bound, @num{1.0} will return the upper bound,
  *  and @num{0.5} will return a point midway between the two bounds.
  *
- *  @param newOffset The offset.
- *  @return The initialized CPTConstraints object.
+ *  @param  newOffset The offset.
+ *  @return           The initialized CPTConstraints object.
  **/
 -(nonnull instancetype)initWithRelativeOffset:(CGFloat)newOffset
 {
@@ -146,14 +148,19 @@
 
 #pragma mark -
 
+/**
+ *  @brief CPTConstraints abstract methods—must be overridden by subclasses
+ *
+ *  @see CPTConstraints
+ **/
 @implementation CPTConstraints(AbstractMethods)
 
 #pragma mark -
 #pragma mark Comparison
 
 /** @brief Determines whether a given constraint is equal to the receiver.
- *  @param otherConstraint The constraint to check.
- *  @return @YES if the constraints are equal.
+ *  @param  otherConstraint The constraint to check.
+ *  @return                 @YES if the constraints are equal.
  **/
 -(BOOL)isEqualToConstraint:(nullable CPTConstraints *)otherConstraint
 {
@@ -165,9 +172,9 @@
 #pragma mark Positioning
 
 /** @brief Compute the position given a range of values.
- *  @param lowerBound The lower bound; must be less than or equal to the @par{upperBound}.
- *  @param upperBound The upper bound; must be greater than or equal to the @par{lowerBound}.
- *  @return The calculated position.
+ *  @param  lowerBound The lower bound; must be less than or equal to the @par{upperBound}.
+ *  @param  upperBound The upper bound; must be greater than or equal to the @par{lowerBound}.
+ *  @return            The calculated position.
  **/
 -(CGFloat)positionForLowerBound:(CGFloat __unused)lowerBound upperBound:(CGFloat __unused)upperBound
 {

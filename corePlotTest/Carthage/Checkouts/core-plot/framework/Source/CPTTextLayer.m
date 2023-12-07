@@ -65,9 +65,9 @@ const CGFloat kCPTTextLayerMarginWidth = CPTFloat(2.0);
 #pragma mark Init/Dealloc
 
 /** @brief Initializes a newly allocated CPTTextLayer object with the provided text and style.
- *  @param newText The text to display.
- *  @param newStyle The text style used to draw the text.
- *  @return The initialized CPTTextLayer object.
+ *  @param  newText  The text to display.
+ *  @param  newStyle The text style used to draw the text.
+ *  @return          The initialized CPTTextLayer object.
  **/
 -(nonnull instancetype)initWithText:(nullable NSString *)newText style:(nullable CPTTextStyle *)newStyle
 {
@@ -82,8 +82,8 @@ const CGFloat kCPTTextLayerMarginWidth = CPTFloat(2.0);
 }
 
 /** @brief Initializes a newly allocated CPTTextLayer object with the provided text and the default text style.
- *  @param newText The text to display.
- *  @return The initialized CPTTextLayer object.
+ *  @param  newText The text to display.
+ *  @return         The initialized CPTTextLayer object.
  **/
 -(nonnull instancetype)initWithText:(nullable NSString *)newText
 {
@@ -91,8 +91,8 @@ const CGFloat kCPTTextLayerMarginWidth = CPTFloat(2.0);
 }
 
 /** @brief Initializes a newly allocated CPTTextLayer object with the provided styled text.
- *  @param newText The styled text to display.
- *  @return The initialized CPTTextLayer object.
+ *  @param  newText The styled text to display.
+ *  @return         The initialized CPTTextLayer object.
  **/
 -(nonnull instancetype)initWithAttributedText:(nullable NSAttributedString *)newText
 {
@@ -134,8 +134,8 @@ const CGFloat kCPTTextLayerMarginWidth = CPTFloat(2.0);
  *  - @ref textStyle = @nil
  *  - @ref attributedText = @nil
  *
- *  @param newFrame The frame rectangle.
- *  @return The initialized CPTTextLayer object.
+ *  @param  newFrame The frame rectangle.
+ *  @return          The initialized CPTTextLayer object.
  **/
 -(nonnull instancetype)initWithFrame:(CGRect __unused)newFrame
 {
@@ -385,7 +385,7 @@ const CGFloat kCPTTextLayerMarginWidth = CPTFloat(2.0);
     if ( myText.length > 0 ) {
         [super renderAsVectorInContext:context];
 
-#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE || TARGET_OS_MACCATALYST
         CGContextSaveGState(context);
         CGContextTranslateCTM(context, CPTFloat(0.0), self.bounds.size.height);
         CGContextScaleCTM(context, CPTFloat(1.0), CPTFloat(-1.0));
@@ -393,7 +393,7 @@ const CGFloat kCPTTextLayerMarginWidth = CPTFloat(2.0);
 
         CGRect newBounds = CGRectInset(self.bounds, kCPTTextLayerMarginWidth, kCPTTextLayerMarginWidth);
         newBounds.origin.x += self.paddingLeft;
-#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE || TARGET_OS_MACCATALYST
         newBounds.origin.y += self.paddingTop;
 #else
         newBounds.origin.y += self.paddingBottom;
@@ -412,7 +412,7 @@ const CGFloat kCPTTextLayerMarginWidth = CPTFloat(2.0);
                      inContext:context];
         }
 
-#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE || TARGET_OS_MACCATALYST
         CGContextRestoreGState(context);
 #endif
     }

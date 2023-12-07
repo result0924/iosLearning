@@ -22,7 +22,6 @@
 		D09CB5202269D62200C62350 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D09CB51E2269D62200C62350 /* Main.storyboard */; };
 		D09CB5222269D62400C62350 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D09CB5212269D62400C62350 /* Assets.xcassets */; };
 		D09CB5252269D62400C62350 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D09CB5232269D62400C62350 /* LaunchScreen.storyboard */; };
-		D09CB52F2269D82D00C62350 /* CorePlot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D09CB52E2269D82D00C62350 /* CorePlot.framework */; };
 		D0B9ACA022D8982600E80DA4 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B9AC9F22D8982600E80DA4 /* TestViewController.swift */; };
 		D0DC8D2D268C054500CD83EE /* ScaleScatterChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0DC8D2C268C054500CD83EE /* ScaleScatterChartView.swift */; };
 		D0DC8D2F268D5D4D00CD83EE /* CorePlot+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0DC8D2E268D5D4D00CD83EE /* CorePlot+Extension.swift */; };
@@ -39,6 +38,7 @@
 		6C9C8685254ABBBC0098CFE8 /* UITableView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extension.swift"; sourceTree = "<group>"; };
 		6C9C873C254C071C0098CFE8 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		6C9C873F254C13B90098CFE8 /* ScatterChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScatterChartView.swift; sourceTree = "<group>"; };
+		6CC1D13B2B1DD1FF0064ABFB /* CorePlot.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CorePlot.xcframework; path = Carthage/Build/CorePlot.xcframework; sourceTree = "<group>"; };
 		D09CB5172269D62200C62350 /* corePlotTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = corePlotTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D09CB51A2269D62200C62350 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D09CB51C2269D62200C62350 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -46,7 +46,6 @@
 		D09CB5212269D62400C62350 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D09CB5242269D62400C62350 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D09CB5262269D62400C62350 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D09CB52E2269D82D00C62350 /* CorePlot.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CorePlot.framework; path = Carthage/Build/iOS/CorePlot.framework; sourceTree = "<group>"; };
 		D0B9AC9F22D8982600E80DA4 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		D0DC8D2C268C054500CD83EE /* ScaleScatterChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleScatterChartView.swift; sourceTree = "<group>"; };
 		D0DC8D2E268D5D4D00CD83EE /* CorePlot+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CorePlot+Extension.swift"; sourceTree = "<group>"; };
@@ -57,7 +56,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D09CB52F2269D82D00C62350 /* CorePlot.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -118,7 +116,7 @@
 		D09CB52D2269D82C00C62350 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D09CB52E2269D82D00C62350 /* CorePlot.framework */,
+				6CC1D13B2B1DD1FF0064ABFB /* CorePlot.xcframework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -210,7 +208,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
+			shellScript = "if which carthage >/dev/null; then\n carthage copy-frameworks\nelse\n echo \"carthage copy-frameworks fail\"\nfi\n\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

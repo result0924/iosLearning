@@ -1,6 +1,6 @@
 #import "CPTColorSpace.h"
 
-#import "NSCoderExtensions.h"
+#import "_NSCoderExtensions.h"
 
 /** @brief An immutable color space.
  *
@@ -32,7 +32,7 @@
 
     dispatch_once(&onceToken, ^{
         CGColorSpaceRef cgSpace = NULL;
-#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE || TARGET_OS_MACCATALYST
         cgSpace = CGColorSpaceCreateDeviceRGB();
 #else
         cgSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
@@ -50,8 +50,8 @@
 /** @brief Initializes a newly allocated colorspace object with the specified color space.
  *  This is the designated initializer.
  *
- *  @param colorSpace The color space.
- *  @return The initialized CPTColorSpace object.
+ *  @param  colorSpace The color space.
+ *  @return            The initialized CPTColorSpace object.
  **/
 -(nonnull instancetype)initWithCGColorSpace:(nonnull CGColorSpaceRef)colorSpace
 {
@@ -68,7 +68,7 @@
 {
     CGColorSpaceRef cgSpace = NULL;
 
-#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE || TARGET_OS_MACCATALYST
     cgSpace = CGColorSpaceCreateDeviceRGB();
 #else
     cgSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
@@ -101,9 +101,9 @@
 /// @endcond
 
 /** @brief Returns an object initialized from data in a given unarchiver.
- *  @param coder An unarchiver object.
- *  @return An object initialized from data in a given unarchiver.
- */
+ *  @param  coder An unarchiver object.
+ *  @return       An object initialized from data in a given unarchiver.
+ **/
 -(nullable instancetype)initWithCoder:(nonnull NSCoder *)coder
 {
     if ((self = [super init])) {

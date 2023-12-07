@@ -1,9 +1,13 @@
+/// @file
+
+#ifdef CPT_IS_FRAMEWORK
+#import <CorePlot/CPTNumericData.h>
+#import <CorePlot/CPTNumericDataType.h>
+#else
 #import "CPTNumericData.h"
 #import "CPTNumericDataType.h"
+#endif
 
-/** @category CPTNumericData(TypeConversion)
- *  @brief Type conversion methods for CPTNumericData.
- **/
 @interface CPTNumericData(TypeConversion)
 
 /// @name Type Conversion

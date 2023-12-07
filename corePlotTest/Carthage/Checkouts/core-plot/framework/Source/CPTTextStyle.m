@@ -1,8 +1,8 @@
 #import "CPTTextStyle.h"
 
+#import "_NSCoderExtensions.h"
 #import "CPTColor.h"
 #import "CPTMutableTextStyle.h"
-#import "NSCoderExtensions.h"
 
 /// @cond
 @interface CPTTextStyle()
@@ -24,6 +24,8 @@
 /** @brief Immutable wrapper for various text style properties.
  *
  *  If you need to customize properties, you should create a CPTMutableTextStyle.
+ *
+ *  @see @ref "CPTTextStyle(CPTPlatformSpecificTextStyleExtensions)"
  **/
 
 @implementation CPTTextStyle
@@ -56,7 +58,7 @@
 @synthesize textAlignment;
 
 /** @property NSLineBreakMode lineBreakMode
- *  @brief The line break mode used when laying out the text. Default is @link NSParagraphStyle::NSLineBreakByWordWrapping NSLineBreakByWordWrapping @endlink.
+ *  @brief The line break mode used when laying out the text. Default is #NSLineBreakByWordWrapping.
  **/
 @synthesize lineBreakMode;
 
@@ -75,8 +77,8 @@
  *
  *  The text style will be initalized with values from the given @par{textStyle}.
  *
- *  @param textStyle An existing CPTTextStyle.
- *  @return A new text style instance.
+ *  @param  textStyle An existing CPTTextStyle.
+ *  @return           A new text style instance.
  **/
 +(nonnull instancetype)textStyleWithStyle:(nullable CPTTextStyle *)textStyle
 {
@@ -106,7 +108,7 @@
  *  - @ref fontSize = @num{12.0}
  *  - @ref color = opaque black
  *  - @ref textAlignment = #CPTTextAlignmentLeft
- *  - @ref lineBreakMode = @link NSParagraphStyle::NSLineBreakByWordWrapping NSLineBreakByWordWrapping @endlink
+ *  - @ref lineBreakMode = #NSLineBreakByWordWrapping
  *
  *  @return The initialized object.
  **/
@@ -132,7 +134,7 @@
 
 -(void)encodeWithCoder:(nonnull NSCoder *)coder
 {
-#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE || TARGET_OS_TV
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE || TARGET_OS_TV || TARGET_OS_MACCATALYST
     if ( self.font ) {
         // UIFont does not support NSCoding :(
         [coder encodeObject:[self.font fontDescriptor] forKey:@"CPTTextStyle.font+descriptor"];
@@ -152,7 +154,7 @@
 -(nullable instancetype)initWithCoder:(nonnull NSCoder *)coder
 {
     if ((self = [super init])) {
-#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE || TARGET_OS_TV
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE || TARGET_OS_TV || TARGET_OS_MACCATALYST
         // UIFont does not support NSCoding :(
         UIFontDescriptor *fontDescriptor = [coder decodeObjectOfClass:[UIFontDescriptor class]
                                                                forKey:@"CPTTextStyle.font+descriptor"];

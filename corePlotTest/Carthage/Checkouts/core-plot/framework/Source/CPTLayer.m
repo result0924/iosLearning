@@ -1,12 +1,13 @@
 #import "CPTLayer.h"
 
+#import "_NSCoderExtensions.h"
 #import "CPTGraph.h"
+#import "CPTGraphHostingView.h"
 #import "CPTPathExtensions.h"
 #import "CPTPlatformSpecificCategories.h"
 #import "CPTPlatformSpecificFunctions.h"
 #import "CPTShadow.h"
 #import "CPTUtilities.h"
-#import "NSCoderExtensions.h"
 #import <objc/runtime.h>
 #import <tgmath.h>
 
@@ -33,6 +34,8 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
 -(void)applyTransform:(CATransform3D)transform toContext:(nonnull CGContextRef)context;
 -(nonnull NSString *)subLayersAtIndex:(NSUInteger)idx;
 
+-(CPTGraphHostingView *)findHostingView;
+
 @end
 
 /// @endcond
@@ -47,6 +50,8 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
  *  bounds, minus any padding. Default animations for changes in position, bounds,
  *  and sublayers are turned off. The default layer is not opaque and does not mask
  *  to bounds.
+ *
+ *  @see @ref "CPTLayer(CPTPlatformSpecificLayerExtensions)"
  **/
 @implementation CPTLayer
 
@@ -79,11 +84,6 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
  *  @brief If @YES, a sublayer mask is applied to clip sublayer content to the inside of the border.
  **/
 @synthesize masksToBorder;
-
-/** @property CGFloat contentsScale
- *  @brief The scale factor applied to the layer.
- **/
-@dynamic contentsScale;
 
 /** @property CPTShadow *shadow
  *  @brief The shadow drawn under the layer content. If @nil (the default), no shadow is drawn.
@@ -161,8 +161,8 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
  *  - @ref opaque = @NO
  *  - @ref masksToBounds = @NO
  *
- *  @param newFrame The frame rectangle.
- *  @return The initialized object.
+ *  @param  newFrame The frame rectangle.
+ *  @return          The initialized object.
  **/
 -(nonnull instancetype)initWithFrame:(CGRect)newFrame
 {
@@ -202,9 +202,9 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
 /// @}
 
 /** @brief Override to copy or initialize custom fields of the specified layer.
- *  @param layer The layer from which custom fields should be copied.
- *  @return A layer instance with any custom instance variables copied from @par{layer}.
- */
+ *  @param  layer The layer from which custom fields should be copied.
+ *  @return       A layer instance with any custom instance variables copied from @par{layer}.
+ **/
 -(nonnull instancetype)initWithLayer:(nonnull id)layer
 {
     if ((self = [super initWithLayer:layer])) {
@@ -263,9 +263,9 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
 /// @endcond
 
 /** @brief Returns an object initialized from data in a given unarchiver.
- *  @param coder An unarchiver object.
- *  @return An object initialized from data in a given unarchiver.
- */
+ *  @param  coder An unarchiver object.
+ *  @return       An object initialized from data in a given unarchiver.
+ **/
 -(nullable instancetype)initWithCoder:(nonnull NSCoder *)coder
 {
     if ((self = [super initWithCoder:coder])) {
@@ -329,19 +329,34 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
         // Workaround since @available macro is not there
 
         if ( [NSView instancesRespondToSelector:@selector(effectiveAppearance)] ) {
-            NSAppearance *oldAppearance = NSAppearance.currentAppearance;
-            NSAppearance.currentAppearance = ((NSView *)self.graph.hostingView).effectiveAppearance;
-            [super display];
-            NSAppearance.currentAppearance = oldAppearance;
+            CPTGraphHostingView *hostingView = [self findHostingView];
+            if ( [NSAppearance instancesRespondToSelector:@selector(performAsCurrentDrawingAppearance:)] ) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunguarded-availability-new"
+                [hostingView.effectiveAppearance performAsCurrentDrawingAppearance: ^{
+                    [super display];
+                }];
+#pragma clang diagnostic pop
+            }
+            else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+                NSAppearance *oldAppearance = NSAppearance.currentAppearance;
+                NSAppearance.currentAppearance = hostingView.effectiveAppearance;
+                [super display];
+                NSAppearance.currentAppearance = oldAppearance;
+#pragma clang diagnostic pop
+            }
         }
         else {
             [super display];
         }
 #else
 #ifdef __IPHONE_13_0
-        if ( @available(iOS 13, *)) {
+        if ( @available(iOS 13, tvOS 13, *)) {
             if ( [UITraitCollection instancesRespondToSelector:@selector(performAsCurrentTraitCollection:)] ) {
-                UITraitCollection *traitCollection = ((UIView *)self.graph.hostingView).traitCollection;
+                CPTGraphHostingView *hostingView   = [self findHostingView];
+                UITraitCollection *traitCollection = hostingView.traitCollection;
                 if ( traitCollection ) {
                     [traitCollection performAsCurrentTraitCollection: ^{
                         [super display];
@@ -364,6 +379,31 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
 #endif
 #pragma clang diagnostic pop
     }
+}
+
+-(CPTGraphHostingView *)findHostingView
+{
+    CPTGraphHostingView *hostingView = self.graph.hostingView;
+
+    if ( !hostingView &&
+         [self respondsToSelector:@selector(hostingView)] ) {
+        hostingView = [self performSelector:@selector(hostingView)];
+    }
+
+    CALayer *superlayer = self.superlayer;
+
+    while ( superlayer && !hostingView ) {
+        if ( [superlayer isKindOfClass:CPTLayer.class] ) {
+            CPTLayer *curLayer = (CPTLayer *)superlayer;
+            hostingView = curLayer.graph.hostingView;
+            if ( !hostingView &&
+                 [superlayer respondsToSelector:@selector(hostingView)] ) {
+                hostingView = [superlayer performSelector:@selector(hostingView)];
+            }
+        }
+        superlayer = superlayer.superlayer;
+    }
+    return hostingView;
 }
 
 -(void)drawInContext:(nonnull CGContextRef)context
@@ -491,7 +531,7 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
 
 /** @brief Updates the layer layout if needed and then draws layer content and the content of all sublayers into the provided graphics context.
  *  @param context The graphics context to draw into.
- */
+ **/
 -(void)layoutAndRenderInContext:(nonnull CGContextRef)context
 {
     [self layoutIfNeeded];
@@ -550,7 +590,7 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
     return NO;
 }
 
-#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE || TARGET_OS_MACCATALYST
 #else
 -(BOOL)scrollWheelEvent:(nonnull CPTNativeEvent *__unused)event fromPoint:(CGPoint __unused)fromPoint toPoint:(CGPoint __unused)toPoint
 {
@@ -727,9 +767,9 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
 /// @endcond
 
 /** @brief Returns the margins that should be left between the bounds of the receiver and all sublayers.
- *  @param left The left margin.
- *  @param top The top margin.
- *  @param right The right margin.
+ *  @param left   The left margin.
+ *  @param top    The top margin.
+ *  @param right  The right margin.
  *  @param bottom The bottom margin.
  **/
 -(void)sublayerMarginLeft:(nonnull CGFloat *)left top:(nonnull CGFloat *)top right:(nonnull CGFloat *)right bottom:(nonnull CGFloat *)bottom
@@ -843,9 +883,9 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
  *  The clipping path is built by recursively climbing the layer tree and combining the sublayer masks from
  *  each super layer. The tree traversal stops when a layer is encountered that is not a CPTLayer.
  *
- *  @param context The graphics context to clip.
+ *  @param context  The graphics context to clip.
  *  @param sublayer The sublayer that called this method.
- *  @param offset The cumulative position offset between the receiver and the first layer in the recursive calling chain.
+ *  @param offset   The cumulative position offset between the receiver and the first layer in the recursive calling chain.
  **/
 -(void)applySublayerMaskToContext:(nonnull CGContextRef)context forSublayer:(nonnull CPTLayer *)sublayer withOffset:(CGPoint)offset
 {
@@ -956,29 +996,16 @@ CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBound
     NSParameterAssert(newContentsScale > CPTFloat(0.0));
 
     if ( self.contentsScale != newContentsScale ) {
-        if ( [CALayer instancesRespondToSelector:@selector(setContentsScale:)] ) {
-            super.contentsScale = newContentsScale;
-            [self setNeedsDisplay];
+        super.contentsScale = newContentsScale;
+        [self setNeedsDisplay];
 
-            Class layerClass = [CPTLayer class];
-            for ( CALayer *subLayer in self.sublayers ) {
-                if ( [subLayer isKindOfClass:layerClass] ) {
-                    subLayer.contentsScale = newContentsScale;
-                }
+        Class layerClass = [CPTLayer class];
+        for ( CALayer *subLayer in self.sublayers ) {
+            if ( [subLayer isKindOfClass:layerClass] ) {
+                subLayer.contentsScale = newContentsScale;
             }
         }
     }
-}
-
--(CGFloat)contentsScale
-{
-    CGFloat scale = CPTFloat(1.0);
-
-    if ( [CALayer instancesRespondToSelector:@selector(contentsScale)] ) {
-        scale = super.contentsScale;
-    }
-
-    return scale;
 }
 
 -(void)setShadow:(nullable CPTShadow *)newShadow

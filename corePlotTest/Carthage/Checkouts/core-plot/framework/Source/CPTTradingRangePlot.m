@@ -1,5 +1,7 @@
 #import "CPTTradingRangePlot.h"
 
+#import "_NSCoderExtensions.h"
+#import "_NSNumberExtensions.h"
 #import "CPTColor.h"
 #import "CPTExceptions.h"
 #import "CPTLegend.h"
@@ -11,8 +13,6 @@
 #import "CPTPlotSpaceAnnotation.h"
 #import "CPTUtilities.h"
 #import "CPTXYPlotSpace.h"
-#import "NSCoderExtensions.h"
-#import "NSNumberExtensions.h"
 #import <tgmath.h>
 
 /** @defgroup plotAnimationTradingRangePlot Trading Range Plot
@@ -165,7 +165,7 @@ static const CPTCoordinate dependentCoord   = CPTCoordinateY;
 
 /// @cond
 
-#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE || TARGET_OS_MACCATALYST
 #else
 +(void)initialize
 {
@@ -206,8 +206,8 @@ static const CPTCoordinate dependentCoord   = CPTCoordinateY;
  *  - @ref showBarBorder = @YES
  *  - @ref labelField = #CPTTradingRangePlotFieldClose
  *
- *  @param newFrame The frame rectangle.
- *  @return The initialized CPTTradingRangePlot object.
+ *  @param  newFrame The frame rectangle.
+ *  @return          The initialized CPTTradingRangePlot object.
  **/
 -(nonnull instancetype)initWithFrame:(CGRect)newFrame
 {
@@ -586,7 +586,7 @@ static const CPTCoordinate dependentCoord   = CPTCoordinateY;
 
         for ( NSUInteger idx = indexRange.location; idx < maxIndex; idx++ ) {
             NSNumber *width = [theDataSource barWidthForTradingRangePlot:self recordIndex:idx];
-            if ( width ) {
+            if ( width != nil ) {
                 [array addObject:width];
             }
             else {
@@ -624,7 +624,7 @@ static const CPTCoordinate dependentCoord   = CPTCoordinateY;
     if ( sampleCount == 0 ) {
         return;
     }
-    if ((opens == nil) || (highs == nil) || (lows == nil) || (closes == nil)) {
+    if ( !opens || !highs || !lows || !closes ) {
         return;
     }
 
@@ -1113,7 +1113,7 @@ static const CPTCoordinate dependentCoord   = CPTCoordinateY;
 {
     CPTFill *theFill = [self cachedValueForKey:CPTTradingRangePlotBindingIncreaseFills recordIndex:idx];
 
-    if ((theFill == nil) || (theFill == [CPTPlot nilData])) {
+    if ( !theFill || (theFill == [CPTPlot nilData])) {
         theFill = self.increaseFill;
     }
 
@@ -1124,7 +1124,7 @@ static const CPTCoordinate dependentCoord   = CPTCoordinateY;
 {
     CPTFill *theFill = [self cachedValueForKey:CPTTradingRangePlotBindingDecreaseFills recordIndex:idx];
 
-    if ((theFill == nil) || (theFill == [CPTPlot nilData])) {
+    if ( !theFill || (theFill == [CPTPlot nilData])) {
         theFill = self.decreaseFill;
     }
 
@@ -1135,7 +1135,7 @@ static const CPTCoordinate dependentCoord   = CPTCoordinateY;
 {
     CPTLineStyle *theLineStyle = [self cachedValueForKey:CPTTradingRangePlotBindingLineStyles recordIndex:idx];
 
-    if ((theLineStyle == nil) || (theLineStyle == [CPTPlot nilData])) {
+    if ( !theLineStyle || (theLineStyle == [CPTPlot nilData])) {
         theLineStyle = self.lineStyle;
     }
 
@@ -1146,11 +1146,11 @@ static const CPTCoordinate dependentCoord   = CPTCoordinateY;
 {
     CPTLineStyle *theLineStyle = [self cachedValueForKey:CPTTradingRangePlotBindingIncreaseLineStyles recordIndex:idx];
 
-    if ((theLineStyle == nil) || (theLineStyle == [CPTPlot nilData])) {
+    if ( !theLineStyle || (theLineStyle == [CPTPlot nilData])) {
         theLineStyle = self.increaseLineStyle;
     }
 
-    if ( theLineStyle == nil ) {
+    if ( !theLineStyle ) {
         theLineStyle = [self lineStyleForIndex:idx];
     }
 
@@ -1161,11 +1161,11 @@ static const CPTCoordinate dependentCoord   = CPTCoordinateY;
 {
     CPTLineStyle *theLineStyle = [self cachedValueForKey:CPTTradingRangePlotBindingDecreaseLineStyles recordIndex:idx];
 
-    if ((theLineStyle == nil) || (theLineStyle == [CPTPlot nilData])) {
+    if ( !theLineStyle || (theLineStyle == [CPTPlot nilData])) {
         theLineStyle = self.decreaseLineStyle;
     }
 
-    if ( theLineStyle == nil ) {
+    if ( !theLineStyle ) {
         theLineStyle = [self lineStyleForIndex:idx];
     }
 
@@ -1584,9 +1584,9 @@ static const CPTCoordinate dependentCoord   = CPTCoordinateY;
  *  index where the @par{interactionPoint} is inside a bar.
  *  This method returns @NO if the @par{interactionPoint} is outside all of the bars.
  *
- *  @param event The OS event.
- *  @param interactionPoint The coordinates of the interaction.
- *  @return Whether the event was handled or not.
+ *  @param  event            The OS event.
+ *  @param  interactionPoint The coordinates of the interaction.
+ *  @return                  Whether the event was handled or not.
  **/
 -(BOOL)pointingDeviceDownEvent:(nonnull CPTNativeEvent *)event atPoint:(CGPoint)interactionPoint
 {
@@ -1650,9 +1650,9 @@ static const CPTCoordinate dependentCoord   = CPTCoordinateY;
  *  @link CPTTradingRangePlotDelegate::tradingRangePlot:barWasSelectedAtRecordIndex:withEvent: -tradingRangePlot:barWasSelectedAtRecordIndex:withEvent: @endlink
  *  methods, these will be called.
  *
- *  @param event The OS event.
- *  @param interactionPoint The coordinates of the interaction.
- *  @return Whether the event was handled or not.
+ *  @param  event            The OS event.
+ *  @param  interactionPoint The coordinates of the interaction.
+ *  @return                  Whether the event was handled or not.
  **/
 -(BOOL)pointingDeviceUpEvent:(nonnull CPTNativeEvent *)event atPoint:(CGPoint)interactionPoint
 {

@@ -1,6 +1,14 @@
+/// @file
+
+#ifdef CPT_IS_FRAMEWORK
+#import <CorePlot/CPTAnnotationHostLayer.h>
+#import <CorePlot/CPTGraph.h>
+#import <CorePlot/CPTLayer.h>
+#else
 #import "CPTAnnotationHostLayer.h"
 #import "CPTGraph.h"
 #import "CPTLayer.h"
+#endif
 
 @class CPTAxis;
 @class CPTAxisLabelGroup;
@@ -32,7 +40,7 @@
  *  @if MacOnly was both pressed and released. @endif
  *  @if iOSOnly received both the touch down and up events. @endif
  *  @param plotArea The plot area.
- *  @param event The event that triggered the selection.
+ *  @param event    The event that triggered the selection.
  **/
 -(void)plotAreaWasSelected:(nonnull CPTPlotArea *)plotArea withEvent:(nonnull CPTNativeEvent *)event;
 
@@ -47,7 +55,7 @@
  *  @if MacOnly was pressed. @endif
  *  @if iOSOnly touch started. @endif
  *  @param plotArea The plot area.
- *  @param event The event that triggered the selection.
+ *  @param event    The event that triggered the selection.
  **/
 -(void)plotAreaTouchDown:(nonnull CPTPlotArea *)plotArea withEvent:(nonnull CPTNativeEvent *)event;
 
@@ -62,7 +70,7 @@
  *  @if MacOnly was released. @endif
  *  @if iOSOnly touch ended. @endif
  *  @param plotArea The plot area.
- *  @param event The event that triggered the selection.
+ *  @param event    The event that triggered the selection.
  **/
 -(void)plotAreaTouchUp:(nonnull CPTPlotArea *)plotArea withEvent:(nonnull CPTNativeEvent *)event;
 

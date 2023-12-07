@@ -1,10 +1,10 @@
 #import "CPTAxisLabel.h"
 
+#import "_NSCoderExtensions.h"
 #import "CPTLayer.h"
 #import "CPTMutableTextStyle.h"
 #import "CPTTextLayer.h"
 #import "CPTUtilities.h"
-#import "NSCoderExtensions.h"
 #import <tgmath.h>
 
 /** @brief An axis label.
@@ -43,9 +43,9 @@
 
 /** @brief Initializes a newly allocated text-based CPTAxisLabel object with the provided text and style.
  *
- *  @param newText The label text.
- *  @param newStyle The text style for the label.
- *  @return The initialized CPTAxisLabel object.
+ *  @param  newText  The label text.
+ *  @param  newStyle The text style for the label.
+ *  @return          The initialized CPTAxisLabel object.
  **/
 -(nonnull instancetype)initWithText:(nullable NSString *)newText textStyle:(nullable CPTTextStyle *)newStyle
 {
@@ -58,8 +58,8 @@
 
 /** @brief Initializes a newly allocated CPTAxisLabel object with the provided layer. This is the designated initializer.
  *
- *  @param layer The label content.
- *  @return The initialized CPTAxisLabel object.
+ *  @param  layer The label content.
+ *  @return       The initialized CPTAxisLabel object.
  **/
 -(nonnull instancetype)initWithContentLayer:(nonnull CPTLayer *)layer
 {
@@ -100,9 +100,9 @@
 /// @endcond
 
 /** @brief Returns an object initialized from data in a given unarchiver.
- *  @param coder An unarchiver object.
- *  @return An object initialized from data in a given unarchiver.
- */
+ *  @param  coder An unarchiver object.
+ *  @return       An object initialized from data in a given unarchiver.
+ **/
 -(nullable instancetype)initWithCoder:(nonnull NSCoder *)coder
 {
     if ((self = [super init])) {
@@ -113,7 +113,7 @@
         alignment = (CPTAlignment)[coder decodeIntegerForKey:@"CPTAxisLabel.alignment"];
         NSNumber *location = [coder decodeObjectOfClass:[NSNumber class]
                                                  forKey:@"CPTAxisLabel.tickLocation"];
-        tickLocation = location ? location : @0.0;
+        tickLocation = location != nil ? location : @0.0;
     }
     return self;
 }
@@ -138,9 +138,9 @@
  *  When zero, the anchor point is positioned along the closest side of the label.
  *  When non-zero, the anchor point is left at the center. This has consequences for
  *  the value taken by the offset.
- *  @param point The view point.
+ *  @param point      The view point.
  *  @param coordinate The coordinate in which the label is being position. Orthogonal to the axis coordinate.
- *  @param direction The offset direction.
+ *  @param direction  The offset direction.
  **/
 -(void)positionRelativeToViewPoint:(CGPoint)point forCoordinate:(CPTCoordinate)coordinate inDirection:(CPTSign)direction
 {
@@ -289,10 +289,10 @@
 }
 
 /** @brief Positions the axis label between two given points.
- *  @param firstPoint The first view point.
+ *  @param firstPoint  The first view point.
  *  @param secondPoint The second view point.
- *  @param coordinate The axis coordinate.
- *  @param direction The offset direction.
+ *  @param coordinate  The axis coordinate.
+ *  @param direction   The offset direction.
  **/
 -(void)positionBetweenViewPoint:(CGPoint)firstPoint andViewPoint:(CGPoint)secondPoint forCoordinate:(CPTCoordinate)coordinate inDirection:(CPTSign)direction
 {
@@ -321,8 +321,8 @@
 
 /** @brief Returns a boolean value that indicates whether the received is equal to the given object.
  *  Axis labels are equal if they have the same @ref tickLocation.
- *  @param object The object to be compared with the receiver.
- *  @return @YES if @par{object} is equal to the receiver, @NO otherwise.
+ *  @param  object The object to be compared with the receiver.
+ *  @return        @YES if @par{object} is equal to the receiver, @NO otherwise.
  **/
 -(BOOL)isEqual:(nullable id)object
 {
@@ -332,7 +332,7 @@
     else if ( [object isKindOfClass:[self class]] ) {
         NSNumber *location = ((CPTAxisLabel *)object).tickLocation;
 
-        if ( location ) {
+        if ( location != nil ) {
             return [self.tickLocation isEqualToNumber:location];
         }
         else {

@@ -69,9 +69,9 @@ static void *CPTFunctionDataSourceKVOContext = (void *)&CPTFunctionDataSourceKVO
 #pragma mark Init/Dealloc
 
 /** @brief Creates and returns a new CPTFunctionDataSource instance initialized with the provided function and plot.
- *  @param plot The plot that will display the function values.
- *  @param function The function used to generate plot data.
- *  @return A new CPTFunctionDataSource instance initialized with the provided function and plot.
+ *  @param  plot     The plot that will display the function values.
+ *  @param  function The function used to generate plot data.
+ *  @return          A new CPTFunctionDataSource instance initialized with the provided function and plot.
  **/
 +(nonnull instancetype)dataSourceForPlot:(nonnull CPTPlot *)plot withFunction:(nonnull CPTDataSourceFunction)function
 {
@@ -79,9 +79,9 @@ static void *CPTFunctionDataSourceKVOContext = (void *)&CPTFunctionDataSourceKVO
 }
 
 /** @brief Creates and returns a new CPTFunctionDataSource instance initialized with the provided block and plot.
- *  @param plot The plot that will display the function values.
- *  @param block The Objective-C block used to generate plot data.
- *  @return A new CPTFunctionDataSource instance initialized with the provided block and plot.
+ *  @param  plot  The plot that will display the function values.
+ *  @param  block The Objective-C block used to generate plot data.
+ *  @return       A new CPTFunctionDataSource instance initialized with the provided block and plot.
  **/
 +(nonnull instancetype)dataSourceForPlot:(nonnull CPTPlot *)plot withBlock:(nonnull CPTDataSourceBlock)block
 {
@@ -89,9 +89,9 @@ static void *CPTFunctionDataSourceKVOContext = (void *)&CPTFunctionDataSourceKVO
 }
 
 /** @brief Initializes a newly allocated CPTFunctionDataSource object with the provided function and plot.
- *  @param plot The plot that will display the function values.
- *  @param function The function used to generate plot data.
- *  @return The initialized CPTFunctionDataSource object.
+ *  @param  plot     The plot that will display the function values.
+ *  @param  function The function used to generate plot data.
+ *  @return          The initialized CPTFunctionDataSource object.
  **/
 -(nonnull instancetype)initForPlot:(nonnull CPTPlot *)plot withFunction:(nonnull CPTDataSourceFunction)function
 {
@@ -106,9 +106,9 @@ static void *CPTFunctionDataSourceKVOContext = (void *)&CPTFunctionDataSourceKVO
 }
 
 /** @brief Initializes a newly allocated CPTFunctionDataSource object with the provided block and plot.
- *  @param plot The plot that will display the function values.
- *  @param block The Objective-C block used to generate plot data.
- *  @return The initialized CPTFunctionDataSource object.
+ *  @param  plot  The plot that will display the function values.
+ *  @param  block The Objective-C block used to generate plot data.
+ *  @return       The initialized CPTFunctionDataSource object.
  **/
 -(nonnull instancetype)initForPlot:(nonnull CPTPlot *)plot withBlock:(nonnull CPTDataSourceBlock)block
 {
@@ -392,8 +392,8 @@ static void *CPTFunctionDataSourceKVOContext = (void *)&CPTFunctionDataSourceKVO
 
             NSMutableData *data = [[NSMutableData alloc] initWithLength:indexRange.length * 2 * sizeof(double)];
 
-            double *xBytes = data.mutableBytes;
-            double *yBytes = data.mutableBytes + (indexRange.length * sizeof(double));
+            double *xBytes = (double *)data.mutableBytes;
+            double *yBytes = (double *)data.mutableBytes + indexRange.length;
 
             double location = xRange.locationDouble;
             double length   = xRange.lengthDouble;

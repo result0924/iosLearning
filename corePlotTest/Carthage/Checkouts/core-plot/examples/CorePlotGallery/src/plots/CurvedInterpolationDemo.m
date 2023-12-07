@@ -30,11 +30,6 @@ static NSString *const hermiteCubicIdentifier          = @"Hermite Cubic";
 
 @synthesize plotData = _plotData;
 
-+(void)load
-{
-    [super registerPlotItem:self];
-}
-
 -(instancetype)init
 {
     if ((self = [super init])) {
@@ -62,7 +57,7 @@ static NSString *const hermiteCubicIdentifier          = @"Hermite Cubic";
                 [generatedData addObject:@{
                      @"x": x,
                      @"y": y
-                }];
+                 }];
             }
         }
         self.plotData = generatedData;

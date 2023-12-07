@@ -1,6 +1,6 @@
 #import "_CPTConstraintsFixed.h"
 
-#import "NSCoderExtensions.h"
+#import "_NSCoderExtensions.h"
 
 /// @cond
 @interface _CPTConstraintsFixed()
@@ -27,8 +27,8 @@
 #pragma mark Init/Dealloc
 
 /** @brief Initializes a newly allocated CPTConstraints instance initialized with a fixed offset from the lower bound.
- *  @param newOffset The offset.
- *  @return The initialized CPTConstraints object.
+ *  @param  newOffset The offset.
+ *  @return           The initialized CPTConstraints object.
  **/
 -(nonnull instancetype)initWithLowerOffset:(CGFloat)newOffset
 {
@@ -41,8 +41,8 @@
 }
 
 /** @brief Initializes a newly allocated CPTConstraints instance initialized with a fixed offset from the upper bound.
- *  @param newOffset The offset.
- *  @return The initialized CPTConstraints object.
+ *  @param  newOffset The offset.
+ *  @return           The initialized CPTConstraints object.
  **/
 -(nonnull instancetype)initWithUpperOffset:(CGFloat)newOffset
 {
@@ -69,11 +69,6 @@
 #pragma mark -
 #pragma mark Positioning
 
-/** @brief Compute the position given a range of values.
- *  @param lowerBound The lower bound; must be less than or equal to the upperBound.
- *  @param upperBound The upper bound; must be greater than or equal to the lowerBound.
- *  @return The calculated position.
- **/
 -(CGFloat)positionForLowerBound:(CGFloat)lowerBound upperBound:(CGFloat)upperBound
 {
     NSAssert(lowerBound <= upperBound, @"lowerBound must be less than or equal to upperBound");
@@ -126,9 +121,9 @@
 /// @endcond
 
 /** @brief Returns an object initialized from data in a given unarchiver.
- *  @param coder An unarchiver object.
- *  @return An object initialized from data in a given unarchiver.
- */
+ *  @param  coder An unarchiver object.
+ *  @return       An object initialized from data in a given unarchiver.
+ **/
 -(nullable instancetype)initWithCoder:(nonnull NSCoder *)coder
 {
     if ((self = [super init])) {

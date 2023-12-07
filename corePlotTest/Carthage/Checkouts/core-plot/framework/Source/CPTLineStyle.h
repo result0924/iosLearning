@@ -1,6 +1,10 @@
-#import "CPTDefinitions.h"
-
 /// @file
+
+#ifdef CPT_IS_FRAMEWORK
+#import <CorePlot/CPTDefinitions.h>
+#else
+#import "CPTDefinitions.h"
+#endif
 
 @class CPTColor;
 @class CPTFill;

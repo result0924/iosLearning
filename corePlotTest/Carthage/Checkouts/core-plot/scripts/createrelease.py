@@ -16,7 +16,7 @@ def RunXcode(project, target):
 # Get version from args
 import sys
 if len(sys.argv) <= 1: 
-    print Usage()
+    print(Usage())
     exit(1)
 version = sys.argv[1]
 
@@ -30,6 +30,7 @@ rmtree(join(frameworkDir, 'CorePlotDocs.docset'), True)
 rmtree(join(frameworkDir, 'CorePlotTouchDocs.docset'), True)
 
 # Remove old build directories
+rmtree(join(projectRoot, 'build'), True)
 rmtree(join(frameworkDir, 'build'), True)
 examples = listdir('examples')
 for ex in examples:
@@ -57,39 +58,16 @@ copy('License.txt', sourceDir)
 # Binaries
 binariesDir = join(releaseRootDir, 'Binaries')
 macosDir = join(binariesDir, 'MacOS')
-iosDir = join(binariesDir, 'iOS')
-tvosDir = join(binariesDir, 'tvOS')
 universalDir = join(binariesDir, 'All')
 makedirs(macosDir)
-mkdir(iosDir)
-mkdir(tvosDir)
 mkdir(universalDir)
 
 # Build Mac Framework
 chdir('framework')
 RunXcode('CorePlot.xcodeproj', 'CorePlot Mac')
-macProductsDir = join(projectRoot, 'build/Release')
+macProductsDir = join(frameworkDir, 'build/Release')
 macFramework = join(macProductsDir, 'CorePlot.framework')
 copytree(macFramework, join(macosDir, 'CorePlot.framework'), symlinks=True)
-
-# Build iOS Framework
-RunXcode('CorePlot.xcodeproj', 'Universal iOS Framework')
-iOSProductsDir = join(projectRoot, 'build/Release-iphoneuniversal')
-iOSFramework = join(iOSProductsDir, 'CorePlot.framework')
-copytree(iOSFramework, join(iosDir, 'CorePlot.framework'), symlinks=True)
-
-# Build iOS Static Library
-RunXcode('CorePlot.xcodeproj', 'Universal Library')
-iOSLibFile = join(join(projectRoot, 'build/Release-universal'), 'libCorePlot-CocoaTouch.a')
-copy(iOSLibFile, iosDir)
-iOSHeaderFile = join(join(projectRoot, 'build/Release-universal'), 'CorePlotHeaders')
-copytree(iOSHeaderFile, join(iosDir, 'CorePlotHeaders'))
-
-# Build tvOS Framework
-RunXcode('CorePlot.xcodeproj', 'Universal tvOS Framework')
-tvOSProductsDir = join(projectRoot, 'build/Release-appletvuniversal')
-tvOSFramework = join(tvOSProductsDir, 'CorePlot.framework')
-copytree(tvOSFramework, join(tvosDir, 'CorePlot.framework'), symlinks=True)
 
 # Build Universal Framework
 RunXcode('CorePlot.xcodeproj', 'Universal XCFramework')

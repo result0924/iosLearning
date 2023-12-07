@@ -177,7 +177,7 @@ static NSString *const kCollectionItem   = @"PlotViewItem";
                                                     bitsPerPixel:32];
 
         NSGraphicsContext *bitmapContext = [NSGraphicsContext graphicsContextWithBitmapImageRep:layerImage];
-        CGContextRef context             = (CGContextRef)bitmapContext.graphicsPort;
+        CGContextRef context             = bitmapContext.CGContext;
 
         CGContextClearRect(context, CGRectMake(0.0, 0.0, boundsSize.width, boundsSize.height));
         CGContextSetAllowsAntialiasing(context, true);
@@ -190,7 +190,7 @@ static NSString *const kCollectionItem   = @"PlotViewItem";
 
         NSData *tiffData          = image.TIFFRepresentation;
         NSBitmapImageRep *tiffRep = [NSBitmapImageRep imageRepWithData:tiffData];
-        NSData *pngData           = [tiffRep representationUsingType:NSPNGFileType properties:@{}];
+        NSData *pngData           = [tiffRep representationUsingType:NSBitmapImageFileTypePNG properties:@{}];
 
         [pngData writeToURL:url atomically:NO];
     }
@@ -300,13 +300,22 @@ static NSString *const kCollectionItem   = @"PlotViewItem";
     if ( content && [view isKindOfClass:[NSTextField class]] ) {
         NSTextField *titleTextField = (NSTextField *)view;
 
-        titleTextField.editable        = NO;
-        titleTextField.selectable      = NO;
-        titleTextField.backgroundColor = [NSColor controlAccentColor];
-        titleTextField.textColor       = [NSColor headerTextColor];
-        titleTextField.font            = [NSFont boldSystemFontOfSize:14.0];
-        titleTextField.bordered        = YES;
-        titleTextField.stringValue     = content;
+        titleTextField.editable   = NO;
+        titleTextField.selectable = NO;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunguarded-availability-new"
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        if ( [NSColor instancesRespondToSelector:@selector(controlAccentColor)] ) {
+            titleTextField.backgroundColor = [NSColor controlAccentColor];
+        }
+        else {
+            titleTextField.backgroundColor = [NSColor colorForControlTint:[NSColor currentControlTint]];
+        }
+#pragma clang diagnostic pop
+        titleTextField.textColor   = [NSColor headerTextColor];
+        titleTextField.font        = [NSFont boldSystemFontOfSize:14.0];
+        titleTextField.bordered    = YES;
+        titleTextField.stringValue = content;
     }
 
     return view;

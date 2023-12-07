@@ -1,5 +1,12 @@
+/// @file
+
+#ifdef CPT_IS_FRAMEWORK
+#import <CorePlot/CPTDefinitions.h>
+#import <CorePlot/CPTPlatformSpecificDefines.h>
+#else
 #import "CPTDefinitions.h"
 #import "CPTPlatformSpecificDefines.h"
+#endif
 
 @interface CPTImage : NSObject<NSCopying, NSCoding, NSSecureCoding>
 
@@ -39,9 +46,6 @@
 
 #pragma mark -
 
-/** @category CPTImage(CPTPlatformSpecificImageExtensions)
- *  @brief Platform-specific extensions to CPTImage.
- **/
 @interface CPTImage(CPTPlatformSpecificImageExtensions)
 
 /// @name Initialization

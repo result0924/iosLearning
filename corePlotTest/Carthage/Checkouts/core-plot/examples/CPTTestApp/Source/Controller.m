@@ -597,7 +597,7 @@ static NSString *const barPlot2       = @"Bar Plot 2";
     const CGFloat duration = 0.25;
     NSNumber *barWidth     = plot.barWidth;
 
-    if ( barWidth ) {
+    if ( barWidth != nil ) {
         [CPTAnimation animate:plot
                      property:@"barWidth"
                    fromNumber:plot.barWidth
@@ -641,7 +641,7 @@ static NSString *const barPlot2       = @"Bar Plot 2";
 
     pdfSavingDialog.allowedFileTypes = @[@"pdf"];
 
-    if ( [pdfSavingDialog runModal] == NSOKButton ) {
+    if ( [pdfSavingDialog runModal] == NSModalResponseOK ) {
         NSData *dataForPDF = [self.graph dataForPDFRepresentationOfLayer];
 
         NSURL *url = pdfSavingDialog.URL;
@@ -657,11 +657,11 @@ static NSString *const barPlot2       = @"Bar Plot 2";
 
     pngSavingDialog.allowedFileTypes = @[@"png"];
 
-    if ( [pngSavingDialog runModal] == NSOKButton ) {
+    if ( [pngSavingDialog runModal] == NSModalResponseOK ) {
         NSImage *image            = [self.graph imageOfLayer];
         NSData *tiffData          = image.TIFFRepresentation;
         NSBitmapImageRep *tiffRep = [NSBitmapImageRep imageRepWithData:tiffData];
-        NSData *pngData           = [tiffRep representationUsingType:NSPNGFileType properties:@{}];
+        NSData *pngData           = [tiffRep representationUsingType:NSBitmapImageFileTypePNG properties:@{}];
 
         NSURL *url = pngSavingDialog.URL;
         if ( url ) {

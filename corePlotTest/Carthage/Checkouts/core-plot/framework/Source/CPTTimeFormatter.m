@@ -44,8 +44,8 @@
 /// @}
 
 /** @brief Initializes new instance with the date formatter passed.
- *  @param aDateFormatter The date formatter.
- *  @return The new instance.
+ *  @param  aDateFormatter The date formatter.
+ *  @return                The new instance.
  **/
 -(nonnull instancetype)initWithDateFormatter:(nullable NSDateFormatter *)aDateFormatter
 {
@@ -72,17 +72,31 @@
 /// @endcond
 
 /** @brief Returns an object initialized from data in a given unarchiver.
- *  @param coder An unarchiver object.
- *  @return An object initialized from data in a given unarchiver.
- */
+ *  @param  coder An unarchiver object.
+ *  @return       An object initialized from data in a given unarchiver.
+ **/
 -(nullable instancetype)initWithCoder:(nonnull NSCoder *)coder
 {
     if ((self = [super init])) {
-        dateFormatter = [coder decodeObjectForKey:@"CPTTimeFormatter.dateFormatter"];
-        referenceDate = [[coder decodeObjectForKey:@"CPTTimeFormatter.referenceDate"] copy];
+        dateFormatter = [coder decodeObjectOfClass:[NSDateFormatter class]
+                                            forKey:@"CPTTimeFormatter.dateFormatter"];
+        referenceDate = [[coder decodeObjectOfClass:[NSDate class]
+                                             forKey:@"CPTTimeFormatter.referenceDate"] copy];
     }
     return self;
 }
+
+#pragma mark -
+#pragma mark NSSecureCoding Methods
+
+/// @cond
+
++(BOOL)supportsSecureCoding
+{
+    return YES;
+}
+
+/// @endcond
 
 #pragma mark -
 #pragma mark NSCopying Methods
@@ -113,8 +127,8 @@
  *  Uses the date formatter to do the conversion. Conversions are relative to the
  *  reference date, unless it is @nil, in which case the standard reference date
  *  of 1 January 2001, GMT is used.
- *  @param coordinateValue The time value.
- *  @return The date string.
+ *  @param  coordinateValue The time value.
+ *  @return                 The date string.
  **/
 -(nullable NSString *)stringForObjectValue:(nullable id)coordinateValue
 {

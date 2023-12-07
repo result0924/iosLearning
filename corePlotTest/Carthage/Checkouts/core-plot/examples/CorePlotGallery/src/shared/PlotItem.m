@@ -36,21 +36,6 @@ NSString *const kFinancialPlots = @"Financial Plots";
 @synthesize cachedImage;
 @dynamic titleSize;
 
-+(void)registerPlotItem:(nonnull id)item
-{
-    NSLog(@"registerPlotItem for class %@", [item class]);
-
-    Class itemClass = [item class];
-
-    if ( itemClass ) {
-        // There's no autorelease pool here yet...
-        PlotItem *plotItem = [[itemClass alloc] init];
-        if ( plotItem ) {
-            [[PlotGallery sharedPlotGallery] addPlotItem:plotItem];
-        }
-    }
-}
-
 -(nonnull instancetype)init
 {
     if ((self = [super init])) {
@@ -125,7 +110,7 @@ NSString *const kFinancialPlots = @"Financial Plots";
 #if TARGET_OS_TV
     size = 36.0;
 #elif TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
-    switch ( UI_USER_INTERFACE_IDIOM()) {
+    switch ( [UIDevice currentDevice].userInterfaceIdiom ) {
         case UIUserInterfaceIdiomPad:
             size = 24.0;
             break;
@@ -245,7 +230,7 @@ NSString *const kFinancialPlots = @"Financial Plots";
 
 -(nonnull CPTNativeImage *)image
 {
-    if ( self.cachedImage == nil ) {
+    if ( !self.cachedImage ) {
         CGRect imageFrame = CGRectMake(0, 0, 400, 300);
         UIView *imageView = [[UIView alloc] initWithFrame:imageFrame];
         [imageView setOpaque:YES];
@@ -290,7 +275,7 @@ NSString *const kFinancialPlots = @"Financial Plots";
 
 -(nonnull CPTNativeImage *)image
 {
-    if ( self.cachedImage == nil ) {
+    if ( !self.cachedImage ) {
         CGRect imageFrame = CGRectMake(0, 0, 400, 300);
 
         NSView *imageView = [[NSView alloc] initWithFrame:NSRectFromCGRect(imageFrame)];
@@ -315,7 +300,7 @@ NSString *const kFinancialPlots = @"Financial Plots";
 
 -(void)applyTheme:(nullable CPTTheme *)theme toGraph:(nonnull CPTGraph *)graph withDefault:(nullable CPTTheme *)defaultTheme
 {
-    if ( theme == nil ) {
+    if ( !theme ) {
         [graph applyTheme:defaultTheme];
     }
     else if ( ![theme isKindOfClass:[NSNull class]] ) {

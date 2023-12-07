@@ -1,5 +1,6 @@
 #import "CPTScatterPlot.h"
 
+#import "_NSCoderExtensions.h"
 #import "CPTExceptions.h"
 #import "CPTFill.h"
 #import "CPTLegend.h"
@@ -12,7 +13,6 @@
 #import "CPTPlotSpaceAnnotation.h"
 #import "CPTUtilities.h"
 #import "CPTXYPlotSpace.h"
-#import "NSCoderExtensions.h"
 #import <tgmath.h>
 
 /** @defgroup plotAnimationScatterPlot Scatter Plot
@@ -196,7 +196,7 @@ CPTScatterPlotBinding const CPTScatterPlotBindingPlotSymbols = @"plotSymbols"; /
 
 /// @cond
 
-#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE || TARGET_OS_MACCATALYST
 #else
 +(void)initialize
 {
@@ -232,8 +232,8 @@ CPTScatterPlotBinding const CPTScatterPlotBindingPlotSymbols = @"plotSymbols"; /
  *  - @ref curvedInterpolationCustomAlpha = @num{0.5}
  *  - @ref labelField = #CPTScatterPlotFieldY
  *
- *  @param newFrame The frame rectangle.
- *  @return The initialized CPTScatterPlot object.
+ *  @param  newFrame The frame rectangle.
+ *  @return          The initialized CPTScatterPlot object.
  **/
 -(nonnull instancetype)initWithFrame:(CGRect)newFrame
 {
@@ -449,14 +449,14 @@ CPTScatterPlotBinding const CPTScatterPlotBindingPlotSymbols = @"plotSymbols"; /
 #pragma mark Symbols
 
 /** @brief Returns the plot symbol to use for a given index.
- *  @param idx The index of the record.
- *  @return The plot symbol to use, or @nil if no plot symbol should be drawn.
+ *  @param  idx The index of the record.
+ *  @return     The plot symbol to use, or @nil if no plot symbol should be drawn.
  **/
 -(nullable CPTPlotSymbol *)plotSymbolForRecordIndex:(NSUInteger)idx
 {
     CPTPlotSymbol *symbol = [self cachedValueForKey:CPTScatterPlotBindingPlotSymbols recordIndex:idx];
 
-    if ((symbol == nil) || (symbol == [CPTPlot nilData])) {
+    if ( !symbol || (symbol == [CPTPlot nilData])) {
         symbol = self.plotSymbol;
     }
 
@@ -661,20 +661,17 @@ CPTScatterPlotBinding const CPTScatterPlotBindingPlotSymbols = @"plotSymbols"; /
 {
     // Align to device pixels if there is a data line.
     // Otherwise, align to view space, so fills are sharp at edges.
+    CPTAlignPointFunction alignmentFunction = CPTAlignIntegralPointToUserSpace;
+
     if ( self.dataLineStyle.lineWidth > CPTFloat(0.0)) {
-        dispatch_apply(dataCount, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(size_t i) {
-            if ( drawPointFlags[i] ) {
-                viewPoints[i] = CPTAlignPointToUserSpace(context, viewPoints[i]);
-            }
-        });
+        alignmentFunction = CPTAlignPointToUserSpace;
     }
-    else {
-        dispatch_apply(dataCount, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(size_t i) {
-            if ( drawPointFlags[i] ) {
-                viewPoints[i] = CPTAlignIntegralPointToUserSpace(context, viewPoints[i]);
-            }
-        });
-    }
+
+    dispatch_apply(dataCount, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(size_t i) {
+        if ( drawPointFlags[i] ) {
+            viewPoints[i] = alignmentFunction(context, viewPoints[i]);
+        }
+    });
 }
 
 -(NSInteger)extremeDrawnPointIndexForFlags:(nonnull BOOL *)pointDrawFlags numberOfPoints:(NSUInteger)dataCount extremeNumIsLowerBound:(BOOL)isLowerBound
@@ -712,8 +709,8 @@ CPTScatterPlotBinding const CPTScatterPlotBindingPlotSymbols = @"plotSymbols"; /
 /// @endcond
 
 /** @brief Returns the index of the closest visible point to the point passed in.
- *  @param viewPoint The reference point.
- *  @return The index of the closest point, or @ref NSNotFound if there is no visible point.
+ *  @param  viewPoint The reference point.
+ *  @return           The index of the closest point, or @ref NSNotFound if there is no visible point.
  **/
 -(NSUInteger)indexOfVisiblePointClosestToPlotAreaPoint:(CGPoint)viewPoint
 {
@@ -746,8 +743,8 @@ CPTScatterPlotBinding const CPTScatterPlotBindingPlotSymbols = @"plotSymbols"; /
 }
 
 /** @brief Returns the plot area view point of a visible point.
- *  @param idx The index of the point.
- *  @return The view point of the visible point at the index passed.
+ *  @param  idx The index of the point.
+ *  @return     The view point of the visible point at the index passed.
  **/
 -(CGPoint)plotAreaPointOfVisiblePointAtIndex:(NSUInteger)idx
 {
@@ -788,7 +785,7 @@ CPTScatterPlotBinding const CPTScatterPlotBindingPlotSymbols = @"plotSymbols"; /
     CPTMutableNumericData *xValueData = [self cachedNumbersForField:CPTScatterPlotFieldX];
     CPTMutableNumericData *yValueData = [self cachedNumbersForField:CPTScatterPlotFieldY];
 
-    if ((xValueData == nil) || (yValueData == nil)) {
+    if ( !xValueData || !yValueData ) {
         return;
     }
     NSUInteger dataCount = self.cachedDataCount;
@@ -1025,8 +1022,8 @@ CPTScatterPlotBinding const CPTScatterPlotBindingPlotSymbols = @"plotSymbols"; /
                             CGPathAddLineToPoint(dataLinePath, NULL, x, viewPoint.y);
                         }
                         CGPathAddLineToPoint(dataLinePath, NULL, viewPoint.x, viewPoint.y);
+                        break;
                     }
-                    break;
 
                     case CPTScatterPlotInterpolationCurved:
                         // Curved plot lines handled separately
@@ -1247,9 +1244,9 @@ CPTScatterPlotBinding const CPTScatterPlotBindingPlotSymbols = @"plotSymbols"; /
 }
 
 /** @brief Compute the control points using a catmull-rom spline.
- *  @param points A pointer to the array which should hold the first control points.
- *  @param points2 A pointer to the array which should hold the second control points.
- *  @param alpha The alpha value used for the catmull-rom interpolation.
+ *  @param points     A pointer to the array which should hold the first control points.
+ *  @param points2    A pointer to the array which should hold the second control points.
+ *  @param alpha      The alpha value used for the catmull-rom interpolation.
  *  @param viewPoints A pointer to the array which holds all view points for which the interpolation should be calculated.
  *  @param indexRange The range in which the interpolation should occur.
  *  @warning The @par{indexRange} must be valid for all passed arrays otherwise this method crashes.
@@ -1329,8 +1326,8 @@ CPTScatterPlotBinding const CPTScatterPlotBindingPlotSymbols = @"plotSymbols"; /
  *  If the view points are monotonically increasing or decreasing in both @par{x} and @par{y},
  *  the smoothed curve will be also.
  *
- *  @param points A pointer to the array which should hold the first control points.
- *  @param points2 A pointer to the array which should hold the second control points.
+ *  @param points     A pointer to the array which should hold the first control points.
+ *  @param points2    A pointer to the array which should hold the second control points.
  *  @param viewPoints A pointer to the array which holds all view points for which the interpolation should be calculated.
  *  @param indexRange The range in which the interpolation should occur.
  *  @warning The @par{indexRange} must be valid for all passed arrays otherwise this method crashes.
@@ -1402,9 +1399,9 @@ CPTScatterPlotBinding const CPTScatterPlotBindingPlotSymbols = @"plotSymbols"; /
 }
 
 /** @brief Determine whether the plot points form a monotonic series.
- *  @param viewPoints A pointer to the array which holds all view points for which the interpolation should be calculated.
- *  @param indexRange The range in which the interpolation should occur.
- *  @return Returns @YES if the viewpoints are monotonically increasing or decreasing in both @par{x} and @par{y}.
+ *  @param  viewPoints A pointer to the array which holds all view points for which the interpolation should be calculated.
+ *  @param  indexRange The range in which the interpolation should occur.
+ *  @return            Returns @YES if the viewpoints are monotonically increasing or decreasing in both @par{x} and @par{y}.
  *  @warning The @par{indexRange} must be valid for all passed arrays otherwise this method crashes.
  **/
 -(BOOL)monotonicViewPoints:(nonnull CGPoint *)viewPoints indexRange:(NSRange)indexRange
@@ -1719,8 +1716,8 @@ CPTScatterPlotBinding const CPTScatterPlotBindingPlotSymbols = @"plotSymbols"; /
                                                            lowerLeft[CPTCoordinateX].decimalValue)];
                     range = [CPTPlotRange plotRangeWithLocation:lowerLeft[CPTCoordinateX]
                                                          length:length];
+                    break;
                 }
-                break;
 
                 case CPTScatterPlotFieldY:
                 {
@@ -1729,8 +1726,8 @@ CPTScatterPlotBinding const CPTScatterPlotBindingPlotSymbols = @"plotSymbols"; /
                                                            lowerLeft[CPTCoordinateY].decimalValue)];
                     range = [CPTPlotRange plotRangeWithLocation:lowerLeft[CPTCoordinateY]
                                                          length:length];
+                    break;
                 }
-                break;
 
                 default:
                     break;
@@ -1903,9 +1900,9 @@ CPTScatterPlotBinding const CPTScatterPlotBindingPlotSymbols = @"plotSymbols"; /
  *  This method returns @NO if the @par{interactionPoint} is not within @ref plotSymbolMarginForHitDetection points of any of
  *  the data points or within @ref plotLineMarginForHitDetection points of the plot line.
  *
- *  @param event The OS event.
- *  @param interactionPoint The coordinates of the interaction.
- *  @return Whether the event was handled or not.
+ *  @param  event            The OS event.
+ *  @param  interactionPoint The coordinates of the interaction.
+ *  @return                  Whether the event was handled or not.
  **/
 -(BOOL)pointingDeviceDownEvent:(nonnull CPTNativeEvent *)event atPoint:(CGPoint)interactionPoint
 {
@@ -2018,9 +2015,9 @@ CPTScatterPlotBinding const CPTScatterPlotBindingPlotSymbols = @"plotSymbols"; /
  *  This method returns @NO if the @par{interactionPoint} is not within @ref plotSymbolMarginForHitDetection points of any of
  *  the data points or within @ref plotLineMarginForHitDetection points of the plot line.
  *
- *  @param event The OS event.
- *  @param interactionPoint The coordinates of the interaction.
- *  @return Whether the event was handled or not.
+ *  @param  event            The OS event.
+ *  @param  interactionPoint The coordinates of the interaction.
+ *  @return                  Whether the event was handled or not.
  **/
 -(BOOL)pointingDeviceUpEvent:(nonnull CPTNativeEvent *)event atPoint:(CGPoint)interactionPoint
 {
@@ -2267,7 +2264,7 @@ CPTScatterPlotBinding const CPTScatterPlotBindingPlotSymbols = @"plotSymbols"; /
 {
     BOOL needsUpdate = YES;
 
-    if ( newAreaBaseValue ) {
+    if ( newAreaBaseValue != nil ) {
         NSNumber *baseValue = newAreaBaseValue;
         needsUpdate = ![areaBaseValue isEqualToNumber:baseValue];
     }
@@ -2283,7 +2280,7 @@ CPTScatterPlotBinding const CPTScatterPlotBindingPlotSymbols = @"plotSymbols"; /
 {
     BOOL needsUpdate = YES;
 
-    if ( newAreaBaseValue ) {
+    if ( newAreaBaseValue != nil ) {
         NSNumber *baseValue = newAreaBaseValue;
         needsUpdate = ![areaBaseValue2 isEqualToNumber:baseValue];
     }

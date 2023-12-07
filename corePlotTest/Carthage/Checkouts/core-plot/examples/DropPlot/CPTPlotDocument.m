@@ -141,7 +141,7 @@
 
     // For applications targeted for Panther or earlier systems, you should use the deprecated API -dataRepresentationOfType:. In this case you can also choose to override -fileWrapperRepresentationOfType: or -writeToFile:ofType: instead.
 
-    if ( outError != NULL ) {
+    if ( outError ) {
         *outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:unimpErr userInfo:NULL];
     }
     return nil;
@@ -225,7 +225,7 @@
         self.maximumValueForYAxis = maxY;
     }
 
-    if ( outError != NULL ) {
+    if ( outError ) {
         *outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:unimpErr userInfo:NULL];
     }
     return YES;
@@ -321,7 +321,7 @@
 
     pdfSavingDialog.allowedFileTypes = @[@"pdf"];
 
-    if ( [pdfSavingDialog runModal] == NSOKButton ) {
+    if ( [pdfSavingDialog runModal] == NSModalResponseOK ) {
         NSData *dataForPDF = [self.graph dataForPDFRepresentationOfLayer];
 
         NSURL *url = pdfSavingDialog.URL;
@@ -337,11 +337,11 @@
 
     pngSavingDialog.allowedFileTypes = @[@"png"];
 
-    if ( [pngSavingDialog runModal] == NSOKButton ) {
+    if ( [pngSavingDialog runModal] == NSModalResponseOK ) {
         NSImage *image            = [self.graph imageOfLayer];
         NSData *tiffData          = image.TIFFRepresentation;
         NSBitmapImageRep *tiffRep = [NSBitmapImageRep imageRepWithData:tiffData];
-        NSData *pngData           = [tiffRep representationUsingType:NSPNGFileType properties:@{}];
+        NSData *pngData           = [tiffRep representationUsingType:NSBitmapImageFileTypePNG properties:@{}];
 
         NSURL *url = pngSavingDialog.URL;
         if ( url ) {

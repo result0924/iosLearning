@@ -44,10 +44,15 @@ class TestViewController : UIViewController, CPTScatterPlotDataSource, CPTAxisDe
         // Axes
         let axisSet = newGraph.axisSet as! CPTXYAxisSet
         
+        let xAxisDashLineStyle = CPTMutableLineStyle()
+        xAxisDashLineStyle.dashPattern = [NSDecimalNumber(value: 3)]
+        xAxisDashLineStyle.lineColor = CPTColor.gray300()
+        
         if let x = axisSet.xAxis {
             x.majorIntervalLength   = 0.5
             x.orthogonalPosition    = 2.0
             x.minorTicksPerInterval = 2
+            x.majorGridLineStyle = xAxisDashLineStyle
             x.labelExclusionRanges  = [
                 CPTPlotRange(location: 0.99, length: 0.02),
                 CPTPlotRange(location: 1.99, length: 0.02),

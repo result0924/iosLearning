@@ -2,6 +2,11 @@
 
 #import "CPTNumericData+TypeConversion.h"
 
+/**
+ *  @brief Type conversion methods for CPTMutableNumericData.
+ *
+ *  @see CPTMutableNumericData
+ **/
 @implementation CPTMutableNumericData(TypeConversion)
 
 /** @property CPTNumericDataType dataType
@@ -25,9 +30,9 @@
 @dynamic byteOrder;
 
 /** @brief Converts the current numeric data to a new data type.
- *  @param newDataType The new data type format.
+ *  @param newDataType    The new data type format.
  *  @param newSampleBytes The number of bytes used to store each sample.
- *  @param newByteOrder The new byte order.
+ *  @param newByteOrder   The new byte order.
  **/
 -(void)convertToType:(CPTDataTypeFormat)newDataType
          sampleBytes:(size_t)newSampleBytes

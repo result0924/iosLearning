@@ -1,8 +1,14 @@
+/// @file
+
+#ifdef CPT_IS_FRAMEWORK
+#import <CorePlot/CPTAnnotationHostLayer.h>
+#import <CorePlot/CPTDefinitions.h>
+#import <CorePlot/CPTNumericDataType.h>
+#else
 #import "CPTAnnotationHostLayer.h"
 #import "CPTDefinitions.h"
 #import "CPTNumericDataType.h"
-
-/// @file
+#endif
 
 @class CPTLegend;
 @class CPTMutableNumericData;
@@ -54,8 +60,8 @@ typedef NSMutableArray<__kindof CPTPlot *> CPTMutablePlotArray;
 /// @{
 
 /** @brief @required The number of data points for the plot.
- *  @param plot The plot.
- *  @return The number of data points for the plot.
+ *  @param  plot The plot.
+ *  @return      The number of data points for the plot.
  **/
 -(NSUInteger)numberOfRecordsForPlot:(nonnull CPTPlot *)plot;
 
@@ -69,10 +75,10 @@ typedef NSMutableArray<__kindof CPTPlot *> CPTMutablePlotArray;
  *  return an array of NSNumber objects holding the data values. For any scale type, include instances of NSNull
  *  in the array to indicate missing values.
  *
- *  @param plot The plot.
- *  @param fieldEnum The field index.
- *  @param indexRange The range of the data indexes of interest.
- *  @return An array of data points.
+ *  @param  plot       The plot.
+ *  @param  fieldEnum  The field index.
+ *  @param  indexRange The range of the data indexes of interest.
+ *  @return            An array of data points.
  **/
 -(nullable NSArray *)numbersForPlot:(nonnull CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndexRange:(NSRange)indexRange;
 
@@ -84,37 +90,37 @@ typedef NSMutableArray<__kindof CPTPlot *> CPTMutablePlotArray;
  *  NSNumber holding the data value. For any scale type, return @nil or an instance of NSNull to indicate
  *  missing values.
  *
- *  @param plot The plot.
- *  @param fieldEnum The field index.
- *  @param idx The data index of interest.
- *  @return A data point.
+ *  @param  plot      The plot.
+ *  @param  fieldEnum The field index.
+ *  @param  idx       The data index of interest.
+ *  @return           A data point.
  **/
 -(nullable id)numberForPlot:(nonnull CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)idx;
 
 /** @brief @optional Gets a range of plot data for the given plot and field.
  *  Implement one and only one of the optional methods in this section.
- *  @param plot The plot.
- *  @param fieldEnum The field index.
- *  @param indexRange The range of the data indexes of interest.
- *  @return A retained C array of data points.
+ *  @param  plot       The plot.
+ *  @param  fieldEnum  The field index.
+ *  @param  indexRange The range of the data indexes of interest.
+ *  @return            A retained C array of data points.
  **/
 -(nullable double *)doublesForPlot:(nonnull CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndexRange:(NSRange)indexRange NS_RETURNS_INNER_POINTER;
 
 /** @brief @optional Gets a plot data value for the given plot and field.
  *  Implement one and only one of the optional methods in this section.
- *  @param plot The plot.
- *  @param fieldEnum The field index.
- *  @param idx The data index of interest.
- *  @return A data point.
+ *  @param  plot      The plot.
+ *  @param  fieldEnum The field index.
+ *  @param  idx       The data index of interest.
+ *  @return           A data point.
  **/
 -(double)doubleForPlot:(nonnull CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)idx;
 
 /** @brief @optional Gets a range of plot data for the given plot and field.
  *  Implement one and only one of the optional methods in this section.
- *  @param plot The plot.
- *  @param fieldEnum The field index.
- *  @param indexRange The range of the data indexes of interest.
- *  @return A one-dimensional array of data points.
+ *  @param  plot       The plot.
+ *  @param  fieldEnum  The field index.
+ *  @param  indexRange The range of the data indexes of interest.
+ *  @return            A one-dimensional array of data points.
  **/
 -(nullable CPTNumericData *)dataForPlot:(nonnull CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndexRange:(NSRange)indexRange;
 
@@ -128,9 +134,9 @@ typedef NSMutableArray<__kindof CPTPlot *> CPTMutablePlotArray;
  *  The column index (zero-based) corresponds with the field index.
  *  The data type will be converted to match the @link CPTPlot::cachePrecision cachePrecision @endlink if needed.
  *
- *  @param plot The plot.
- *  @param indexRange The range of the data indexes of interest.
- *  @return A two-dimensional array of data points.
+ *  @param  plot       The plot.
+ *  @param  indexRange The range of the data indexes of interest.
+ *  @return            A two-dimensional array of data points.
  **/
 -(nullable CPTNumericData *)dataForPlot:(nonnull CPTPlot *)plot recordIndexRange:(NSRange)indexRange;
 
@@ -140,9 +146,9 @@ typedef NSMutableArray<__kindof CPTPlot *> CPTMutablePlotArray;
 /// @{
 
 /** @brief @optional Gets a range of data labels for the given plot.
- *  @param plot The plot.
- *  @param indexRange The range of the data indexes of interest.
- *  @return An array of data labels.
+ *  @param  plot       The plot.
+ *  @param  indexRange The range of the data indexes of interest.
+ *  @return            An array of data labels.
  **/
 -(nullable CPTLayerArray *)dataLabelsForPlot:(nonnull CPTPlot *)plot recordIndexRange:(NSRange)indexRange;
 
@@ -150,9 +156,9 @@ typedef NSMutableArray<__kindof CPTPlot *> CPTMutablePlotArray;
  *  This method will not be called if
  *  @link CPTPlotDataSource::dataLabelsForPlot:recordIndexRange: -dataLabelsForPlot:recordIndexRange: @endlink
  *  is also implemented in the datasource.
- *  @param plot The plot.
- *  @param idx The data index of interest.
- *  @return The data label for the point with the given index.
+ *  @param  plot The plot.
+ *  @param  idx  The data index of interest.
+ *  @return      The data label for the point with the given index.
  *  If you return @nil, the default data label will be used. If you return an instance of NSNull,
  *  no label will be shown for the index in question.
  **/
@@ -178,7 +184,7 @@ typedef NSMutableArray<__kindof CPTPlot *> CPTMutablePlotArray;
  *  @if MacOnly was both pressed and released. @endif
  *  @if iOSOnly received both the touch down and up events. @endif
  *  @param plot The plot.
- *  @param idx The index of the
+ *  @param idx  The index of the
  *  @if MacOnly clicked data label. @endif
  *  @if iOSOnly touched data label. @endif
  **/
@@ -187,8 +193,8 @@ typedef NSMutableArray<__kindof CPTPlot *> CPTMutablePlotArray;
 /** @brief @optional Informs the delegate that a data label
  *  @if MacOnly was both pressed and released. @endif
  *  @if iOSOnly received both the touch down and up events. @endif
- *  @param plot The plot.
- *  @param idx The index of the
+ *  @param plot  The plot.
+ *  @param idx   The index of the
  *  @if MacOnly clicked data label. @endif
  *  @if iOSOnly touched data label. @endif
  *  @param event The event that triggered the selection.
@@ -199,7 +205,7 @@ typedef NSMutableArray<__kindof CPTPlot *> CPTMutablePlotArray;
  *  @if MacOnly was pressed. @endif
  *  @if iOSOnly touch started. @endif
  *  @param plot The plot.
- *  @param idx The index of the
+ *  @param idx  The index of the
  *  @if MacOnly clicked data label. @endif
  *  @if iOSOnly touched data label. @endif
  **/
@@ -208,8 +214,8 @@ typedef NSMutableArray<__kindof CPTPlot *> CPTMutablePlotArray;
 /** @brief @optional Informs the delegate that a data label
  *  @if MacOnly was pressed. @endif
  *  @if iOSOnly touch started. @endif
- *  @param plot The plot.
- *  @param idx The index of the
+ *  @param plot  The plot.
+ *  @param idx   The index of the
  *  @if MacOnly clicked data label. @endif
  *  @if iOSOnly touched data label. @endif
  *  @param event The event that triggered the selection.
@@ -220,7 +226,7 @@ typedef NSMutableArray<__kindof CPTPlot *> CPTMutablePlotArray;
  *  @if MacOnly was released. @endif
  *  @if iOSOnly touch ended. @endif
  *  @param plot The plot.
- *  @param idx The index of the
+ *  @param idx  The index of the
  *  @if MacOnly clicked data label. @endif
  *  @if iOSOnly touched data label. @endif
  **/
@@ -229,8 +235,8 @@ typedef NSMutableArray<__kindof CPTPlot *> CPTMutablePlotArray;
 /** @brief @optional Informs the delegate that a data label
  *  @if MacOnly was released. @endif
  *  @if iOSOnly touch ended. @endif
- *  @param plot The plot.
- *  @param idx The index of the
+ *  @param plot  The plot.
+ *  @param idx   The index of the
  *  @if MacOnly clicked data label. @endif
  *  @if iOSOnly touched data label. @endif
  *  @param event The event that triggered the selection.
@@ -380,9 +386,6 @@ typedef NSMutableArray<__kindof CPTPlot *> CPTMutablePlotArray;
 
 #pragma mark -
 
-/** @category CPTPlot(AbstractMethods)
- *  @brief CPTPlot abstract methods—must be overridden by subclasses
- **/
 @interface CPTPlot(AbstractMethods)
 
 /// @name Fields
