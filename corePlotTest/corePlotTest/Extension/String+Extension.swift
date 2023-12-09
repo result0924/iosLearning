@@ -6,7 +6,7 @@
 //  Copyright © 2020 h2. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 extension String {
     func toDate(withFormat format: String = "yyyy-MM-dd HH:mm:ss") -> Date {
@@ -17,5 +17,29 @@ extension String {
         let date = dateFormatter.date(from: self)
 
         return date ?? Date()
+    }
+    
+    func widthOfString(usingFont font: UIFont) -> CGFloat {
+        let fontAttributes = [NSAttributedString.Key.font: font]
+        let size = self.size(withAttributes: fontAttributes)
+        return ceil(size.width)
+    }
+    
+    var date: Date? {
+        let selfLowercased = trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        let formatter = DateFormatter()
+        formatter.timeZone = TimeZone(abbreviation: "UTC")
+        formatter.dateFormat = "yyyy-MM-dd"
+        return formatter.date(from: selfLowercased)
+    }
+    
+    func formatFloatByNumber(digit: Int) -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.usesSignificantDigits = false
+        formatter.maximumFractionDigits = digit
+        formatter.roundingMode = .halfUp
+        
+        return formatter.string(from: NSNumber(value: Float(self) ?? 0)) ?? ""
     }
 }

@@ -15,6 +15,7 @@ class ScatterTableViewCell: UITableViewCell {
     @IBOutlet weak var barChartView: BarChartView!
     @IBOutlet weak var scatterBarChartView: ScatterBarChartView!
     @IBOutlet weak var scaleScatterChartView: ScaleScatterChartView!
+    @IBOutlet weak var LabChartView: LabResultDetailChartView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -28,6 +29,7 @@ class ScatterTableViewCell: UITableViewCell {
         barChartView.isHidden = true
         scatterBarChartView.isHidden = true
         scaleScatterChartView.isHidden = true
+        LabChartView.isHidden = true
         scatterChartView.reloadCharts()
     }
     
@@ -36,6 +38,7 @@ class ScatterTableViewCell: UITableViewCell {
         barChartView.isHidden = false
         scatterBarChartView.isHidden = true
         scaleScatterChartView.isHidden = true
+        LabChartView.isHidden = true
         barChartView.reloadCharts()
     }
     
@@ -44,6 +47,7 @@ class ScatterTableViewCell: UITableViewCell {
         barChartView.isHidden = true
         scatterBarChartView.isHidden = false
         scaleScatterChartView.isHidden = true
+        LabChartView.isHidden = true
         scatterBarChartView.reloadCharts()
     }
     
@@ -52,7 +56,17 @@ class ScatterTableViewCell: UITableViewCell {
         barChartView.isHidden = true
         scatterBarChartView.isHidden = true
         scaleScatterChartView.isHidden = false
+        LabChartView.isHidden = true
         scaleScatterChartView.reloadCharts()
+    }
+    
+    func updateYearScatterCell() {
+        scatterChartView.isHidden = true
+        barChartView.isHidden = true
+        scatterBarChartView.isHidden = true
+        scaleScatterChartView.isHidden = true
+        LabChartView.isHidden = false
+        LabChartView.reloadCharts()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

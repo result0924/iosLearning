@@ -3,10 +3,14 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6C41EA562B23FDFA003B79AB /* CorePlot.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CC1D13B2B1DD1FF0064ABFB /* CorePlot.xcframework */; };
+		6C41EA5A2B241F06003B79AB /* LabResultDetailChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C41EA592B241F06003B79AB /* LabResultDetailChartView.swift */; };
+		6C41EA5C2B241F9F003B79AB /* H2SDateTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C41EA5B2B241F9F003B79AB /* H2SDateTransformer.swift */; };
+		6C41EA5E2B242278003B79AB /* CPTColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C41EA5D2B242278003B79AB /* CPTColor+Extension.swift */; };
 		6C4F703D26316D2A00BA62D4 /* CGMChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4F703C26316D2A00BA62D4 /* CGMChartViewController.swift */; };
 		6C793B8F255404C6002D607B /* BarChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C793B8E255404C6002D607B /* BarChartView.swift */; };
 		6C793B922554053B002D607B /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C793B912554053B002D607B /* UIColor+Extension.swift */; };
@@ -28,6 +32,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6C41EA592B241F06003B79AB /* LabResultDetailChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabResultDetailChartView.swift; sourceTree = "<group>"; };
+		6C41EA5B2B241F9F003B79AB /* H2SDateTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = H2SDateTransformer.swift; sourceTree = "<group>"; };
+		6C41EA5D2B242278003B79AB /* CPTColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CPTColor+Extension.swift"; sourceTree = "<group>"; };
 		6C4F703C26316D2A00BA62D4 /* CGMChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGMChartViewController.swift; sourceTree = "<group>"; };
 		6C793B8E255404C6002D607B /* BarChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartView.swift; sourceTree = "<group>"; };
 		6C793B912554053B002D607B /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
@@ -56,6 +63,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C41EA562B23FDFA003B79AB /* CorePlot.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -69,6 +77,7 @@
 				6C9C873C254C071C0098CFE8 /* String+Extension.swift */,
 				6C793B912554053B002D607B /* UIColor+Extension.swift */,
 				D0DC8D2E268D5D4D00CD83EE /* CorePlot+Extension.swift */,
+				6C41EA5D2B242278003B79AB /* CPTColor+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -99,6 +108,8 @@
 				6C9C859A254827260098CFE8 /* ListViewController.swift */,
 				6C9C859F254831160098CFE8 /* GraphViewController.swift */,
 				6C9C8682254ABACF0098CFE8 /* ScatterTableViewCell.swift */,
+				6C41EA592B241F06003B79AB /* LabResultDetailChartView.swift */,
+				6C41EA5B2B241F9F003B79AB /* H2SDateTransformer.swift */,
 				D09CB51C2269D62200C62350 /* ViewController.swift */,
 				6C4F703C26316D2A00BA62D4 /* CGMChartViewController.swift */,
 				D0DC8D2C268C054500CD83EE /* ScaleScatterChartView.swift */,
@@ -224,7 +235,9 @@
 				6C4F703D26316D2A00BA62D4 /* CGMChartViewController.swift in Sources */,
 				6C793B922554053B002D607B /* UIColor+Extension.swift in Sources */,
 				6C793BA5255520A8002D607B /* ScatterBarChartView.swift in Sources */,
+				6C41EA5A2B241F06003B79AB /* LabResultDetailChartView.swift in Sources */,
 				6C9C8686254ABBBC0098CFE8 /* UITableView+Extension.swift in Sources */,
+				6C41EA5C2B241F9F003B79AB /* H2SDateTransformer.swift in Sources */,
 				6C9C85A0254831170098CFE8 /* GraphViewController.swift in Sources */,
 				D0B9ACA022D8982600E80DA4 /* TestViewController.swift in Sources */,
 				6C9C859B254827260098CFE8 /* ListViewController.swift in Sources */,
@@ -232,6 +245,7 @@
 				D0DC8D2D268C054500CD83EE /* ScaleScatterChartView.swift in Sources */,
 				6C9C8740254C13B90098CFE8 /* ScatterChartView.swift in Sources */,
 				D09CB51B2269D62200C62350 /* AppDelegate.swift in Sources */,
+				6C41EA5E2B242278003B79AB /* CPTColor+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
