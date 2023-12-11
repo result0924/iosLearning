@@ -38,18 +38,23 @@ class LabResultDetailChartView: UIView {
     // swiftlint:disable implicitly_unwrapped_optional
     private var hostView: CPTGraphHostingView!
     // swiftlint:enable implicitly_unwrapped_optional
-    private var viewModel = LabResultDetailChartViewModel(testDatas: [LabResultDetailChartPointEntry(value: 3, date: Date().add(year: -2)),
-                                                                     LabResultDetailChartPointEntry(value: 4, date: Date().add(month: -4)),
-                                                                     LabResultDetailChartPointEntry(value: 2.5, date: Date().add(month: -1)),
-                                                                     LabResultDetailChartPointEntry(value: 1.5, date: Date()), ], lowTarget: 0, highTarget: 0, unit: "%")
+    private var viewModel = LabResultDetailChartViewModel(testDatas: [], lowTarget: 0, highTarget: 0, unit: "")
     private var ySpaceCount = 3
     private var minDate: Date = Date()
     private var maxDate: Date = Date()
     private var chartType: LabResultDetailChartType = .oneYear
-    private var numberOfDivisions: CGFloat = 12
+    private var numberOfDivisions: CGFloat = 11
 
     private var textStyle: CPTMutableTextStyle {
         CPTMutableTextStyle.dashBoardTextStyle()
+    }
+    
+    private var dashStyle: CPTLineStyle {
+        let dashLineStyle = CPTMutableLineStyle()
+        dashLineStyle.dashPattern = [NSDecimalNumber(value: 3)]
+        dashLineStyle.lineColor = CPTColor.gray300()
+        
+        return dashLineStyle
     }
 
     private lazy var calendar: Calendar = {
@@ -71,6 +76,16 @@ class LabResultDetailChartView: UIView {
     }
 
     func reloadCharts() {
+        guard let testDate = try? dateTransformer.utcDate(from: "2023-07-01", format: dateTransformer.dateFormat),
+        let testDate2 = try? dateTransformer.utcDate(from: "2023-07-31", format: dateTransformer.dateFormat),
+                let testDate3 = try? dateTransformer.utcDate(from: "2023-08-01", format: dateTransformer.dateFormat),
+                let testDate4 = try? dateTransformer.utcDate(from: "2023-08-31", format: dateTransformer.dateFormat) else {
+            return
+        }
+        viewModel = LabResultDetailChartViewModel(testDatas: [LabResultDetailChartPointEntry(value: 3, date: testDate),
+                                                              LabResultDetailChartPointEntry(value: 4, date: testDate2),
+                                                              LabResultDetailChartPointEntry(value: 2.5, date: testDate3),
+                                                              LabResultDetailChartPointEntry(value: 1.5, date: testDate4), ], lowTarget: 0, highTarget: 0, unit: "%")
         configureAxisLabels()
         hostView.hostedGraph?.reloadData()
     }
@@ -97,10 +112,10 @@ class LabResultDetailChartView: UIView {
         let graph = CPTXYGraph(frame: hostView.frame)
         graph.fill = CPTFill(color: CPTColor.clear())
         graph.plotAreaFrame?.masksToBorder = false
-        graph.paddingTop = 25
-        graph.paddingBottom = 35
-        graph.paddingLeft = 40
-        graph.paddingRight = 0
+        graph.plotAreaFrame?.paddingTop = 0
+        graph.plotAreaFrame?.paddingBottom = 30
+        graph.plotAreaFrame?.paddingLeft = 30
+        graph.plotAreaFrame?.paddingRight = 0
         hostView.hostedGraph = graph
     }
 
@@ -134,6 +149,7 @@ class LabResultDetailChartView: UIView {
         if let xAxis = axisSet.xAxis {
             let axisXConstraints = CPTConstraints.constraint(withLowerOffset: 0)
             xAxis.axisConstraints = axisXConstraints
+            xAxis.majorGridLineStyle = xAxisDashLineStyle
             xAxis.axisLineStyle = axisLineStyle
             xAxis.labelingPolicy = .none
         }
@@ -145,6 +161,7 @@ class LabResultDetailChartView: UIView {
             yAxis.axisLineStyle = axisLineStyle
             yAxis.majorGridLineStyle = axisLineStyle
             yAxis.labelingPolicy = .none
+            yAxis.majorTickLength = 0
         }
 
         graph.axisSet?.axes = [axisSet.xAxis, axisSet.yAxis] as? [CPTAxis]
@@ -236,6 +253,7 @@ class LabResultDetailChartView: UIView {
             let widthPoint = getWidthPoint()
             var currentYear = fromYear
             var xLabels = Set<CPTAxisLabel>()
+            var xMajorLocations = Set<NSNumber>()
 
             for index in 0...Int(fetchMonthCount()) {
                 let month = index + fromMonth
@@ -254,12 +272,19 @@ class LabResultDetailChartView: UIView {
                 let location = CGFloat(monthFromFirstMonthDay ?? 0) * widthPoint
 
                 let label = CPTAxisLabel(text: text, textStyle: textStyle)
-                label.tickLocation = NSNumber(value: Float(location))
-                label.alignment = .center
+                let lablLocation = NSNumber(value: Float(location))
+                label.tickLocation = lablLocation
+                label.alignment = .left
                 label.offset = 5
                 xLabels.insert(label)
+                xMajorLocations.insert(lablLocation)
             }
             xAxis.axisLabels = xLabels
+            xAxis.majorTickLocations = xMajorLocations
+            xAxis.majorTickLength = 30
+            let axisLineStyle = CPTMutableLineStyle.makeLineStyle(lineWidth: 1, lineColor: CPTColor.gray300())
+            xAxis.majorTickLineStyle = dashStyle
+            xAxis.tickDirection = .negative
         }
     }
 
