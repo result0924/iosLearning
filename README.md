@@ -17,6 +17,7 @@
 - [圖解方式、教學使用XCode快速鍵](https://xcode.tips/)
 - [swift new](https://theswiftdev.com/news/)
 - [swift vincent](https://www.swiftwithvincent.com/tips)
+- [Those Who Swift](https://swiftnews.curated.co/)
 
 ### Git Hub
 - [AR 100 Days](https://github.com/satoshi0212/AR_100Days)
