@@ -35,8 +35,7 @@ class ViewController: UIViewController {
     
     private func downloadImageAndReload() {
         let imageUrl = imageUrls[currentIndex]
-
-        Alamofire.request(imageUrl).responseData(completionHandler: { [weak self] response in
+        AF.request(imageUrl).responseData { [weak self] response in
             guard let self = self else { return }
             if let imageData = response.data {
                 self.downloadDataByteLabel.text = "\(ByteCountFormatter.string(fromByteCount: Int64(imageData.count), countStyle: .binary))"
@@ -47,8 +46,8 @@ class ViewController: UIViewController {
                 // increment the index to cycle through items
                 self.currentIndex = (self.currentIndex + 1) % self.imageUrls.count
             }
-        })
-        
+        }
+
     }
     
 }

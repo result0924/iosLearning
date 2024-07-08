@@ -8,5 +8,5 @@ target 'TrackCellularDataUsageTest' do
   use_frameworks!
 
   # Pods for TrackCellularDataUsageTest
-  pod 'Alamofire', '~> 4.9'
+  pod 'Alamofire'
 end
