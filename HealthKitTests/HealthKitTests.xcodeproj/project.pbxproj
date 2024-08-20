@@ -48,6 +48,7 @@
 		6C1D5FF72C74A6F800D317D8 /* HealthKitTestsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HealthKitTestsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C1D5FFB2C74A6F800D317D8 /* HealthKitTestsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitTestsUITests.swift; sourceTree = "<group>"; };
 		6C1D5FFD2C74A6F800D317D8 /* HealthKitTestsUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitTestsUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		6C1D600A2C74AAB000D317D8 /* HealthKitTests.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HealthKitTests.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +99,7 @@
 		6C1D5FDA2C74A6F600D317D8 /* HealthKitTests */ = {
 			isa = PBXGroup;
 			children = (
+				6C1D600A2C74AAB000D317D8 /* HealthKitTests.entitlements */,
 				6C1D5FDB2C74A6F600D317D8 /* HealthKitTestsApp.swift */,
 				6C1D5FDD2C74A6F600D317D8 /* ContentView.swift */,
 				6C1D5FDF2C74A6F700D317D8 /* Assets.xcassets */,
@@ -427,12 +429,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = HealthKitTests/HealthKitTests.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HealthKitTests/Preview Content\"";
 				DEVELOPMENT_TEAM = 9TNVAWA2VV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "This is needed to sync data with the Health App.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "This is needed to sync data with the Health App.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "This is needed to sync data with the Health App.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -456,12 +462,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = HealthKitTests/HealthKitTests.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HealthKitTests/Preview Content\"";
 				DEVELOPMENT_TEAM = 9TNVAWA2VV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "This is needed to sync data with the Health App.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "This is needed to sync data with the Health App.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "This is needed to sync data with the Health App.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

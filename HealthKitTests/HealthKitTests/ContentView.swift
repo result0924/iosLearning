@@ -6,81 +6,105 @@
 //
 
 import SwiftUI
-import CoreData
+import HealthKit
 
 struct ContentView: View {
-    @Environment(\.managedObjectContext) private var viewContext
-
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
-        animation: .default)
-    private var items: FetchedResults<Item>
+    @State private var bloodGlucose: String = ""
+    @State private var syncIdentifier: String = ""
+    @State private var syncVersion: Int = 1
+    
+    let healthStore = HKHealthStore()
 
     var body: some View {
-        NavigationView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp!, formatter: itemFormatter)")
-                    } label: {
-                        Text(item.timestamp!, formatter: itemFormatter)
-                    }
-                }
-                .onDelete(perform: deleteItems)
+        VStack {
+            TextField("Enter Blood Glucose Value", text: $bloodGlucose)
+                .padding()
+                .keyboardType(.decimalPad)
+
+            TextField("Enter Sync Identifier", text: $syncIdentifier)
+                .padding()
+
+            Stepper("Sync Version: \(syncVersion)", value: $syncVersion, in: 1...100)
+
+            Button(action: {
+                requestAuthorizationAndSave()
+            }) {
+                Text("Save to Health")
             }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
-                }
-            }
-            Text("Select an item")
+            .padding()
+        }
+        .padding()
+        .onAppear {
+            requestAuthorization()
         }
     }
 
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
+    // 请求授权
+    func requestAuthorization() {
+        guard let bloodGlucoseType = HKObjectType.quantityType(forIdentifier: .bloodGlucose) else {
+            return
+        }
 
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+        let typesToShare: Set = [bloodGlucoseType]
+        let typesToRead: Set = [bloodGlucoseType]
+
+        healthStore.requestAuthorization(toShare: typesToShare, read: typesToRead) { success, error in
+            if !success {
+                print("Authorization failed: \(error?.localizedDescription ?? "Unknown error")")
             }
         }
     }
 
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            offsets.map { items[$0] }.forEach(viewContext.delete)
+    // 保存血糖数据
+    func requestAuthorizationAndSave() {
+        guard let bloodGlucoseType = HKObjectType.quantityType(forIdentifier: .bloodGlucose) else {
+            return
+        }
 
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+        healthStore.getRequestStatusForAuthorization(toShare: Set([bloodGlucoseType]), read: Set([bloodGlucoseType])) { status, error in
+            switch status {
+            case .shouldRequest:
+                requestAuthorization()
+            case .unnecessary:
+                saveBloodGlucoseData()
+            case .unknown:
+                print("Authorization status unknown.")
+            @unknown default:
+                fatalError()
+            }
+        }
+    }
+
+    func saveBloodGlucoseData() {
+        guard let bloodGlucoseValue = Double(bloodGlucose) else {
+            print("Invalid blood glucose value")
+            return
+        }
+
+        let quantityType = HKQuantityType.quantityType(forIdentifier: .bloodGlucose)!
+        let quantity = HKQuantity(unit: HKUnit(from: "mg/dL"), doubleValue: bloodGlucoseValue)
+        let date = Date()
+
+        let metadata: [String: Any] = [
+            HKMetadataKeySyncIdentifier: syncIdentifier,
+            HKMetadataKeySyncVersion: syncVersion
+        ]
+
+        let sample = HKQuantitySample(type: quantityType, quantity: quantity, start: date, end: date, metadata: metadata)
+
+        healthStore.save(sample) { success, error in
+            if success {
+                print("Blood glucose data saved successfully.")
+            } else {
+                print("Error saving blood glucose data: \(error?.localizedDescription ?? "Unknown error")")
             }
         }
     }
 }
 
-private let itemFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateStyle = .short
-    formatter.timeStyle = .medium
-    return formatter
-}()
-
-#Preview {
-    ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
 }
+
