@@ -12,6 +12,12 @@ struct ContentView: View {
     @State private var bloodGlucose: String = ""
     @State private var syncIdentifier: String = ""
     @State private var syncVersion: Int = 1
+    @State private var selectedDate = {
+        let now = Date()
+        let calendar = Calendar.current
+        // 將當前時間的秒數設為 0
+        return calendar.date(bySetting: .second, value: 0, of: now) ?? now
+    }()
     
     let healthStore = HKHealthStore()
 
@@ -25,6 +31,11 @@ struct ContentView: View {
                 .padding()
 
             Stepper("Sync Version: \(syncVersion)", value: $syncVersion, in: 1...100)
+
+            DatePicker("選擇日期時間",
+                      selection: $selectedDate,
+                      displayedComponents: [.date, .hourAndMinute])
+                .padding()
 
             Button(action: {
                 requestAuthorizationAndSave()
@@ -83,7 +94,7 @@ struct ContentView: View {
 
         let quantityType = HKQuantityType.quantityType(forIdentifier: .bloodGlucose)!
         let quantity = HKQuantity(unit: HKUnit(from: "mg/dL"), doubleValue: bloodGlucoseValue)
-        let date = Date()
+        let date = selectedDate
 
         let metadata: [String: Any] = [
             HKMetadataKeySyncIdentifier: syncIdentifier,
@@ -95,6 +106,9 @@ struct ContentView: View {
         healthStore.save(sample) { success, error in
             if success {
                 print("Blood glucose data saved successfully.")
+                // 獲取 UUID
+                let uuid = sample.uuid
+                print("保存的數據 UUID: \(uuid)")
             } else {
                 print("Error saving blood glucose data: \(error?.localizedDescription ?? "Unknown error")")
             }
