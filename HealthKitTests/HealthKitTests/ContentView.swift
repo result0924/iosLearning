@@ -88,6 +88,13 @@ struct SyncDataView: View {
             }
             .padding()
             
+            Button(action: {
+                deleteBloodGlucoseData()
+            }) {
+                Text("Delete Data")
+                    .foregroundColor(.red)
+            }
+            .padding()
             Spacer()
         }
         .padding()
@@ -164,6 +171,15 @@ struct SyncDataView: View {
             }
         }
     }
+
+    // 添加刪除方法
+    func deleteBloodGlucoseData() {
+        HealthKitManager.shared.deleteBloodGlucoseData(
+            value: bloodGlucose,
+            date: selectedDate,
+            syncIdentifier: syncIdentifier
+        )
+    }
 }
 
 struct SimpleDataView: View {
@@ -194,6 +210,14 @@ struct SimpleDataView: View {
                 requestAuthorizationAndSave()
             }) {
                 Text("Save to Health")
+            }
+            .padding()
+            
+            Button(action: {
+                deleteBloodGlucoseData()
+            }) {
+                Text("Delete Data")
+                    .foregroundColor(.red)
             }
             .padding()
             
@@ -267,6 +291,14 @@ struct SimpleDataView: View {
                 print("Error saving blood glucose data: \(error?.localizedDescription ?? "Unknown error")")
             }
         }
+    }
+
+    // 添加刪除方法
+    func deleteBloodGlucoseData() {
+        HealthKitManager.shared.deleteBloodGlucoseData(
+            value: bloodGlucose,
+            date: selectedDate
+        )
     }
 }
 
