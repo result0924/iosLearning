@@ -267,121 +267,10 @@ struct HealthDataEditView: View {
         }
     }
     
-    private func saveWeight(_ value: Double) {
-        guard HKHealthStore.isHealthDataAvailable() else {
-            alertMessage = "HealthKit 不可用"
-            showingSaveAlert = true
-            return
-        }
-        
-        let weightType = HKObjectType.quantityType(forIdentifier: .bodyMass)!
-        let weightUnit = HKUnit.gramUnit(with: .kilo)
-        let weightQuantity = HKQuantity(unit: weightUnit, doubleValue: value)
-        
-        var metadata: [String: Any] = [:]
-        if !healthData.syncIdentifier.isEmpty {
-            metadata[HKMetadataKeySyncIdentifier] = healthData.syncIdentifier
-        }
-        if !healthData.syncVersion.isEmpty {
-            if let versionNumber = Int(healthData.syncVersion) {
-                metadata[HKMetadataKeySyncVersion] = NSNumber(value: versionNumber)
-            }
-        }
-        
-        let weightSample = HKQuantitySample(type: weightType,
-                                            quantity: weightQuantity,
-                                            start: healthData.date,
-                                            end: healthData.date,
-                                            metadata: metadata)
-        
-        healthStore.save(weightSample) { (success, error) in
-            DispatchQueue.main.async {
-                if success {
-                    alertMessage = "體重數據保存成功"
-                } else {
-                    alertMessage = "保存失敗: \(error?.localizedDescription ?? "未知錯誤")"
-                }
-                showingSaveAlert = true
-            }
-        }
-    }
-    
-    private func saveBodyFat(_ value: Double) {
-        guard HKHealthStore.isHealthDataAvailable() else {
-            alertMessage = "HealthKit 不可用"
-            showingSaveAlert = true
-            return
-        }
-        
-        let bodyFatType = HKObjectType.quantityType(forIdentifier: .bodyFatPercentage)!
-        let bodyFatUnit = HKUnit.percent()
-        let bodyFatQuantity = HKQuantity(unit: bodyFatUnit, doubleValue: value / 100.0)
-        
-        var metadata: [String: Any] = [:]
-        if !healthData.syncIdentifier.isEmpty {
-            metadata[HKMetadataKeySyncIdentifier] = healthData.syncIdentifier
-        }
-        if !healthData.syncVersion.isEmpty {
-            if let versionNumber = Int(healthData.syncVersion) {
-                metadata[HKMetadataKeySyncVersion] = NSNumber(value: versionNumber)
-            }
-        }
-        
-        let bodyFatSample = HKQuantitySample(type: bodyFatType,
-                                             quantity: bodyFatQuantity,
-                                             start: healthData.date,
-                                             end: healthData.date,
-                                             metadata: metadata)
-        
-        healthStore.save(bodyFatSample) { (success, error) in
-            DispatchQueue.main.async {
-                if success {
-                    alertMessage = "體脂數據保存成功"
-                } else {
-                    alertMessage = "保存失敗: \(error?.localizedDescription ?? "未知錯誤")"
-                }
-                showingSaveAlert = true
-            }
-        }
-    }
-    
-    private func saveBloodGlucose(_ value: Double) {
-        guard HKHealthStore.isHealthDataAvailable() else {
-            alertMessage = "HealthKit 不可用"
-            showingSaveAlert = true
-            return
-        }
-        
-        let glucoseType = HKObjectType.quantityType(forIdentifier: .bloodGlucose)!
-        let glucoseUnit = HKUnit.init(from: "mg/dL")
-        
-        var metadata: [String: Any] = [:]
-        if !healthData.syncIdentifier.isEmpty {
-            metadata[HKMetadataKeySyncIdentifier] = healthData.syncIdentifier
-        }
-        if !healthData.syncVersion.isEmpty {
-            if let versionNumber = Int(healthData.syncVersion) {
-                metadata[HKMetadataKeySyncVersion] = NSNumber(value: versionNumber)
-            }
-        }
-        
-        let glucoseQuantity = HKQuantity(unit: glucoseUnit, doubleValue: value)
-        let glucoseSample = HKQuantitySample(type: glucoseType,
-                                           quantity: glucoseQuantity,
-                                           start: healthData.date,
-                                           end: healthData.date,
-                                           metadata: metadata)
-        
-        healthStore.save(glucoseSample) { (success, error) in
-            DispatchQueue.main.async {
-                if success {
-                    alertMessage = "血糖數據保存成功"
-                } else {
-                    alertMessage = "血糖保存失敗: \(error?.localizedDescription ?? "未知錯誤")"
-                }
-                showingSaveAlert = true
-            }
-        }
+    private func normalizeDate(_ date: Date) -> Date {
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: date)
+        return calendar.date(from: components) ?? date
     }
     
     private func saveBloodPressure(_ systolic: Double, diastolic: Double, completion: @escaping (Bool) -> Void) {
@@ -406,27 +295,29 @@ struct HealthDataEditView: View {
             }
         }
         
+        let normalizedDate = normalizeDate(healthData.date)
+        
         // 創建收縮壓樣本
         let systolicQuantity = HKQuantity(unit: pressureUnit, doubleValue: systolic)
         let systolicSample = HKQuantitySample(type: systolicType,
                                             quantity: systolicQuantity,
-                                            start: healthData.date,
-                                            end: healthData.date,
+                                            start: normalizedDate,
+                                            end: normalizedDate,
                                             metadata: metadata)
         
         // 創建舒張壓樣本
         let diastolicQuantity = HKQuantity(unit: pressureUnit, doubleValue: diastolic)
         let diastolicSample = HKQuantitySample(type: diastolicType,
                                          quantity: diastolicQuantity,
-                                         start: healthData.date,
-                                         end: healthData.date,
+                                         start: normalizedDate,
+                                         end: normalizedDate,
                                          metadata: metadata)
         
         // 創建血壓關聯
         let bloodPressureType = HKCorrelationType.correlationType(forIdentifier: .bloodPressure)!
         let correlation = HKCorrelation(type: bloodPressureType,
-                                  start: healthData.date,
-                                  end: healthData.date,
+                                  start: normalizedDate,
+                                  end: normalizedDate,
                                   objects: Set([systolicSample, diastolicSample]),
                                   metadata: metadata)
         
@@ -463,11 +354,12 @@ struct HealthDataEditView: View {
             }
         }
         
+        let normalizedDate = normalizeDate(healthData.date)
         let heartRateQuantity = HKQuantity(unit: heartRateUnit, doubleValue: value)
         let heartRateSample = HKQuantitySample(type: heartRateType,
                                          quantity: heartRateQuantity,
-                                         start: healthData.date,
-                                         end: healthData.date,
+                                         start: normalizedDate,
+                                         end: normalizedDate,
                                          metadata: metadata)
         
         healthStore.save(heartRateSample) { (success, error) in
@@ -477,6 +369,126 @@ struct HealthDataEditView: View {
                     showingSaveAlert = true
                 }
                 completion(success)
+            }
+        }
+    }
+    
+    private func saveBloodGlucose(_ value: Double) {
+        guard HKHealthStore.isHealthDataAvailable() else {
+            alertMessage = "HealthKit 不可用"
+            showingSaveAlert = true
+            return
+        }
+        
+        let glucoseType = HKObjectType.quantityType(forIdentifier: .bloodGlucose)!
+        let glucoseUnit = HKUnit.init(from: "mg/dL")
+        
+        var metadata: [String: Any] = [:]
+        if !healthData.syncIdentifier.isEmpty {
+            metadata[HKMetadataKeySyncIdentifier] = healthData.syncIdentifier
+        }
+        if !healthData.syncVersion.isEmpty {
+            if let versionNumber = Int(healthData.syncVersion) {
+                metadata[HKMetadataKeySyncVersion] = NSNumber(value: versionNumber)
+            }
+        }
+        
+        let normalizedDate = normalizeDate(healthData.date)
+        let glucoseQuantity = HKQuantity(unit: glucoseUnit, doubleValue: value)
+        let glucoseSample = HKQuantitySample(type: glucoseType,
+                                           quantity: glucoseQuantity,
+                                           start: normalizedDate,
+                                           end: normalizedDate,
+                                           metadata: metadata)
+        
+        healthStore.save(glucoseSample) { (success, error) in
+            DispatchQueue.main.async {
+                if success {
+                    alertMessage = "血糖數據保存成功"
+                } else {
+                    alertMessage = "血糖保存失敗: \(error?.localizedDescription ?? "未知錯誤")"
+                }
+                showingSaveAlert = true
+            }
+        }
+    }
+    
+    private func saveWeight(_ value: Double) {
+        guard HKHealthStore.isHealthDataAvailable() else {
+            alertMessage = "HealthKit 不可用"
+            showingSaveAlert = true
+            return
+        }
+        
+        let weightType = HKObjectType.quantityType(forIdentifier: .bodyMass)!
+        let weightUnit = HKUnit.gramUnit(with: .kilo)
+        let weightQuantity = HKQuantity(unit: weightUnit, doubleValue: value)
+        
+        var metadata: [String: Any] = [:]
+        if !healthData.syncIdentifier.isEmpty {
+            metadata[HKMetadataKeySyncIdentifier] = healthData.syncIdentifier
+        }
+        if !healthData.syncVersion.isEmpty {
+            if let versionNumber = Int(healthData.syncVersion) {
+                metadata[HKMetadataKeySyncVersion] = NSNumber(value: versionNumber)
+            }
+        }
+        
+        let normalizedDate = normalizeDate(healthData.date)
+        let weightSample = HKQuantitySample(type: weightType,
+                                          quantity: weightQuantity,
+                                          start: normalizedDate,
+                                          end: normalizedDate,
+                                          metadata: metadata)
+        
+        healthStore.save(weightSample) { (success, error) in
+            DispatchQueue.main.async {
+                if success {
+                    alertMessage = "體重數據保存成功"
+                } else {
+                    alertMessage = "保存失敗: \(error?.localizedDescription ?? "未知錯誤")"
+                }
+                showingSaveAlert = true
+            }
+        }
+    }
+    
+    private func saveBodyFat(_ value: Double) {
+        guard HKHealthStore.isHealthDataAvailable() else {
+            alertMessage = "HealthKit 不可用"
+            showingSaveAlert = true
+            return
+        }
+        
+        let bodyFatType = HKObjectType.quantityType(forIdentifier: .bodyFatPercentage)!
+        let bodyFatUnit = HKUnit.percent()
+        let bodyFatQuantity = HKQuantity(unit: bodyFatUnit, doubleValue: value / 100.0)
+        
+        var metadata: [String: Any] = [:]
+        if !healthData.syncIdentifier.isEmpty {
+            metadata[HKMetadataKeySyncIdentifier] = healthData.syncIdentifier
+        }
+        if !healthData.syncVersion.isEmpty {
+            if let versionNumber = Int(healthData.syncVersion) {
+                metadata[HKMetadataKeySyncVersion] = NSNumber(value: versionNumber)
+            }
+        }
+        
+        let normalizedDate = normalizeDate(healthData.date)
+        let bodyFatSample = HKQuantitySample(type: bodyFatType,
+                                           quantity: bodyFatQuantity,
+                                           start: normalizedDate,
+                                           end: normalizedDate,
+                                           metadata: metadata)
+        
+        healthStore.save(bodyFatSample) { (success, error) in
+            DispatchQueue.main.async {
+                if success {
+                    alertMessage = "體脂數據保存成功"
+                } else {
+                    alertMessage = "保存失敗: \(error?.localizedDescription ?? "未知錯誤")"
+                }
+                showingSaveAlert = true
             }
         }
     }
