@@ -45,8 +45,9 @@ struct KeyboardAdaptive: ViewModifier {
 
 struct ContentView: View {
     @State private var healthDataList: [HealthData] = [
-        HealthData(type: "血壓和心跳", value: "", value2: "", date: Date(), syncIdentifier: "", syncVersion: ""),
         HealthData(type: "血糖", value: "", value2: nil, date: Date(), syncIdentifier: "", syncVersion: ""),
+        HealthData(type: "血壓", value: "", value2: "", date: Date(), syncIdentifier: "", syncVersion: ""),
+        HealthData(type: "心跳", value: "", value2: nil, date: Date(), syncIdentifier: "", syncVersion: ""),
         HealthData(type: "體重", value: "", value2: nil, date: Date(), syncIdentifier: "", syncVersion: ""),
         HealthData(type: "體脂", value: "", value2: nil, date: Date(), syncIdentifier: "", syncVersion: "")
     ]
@@ -77,8 +78,13 @@ struct ContentView: View {
                         Text(data.type)
                         Spacer()
                         if !data.value.isEmpty {
-                            Text(data.value)
-                                .foregroundColor(.gray)
+                            if data.type == "血壓" {
+                                Text("\(data.value)/\(data.value2 ?? "")")
+                                    .foregroundColor(.gray)
+                            } else {
+                                Text(data.value)
+                                    .foregroundColor(.gray)
+                            }
                         }
                     }
                 }
@@ -118,27 +124,33 @@ struct HealthDataEditView: View {
     var body: some View {
         List {
             Group {
-                if healthData.type == "血壓和心跳" {
+                if healthData.type == "血壓" {
                     VStack(spacing: 10) {
                         HStack {
-                            Text("血壓:")
-                                .frame(width: 60, alignment: .leading)
+                            Text("收縮壓:")
+                                .frame(width: 70, alignment: .leading)
                             TextField("收縮壓", text: $healthData.value)
                                 .keyboardType(.decimalPad)
+                            Text("mmHg")
+                        }
+                        HStack {
+                            Text("舒張壓:")
+                                .frame(width: 70, alignment: .leading)
                             TextField("舒張壓", text: Binding(
                                 get: { healthData.value2 ?? "" },
                                 set: { healthData.value2 = $0 }
                             ))
                             .keyboardType(.decimalPad)
+                            Text("mmHg")
                         }
-                        
-                        HStack {
-                            Text("心跳:")
-                                .frame(width: 60, alignment: .leading)
-                            TextField("心跳數值", text: $heartRate)
-                                .keyboardType(.decimalPad)
-                            Text("次/分")
-                        }
+                    }
+                } else if healthData.type == "心跳" {
+                    HStack {
+                        Text("心跳:")
+                            .frame(width: 60, alignment: .leading)
+                        TextField("心跳數值", text: $healthData.value)
+                            .keyboardType(.decimalPad)
+                        Text("次/分")
                     }
                 } else {
                     TextField("輸入\(healthData.type)數值", text: $healthData.value)
@@ -186,80 +198,68 @@ struct HealthDataEditView: View {
     }
     
     private func saveToHealthKit() {
-        if healthData.type == "血壓和心跳" {
-            var hasError = false
-            var errorMessage = ""
-            var bloodPressureSaved = false
-            var heartRateSaved = false
-            
+        if healthData.type == "血壓" {
             // 檢查血壓數值
             let hasSystolic = !healthData.value.isEmpty
             let hasDiastolic = !(healthData.value2 ?? "").isEmpty
             
             if hasSystolic != hasDiastolic {
-                // 只填寫了其中一個血壓值
-                hasError = true
-                errorMessage = "請同時填寫收縮壓和舒張壓"
-            } else if hasSystolic && hasDiastolic {
-                // 兩個都有填寫，檢查是否為有效數值
+                alertMessage = "請同時填寫收縮壓和舒張壓"
+                showingSaveAlert = true
+                return
+            }
+            
+            if hasSystolic && hasDiastolic {
                 if let systolic = Double(healthData.value),
                    let diastolic = Double(healthData.value2 ?? "") {
                     saveBloodPressure(systolic, diastolic: diastolic) { success in
-                        bloodPressureSaved = success
-                        checkSaveCompletion(bloodPressureSaved: bloodPressureSaved, 
-                                          heartRateSaved: heartRateSaved)
+                        DispatchQueue.main.async {
+                            if success {
+                                alertMessage = "血壓數據保存成功"
+                            } else {
+                                alertMessage = "血壓數據保存失敗"
+                            }
+                            showingSaveAlert = true
+                        }
                     }
                 } else {
-                    hasError = true
-                    errorMessage = "請輸入有效的血壓數值"
-                }
-            } else {
-                // 兩個都沒填，視為不需要保存血壓
-                bloodPressureSaved = true
-            }
-            
-            // 檢查心跳數值
-            if !heartRate.isEmpty {
-                if let heartRateValue = Double(heartRate) {
-                    saveHeartRate(heartRateValue) { success in
-                        heartRateSaved = success
-                        checkSaveCompletion(bloodPressureSaved: bloodPressureSaved, 
-                                          heartRateSaved: heartRateSaved)
-                    }
-                } else {
-                    if !hasError {  // 如果血壓沒有錯誤才顯示心跳的錯誤
-                        hasError = true
-                        errorMessage = "請輸入有效的心跳數值"
-                    }
-                }
-            } else {
-                heartRateSaved = true
-            }
-            
-            // 如果沒有填寫任何數值
-            if !hasSystolic && !hasDiastolic && heartRate.isEmpty {
-                hasError = true
-                errorMessage = "請至少輸入一組數據"
-            }
-            
-            if hasError {
-                alertMessage = errorMessage
-                showingSaveAlert = true
-            }
-        } else {
-            // 其他類型的保存邏輯
-            if let value = Double(healthData.value) {
-                switch healthData.type {
-                case "血糖":
-                    saveBloodGlucose(value)
-                case "體重":
-                    saveWeight(value)
-                case "體脂":
-                    saveBodyFat(value)
-                default:
-                    alertMessage = "未知的數據類型"
+                    alertMessage = "請輸入有效的血壓數值"
                     showingSaveAlert = true
                 }
+            }
+        } else if healthData.type == "心跳" {
+            if let heartRateValue = Double(healthData.value) {
+                saveHeartRate(heartRateValue) { success in
+                    DispatchQueue.main.async {
+                        if success {
+                            alertMessage = "心跳數據保存成功"
+                        } else {
+                            alertMessage = "心跳數據保存失敗"
+                        }
+                        showingSaveAlert = true
+                    }
+                }
+            } else {
+                alertMessage = "請輸入有效的心跳數值"
+                showingSaveAlert = true
+            }
+        } else if healthData.type == "血糖" {
+            if let value = Double(healthData.value) {
+                saveBloodGlucose(value)
+            } else {
+                alertMessage = "請輸入有效的數值"
+                showingSaveAlert = true
+            }
+        } else if healthData.type == "體重" {
+            if let value = Double(healthData.value) {
+                saveWeight(value)
+            } else {
+                alertMessage = "請輸入有效的數值"
+                showingSaveAlert = true
+            }
+        } else if healthData.type == "體脂" {
+            if let value = Double(healthData.value) {
+                saveBodyFat(value)
             } else {
                 alertMessage = "請輸入有效的數值"
                 showingSaveAlert = true
@@ -490,13 +490,6 @@ struct HealthDataEditView: View {
                 }
                 showingSaveAlert = true
             }
-        }
-    }
-    
-    private func checkSaveCompletion(bloodPressureSaved: Bool, heartRateSaved: Bool) {
-        if bloodPressureSaved && heartRateSaved {
-            alertMessage = "數據保存成功"
-            showingSaveAlert = true
         }
     }
 }
