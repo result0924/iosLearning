@@ -8,6 +8,18 @@
 import SwiftUI
 import HealthKit
 
+let healthStore = HKHealthStore()
+
+struct HealthData: Identifiable {
+    let id = UUID()
+    var type: String
+    var value: String
+    var value2: String?
+    var date: Date
+    var syncIdentifier: String
+    var syncVersion: String
+}
+
 struct KeyboardAdaptive: ViewModifier {
     @State private var keyboardHeight: CGFloat = 0
 
@@ -32,273 +44,448 @@ struct KeyboardAdaptive: ViewModifier {
 }
 
 struct ContentView: View {
-    var body: some View {
-        TabView {
-            SyncDataView()
-                .tabItem {
-                    Image(systemName: "arrow.triangle.2.circlepath")
-                    Text("同步模式")
-                }
-            
-            SimpleDataView()
-                .tabItem {
-                    Image(systemName: "plus.circle")
-                    Text("簡單模式")
-                }
-        }
-    }
-}
-
-struct SyncDataView: View {
-    @State private var bloodGlucose: String = ""
-    @State private var syncIdentifier: String = ""
-    @State private var syncVersion: Int = 1
-    @State private var selectedDate = {
-        let now = Date()
-        let calendar = Calendar.current
-        return calendar.date(bySetting: .second, value: 0, of: now) ?? now
-    }()
+    @State private var healthDataList: [HealthData] = [
+        HealthData(type: "血壓和心跳", value: "", value2: "", date: Date(), syncIdentifier: "", syncVersion: ""),
+        HealthData(type: "血糖", value: "", value2: nil, date: Date(), syncIdentifier: "", syncVersion: ""),
+        HealthData(type: "體重", value: "", value2: nil, date: Date(), syncIdentifier: "", syncVersion: ""),
+        HealthData(type: "體脂", value: "", value2: nil, date: Date(), syncIdentifier: "", syncVersion: "")
+    ]
     
-    @FocusState private var isFocused: Bool
-    
-    let healthStore = HKHealthStore()
-    
-    var body: some View {
-        VStack(spacing: 16) {
-            TextField("Enter Blood Glucose Value", text: $bloodGlucose)
-                .padding()
-                .keyboardType(.decimalPad)
-                .focused($isFocused)
-            
-            TextField("Enter Sync Identifier", text: $syncIdentifier)
-                .padding()
-                .focused($isFocused)
-            
-            Stepper("Sync Version: \(syncVersion)", value: $syncVersion, in: 1...100)
-            
-            DatePicker("選擇日期時間",
-                      selection: $selectedDate,
-                      displayedComponents: [.date, .hourAndMinute])
-                .padding()
-            
-            Button(action: {
-                requestAuthorizationAndSave()
-            }) {
-                Text("Save to Health")
-            }
-            .padding()
-            
-            Button(action: {
-                deleteBloodGlucoseData()
-            }) {
-                Text("Delete Data")
-                    .foregroundColor(.red)
-            }
-            .padding()
-            Spacer()
-        }
-        .padding()
-        .toolbar {
-            ToolbarItemGroup(placement: .keyboard) {
-                Spacer()
-                Button("Done") {
-                    isFocused = false
-                }
-            }
-        }
-    }
-    
-    // 请求授权
-    func requestAuthorization() {
-        guard let bloodGlucoseType = HKObjectType.quantityType(forIdentifier: .bloodGlucose) else {
-            return
-        }
-
-        let typesToShare: Set = [bloodGlucoseType]
-        let typesToRead: Set = [bloodGlucoseType]
-
-        healthStore.requestAuthorization(toShare: typesToShare, read: typesToRead) { success, error in
-            if !success {
-                print("Authorization failed: \(error?.localizedDescription ?? "Unknown error")")
-            }
-        }
-    }
-
-    // 保存血糖数据
-    func requestAuthorizationAndSave() {
-        guard let bloodGlucoseType = HKObjectType.quantityType(forIdentifier: .bloodGlucose) else {
-            return
-        }
-
-        healthStore.getRequestStatusForAuthorization(toShare: Set([bloodGlucoseType]), read: Set([bloodGlucoseType])) { status, error in
-            switch status {
-            case .shouldRequest:
-                requestAuthorization()
-            case .unnecessary:
-                saveBloodGlucoseData()
-            case .unknown:
-                print("Authorization status unknown.")
-            @unknown default:
-                fatalError()
-            }
-        }
-    }
-
-    func saveBloodGlucoseData() {
-        guard let bloodGlucoseValue = Double(bloodGlucose) else {
-            print("Invalid blood glucose value")
-            return
-        }
-
-        let quantityType = HKQuantityType.quantityType(forIdentifier: .bloodGlucose)!
-        let quantity = HKQuantity(unit: HKUnit(from: "mg/dL"), doubleValue: bloodGlucoseValue)
-        let date = selectedDate
-        
-        let metadata: [String: Any] = [
-            HKMetadataKeySyncIdentifier: syncIdentifier,
-            HKMetadataKeySyncVersion: syncVersion
+    init() {
+        // 請求需要的權限
+        let typesToShare: Set = [
+            HKObjectType.quantityType(forIdentifier: .bloodGlucose)!,
+            HKObjectType.quantityType(forIdentifier: .bloodPressureSystolic)!,
+            HKObjectType.quantityType(forIdentifier: .bloodPressureDiastolic)!,
+            HKObjectType.quantityType(forIdentifier: .heartRate)!,
+            HKObjectType.quantityType(forIdentifier: .bodyMass)!,
+            HKObjectType.quantityType(forIdentifier: .bodyFatPercentage)!
         ]
         
-        let sample = HKQuantitySample(type: quantityType, quantity: quantity, start: date, end: date, metadata: metadata)
-        
-        healthStore.save(sample) { success, error in
-            if success {
-                print("Blood glucose data saved successfully.")
-                let uuid = sample.uuid
-                print("保存的數據 UUID: \(uuid)")
-            } else {
-                print("Error saving blood glucose data: \(error?.localizedDescription ?? "Unknown error")")
+        healthStore.requestAuthorization(toShare: typesToShare, read: typesToShare) { (success, error) in
+            if !success {
+                print("請求 HealthKit 權限失敗: \(error?.localizedDescription ?? "未知錯誤")")
             }
         }
     }
-
-    // 添加刪除方法
-    func deleteBloodGlucoseData() {
-        HealthKitManager.shared.deleteBloodGlucoseData(
-            value: bloodGlucose,
-            date: selectedDate,
-            syncIdentifier: syncIdentifier
+    
+    var body: some View {
+        NavigationView {
+            List(healthDataList) { data in
+                NavigationLink(destination: HealthDataEditView(healthData: binding(for: data))) {
+                    HStack {
+                        Text(data.type)
+                        Spacer()
+                        if !data.value.isEmpty {
+                            Text(data.value)
+                                .foregroundColor(.gray)
+                        }
+                    }
+                }
+            }
+            .navigationTitle("健康數據")
+        }
+    }
+    
+    private func binding(for data: HealthData) -> Binding<HealthData> {
+        Binding(
+            get: { data },
+            set: { newValue in
+                if let index = healthDataList.firstIndex(where: { $0.id == newValue.id }) {
+                    healthDataList[index] = newValue
+                }
+            }
         )
     }
 }
 
-struct SimpleDataView: View {
-    @State private var bloodGlucose: String = ""
-    @State private var selectedDate = {
-        let now = Date()
-        let calendar = Calendar.current
-        return calendar.date(bySetting: .second, value: 0, of: now) ?? now
-    }()
-    
-    @FocusState private var isFocused: Bool
-    
-    let healthStore = HKHealthStore()
+// 添加一個擴展來處理列表標題
+extension View {
+    func listSectionHeader(_ text: String) -> some View {
+        Section(header: Text(text)) {
+            self
+        }
+    }
+}
+
+struct HealthDataEditView: View {
+    @Environment(\.presentationMode) var presentationMode
+    @Binding var healthData: HealthData
+    @State private var showingSaveAlert = false
+    @State private var alertMessage = ""
+    @State private var heartRate: String = ""  // 新增心跳數值
     
     var body: some View {
-        VStack {
-            TextField("Enter Blood Glucose Value", text: $bloodGlucose)
-                .padding()
-                .keyboardType(.decimalPad)
-                .focused($isFocused)
-            
-            DatePicker("選擇日期時間",
-                      selection: $selectedDate,
-                      displayedComponents: [.date, .hourAndMinute])
-                .padding()
-            
-            Button(action: {
-                requestAuthorizationAndSave()
-            }) {
-                Text("Save to Health")
-            }
-            .padding()
-            
-            Button(action: {
-                deleteBloodGlucoseData()
-            }) {
-                Text("Delete Data")
-                    .foregroundColor(.red)
-            }
-            .padding()
-            
-            Spacer()
-        }
-        .padding()
-        .toolbar {
-            ToolbarItemGroup(placement: .keyboard) {
-                Spacer()
-                Button("Done") {
-                    isFocused = false
+        List {
+            Group {
+                if healthData.type == "血壓和心跳" {
+                    VStack(spacing: 10) {
+                        HStack {
+                            Text("血壓:")
+                                .frame(width: 60, alignment: .leading)
+                            TextField("收縮壓", text: $healthData.value)
+                                .keyboardType(.decimalPad)
+                            TextField("舒張壓", text: Binding(
+                                get: { healthData.value2 ?? "" },
+                                set: { healthData.value2 = $0 }
+                            ))
+                            .keyboardType(.decimalPad)
+                        }
+                        
+                        HStack {
+                            Text("心跳:")
+                                .frame(width: 60, alignment: .leading)
+                            TextField("心跳數值", text: $heartRate)
+                                .keyboardType(.decimalPad)
+                            Text("次/分")
+                        }
+                    }
+                } else {
+                    TextField("輸入\(healthData.type)數值", text: $healthData.value)
+                        .keyboardType(.decimalPad)
                 }
+            }
+            .listSectionHeader("數值")
+            
+            Group {
+                DatePicker("選擇時間", selection: $healthData.date)
+                    .datePickerStyle(.compact)
+            }
+            .listSectionHeader("時間")
+            
+            Group {
+                TextField("同步 ID", text: $healthData.syncIdentifier)
+                TextField("同步版本", text: $healthData.syncVersion)
+            }
+            .listSectionHeader("同步資訊")
+            
+            Button(action: saveToHealthKit) {
+                HStack {
+                    Spacer()
+                    Text("保存到健康")
+                    Spacer()
+                }
+            }
+            .foregroundColor(.blue)
+        }
+        .navigationTitle(healthData.type)
+        .alert(
+            "保存結果",
+            isPresented: $showingSaveAlert,
+            actions: {
+                Button("確定") {
+                    if alertMessage.contains("成功") {
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                }
+            },
+            message: {
+                Text(alertMessage)
+            }
+        )
+    }
+    
+    private func saveToHealthKit() {
+        if healthData.type == "血壓和心跳" {
+            var hasError = false
+            var errorMessage = ""
+            var bloodPressureSaved = false
+            var heartRateSaved = false
+            
+            // 檢查血壓數值
+            let hasSystolic = !healthData.value.isEmpty
+            let hasDiastolic = !(healthData.value2 ?? "").isEmpty
+            
+            if hasSystolic != hasDiastolic {
+                // 只填寫了其中一個血壓值
+                hasError = true
+                errorMessage = "請同時填寫收縮壓和舒張壓"
+            } else if hasSystolic && hasDiastolic {
+                // 兩個都有填寫，檢查是否為有效數值
+                if let systolic = Double(healthData.value),
+                   let diastolic = Double(healthData.value2 ?? "") {
+                    saveBloodPressure(systolic, diastolic: diastolic) { success in
+                        bloodPressureSaved = success
+                        checkSaveCompletion(bloodPressureSaved: bloodPressureSaved, 
+                                          heartRateSaved: heartRateSaved)
+                    }
+                } else {
+                    hasError = true
+                    errorMessage = "請輸入有效的血壓數值"
+                }
+            } else {
+                // 兩個都沒填，視為不需要保存血壓
+                bloodPressureSaved = true
+            }
+            
+            // 檢查心跳數值
+            if !heartRate.isEmpty {
+                if let heartRateValue = Double(heartRate) {
+                    saveHeartRate(heartRateValue) { success in
+                        heartRateSaved = success
+                        checkSaveCompletion(bloodPressureSaved: bloodPressureSaved, 
+                                          heartRateSaved: heartRateSaved)
+                    }
+                } else {
+                    if !hasError {  // 如果血壓沒有錯誤才顯示心跳的錯誤
+                        hasError = true
+                        errorMessage = "請輸入有效的心跳數值"
+                    }
+                }
+            } else {
+                heartRateSaved = true
+            }
+            
+            // 如果沒有填寫任何數值
+            if !hasSystolic && !hasDiastolic && heartRate.isEmpty {
+                hasError = true
+                errorMessage = "請至少輸入一組數據"
+            }
+            
+            if hasError {
+                alertMessage = errorMessage
+                showingSaveAlert = true
+            }
+        } else {
+            // 其他類型的保存邏輯
+            if let value = Double(healthData.value) {
+                switch healthData.type {
+                case "血糖":
+                    saveBloodGlucose(value)
+                case "體重":
+                    saveWeight(value)
+                case "體脂":
+                    saveBodyFat(value)
+                default:
+                    alertMessage = "未知的數據類型"
+                    showingSaveAlert = true
+                }
+            } else {
+                alertMessage = "請輸入有效的數值"
+                showingSaveAlert = true
             }
         }
     }
     
-    // 请求授权
-    func requestAuthorization() {
-        guard let bloodGlucoseType = HKObjectType.quantityType(forIdentifier: .bloodGlucose) else {
+    private func saveWeight(_ value: Double) {
+        guard HKHealthStore.isHealthDataAvailable() else {
+            alertMessage = "HealthKit 不可用"
+            showingSaveAlert = true
             return
         }
-
-        let typesToShare: Set = [bloodGlucoseType]
-        let typesToRead: Set = [bloodGlucoseType]
-
-        healthStore.requestAuthorization(toShare: typesToShare, read: typesToRead) { success, error in
-            if !success {
-                print("Authorization failed: \(error?.localizedDescription ?? "Unknown error")")
-            }
-        }
-    }
-
-    // 保存血糖数据
-    func requestAuthorizationAndSave() {
-        guard let bloodGlucoseType = HKObjectType.quantityType(forIdentifier: .bloodGlucose) else {
-            return
-        }
-
-        healthStore.getRequestStatusForAuthorization(toShare: Set([bloodGlucoseType]), read: Set([bloodGlucoseType])) { status, error in
-            switch status {
-            case .shouldRequest:
-                requestAuthorization()
-            case .unnecessary:
-                saveBloodGlucoseData()
-            case .unknown:
-                print("Authorization status unknown.")
-            @unknown default:
-                fatalError()
-            }
-        }
-    }
-
-    func saveBloodGlucoseData() {
-        guard let bloodGlucoseValue = Double(bloodGlucose) else {
-            print("Invalid blood glucose value")
-            return
-        }
-
-        let quantityType = HKQuantityType.quantityType(forIdentifier: .bloodGlucose)!
-        let quantity = HKQuantity(unit: HKUnit(from: "mg/dL"), doubleValue: bloodGlucoseValue)
-        let date = selectedDate
         
-        let sample = HKQuantitySample(type: quantityType, quantity: quantity, start: date, end: date)
+        let weightType = HKObjectType.quantityType(forIdentifier: .bodyMass)!
+        let weightUnit = HKUnit.gramUnit(with: .kilo)
+        let weightQuantity = HKQuantity(unit: weightUnit, doubleValue: value)
         
-        healthStore.save(sample) { success, error in
-            if success {
-                print("Blood glucose data saved successfully.")
-                let uuid = sample.uuid
-                print("保存的數據 UUID: \(uuid)")
-            } else {
-                print("Error saving blood glucose data: \(error?.localizedDescription ?? "Unknown error")")
+        var metadata: [String: Any] = [:]
+        if !healthData.syncIdentifier.isEmpty {
+            metadata[HKMetadataKeySyncIdentifier] = healthData.syncIdentifier
+        }
+        if !healthData.syncVersion.isEmpty {
+            if let versionNumber = Int(healthData.syncVersion) {
+                metadata[HKMetadataKeySyncVersion] = NSNumber(value: versionNumber)
+            }
+        }
+        
+        let weightSample = HKQuantitySample(type: weightType,
+                                            quantity: weightQuantity,
+                                            start: healthData.date,
+                                            end: healthData.date,
+                                            metadata: metadata)
+        
+        healthStore.save(weightSample) { (success, error) in
+            DispatchQueue.main.async {
+                if success {
+                    alertMessage = "體重數據保存成功"
+                } else {
+                    alertMessage = "保存失敗: \(error?.localizedDescription ?? "未知錯誤")"
+                }
+                showingSaveAlert = true
             }
         }
     }
-
-    // 添加刪除方法
-    func deleteBloodGlucoseData() {
-        HealthKitManager.shared.deleteBloodGlucoseData(
-            value: bloodGlucose,
-            date: selectedDate
-        )
+    
+    private func saveBodyFat(_ value: Double) {
+        guard HKHealthStore.isHealthDataAvailable() else {
+            alertMessage = "HealthKit 不可用"
+            showingSaveAlert = true
+            return
+        }
+        
+        let bodyFatType = HKObjectType.quantityType(forIdentifier: .bodyFatPercentage)!
+        let bodyFatUnit = HKUnit.percent()
+        let bodyFatQuantity = HKQuantity(unit: bodyFatUnit, doubleValue: value / 100.0)
+        
+        var metadata: [String: Any] = [:]
+        if !healthData.syncIdentifier.isEmpty {
+            metadata[HKMetadataKeySyncIdentifier] = healthData.syncIdentifier
+        }
+        if !healthData.syncVersion.isEmpty {
+            if let versionNumber = Int(healthData.syncVersion) {
+                metadata[HKMetadataKeySyncVersion] = NSNumber(value: versionNumber)
+            }
+        }
+        
+        let bodyFatSample = HKQuantitySample(type: bodyFatType,
+                                             quantity: bodyFatQuantity,
+                                             start: healthData.date,
+                                             end: healthData.date,
+                                             metadata: metadata)
+        
+        healthStore.save(bodyFatSample) { (success, error) in
+            DispatchQueue.main.async {
+                if success {
+                    alertMessage = "體脂數據保存成功"
+                } else {
+                    alertMessage = "保存失敗: \(error?.localizedDescription ?? "未知錯誤")"
+                }
+                showingSaveAlert = true
+            }
+        }
+    }
+    
+    private func saveBloodGlucose(_ value: Double) {
+        guard HKHealthStore.isHealthDataAvailable() else {
+            alertMessage = "HealthKit 不可用"
+            showingSaveAlert = true
+            return
+        }
+        
+        let glucoseType = HKObjectType.quantityType(forIdentifier: .bloodGlucose)!
+        let glucoseUnit = HKUnit.init(from: "mg/dL")
+        
+        var metadata: [String: Any] = [:]
+        if !healthData.syncIdentifier.isEmpty {
+            metadata[HKMetadataKeySyncIdentifier] = healthData.syncIdentifier
+        }
+        if !healthData.syncVersion.isEmpty {
+            if let versionNumber = Int(healthData.syncVersion) {
+                metadata[HKMetadataKeySyncVersion] = NSNumber(value: versionNumber)
+            }
+        }
+        
+        let glucoseQuantity = HKQuantity(unit: glucoseUnit, doubleValue: value)
+        let glucoseSample = HKQuantitySample(type: glucoseType,
+                                           quantity: glucoseQuantity,
+                                           start: healthData.date,
+                                           end: healthData.date,
+                                           metadata: metadata)
+        
+        healthStore.save(glucoseSample) { (success, error) in
+            DispatchQueue.main.async {
+                if success {
+                    alertMessage = "血糖數據保存成功"
+                } else {
+                    alertMessage = "血糖保存失敗: \(error?.localizedDescription ?? "未知錯誤")"
+                }
+                showingSaveAlert = true
+            }
+        }
+    }
+    
+    private func saveBloodPressure(_ systolic: Double, diastolic: Double, completion: @escaping (Bool) -> Void) {
+        guard HKHealthStore.isHealthDataAvailable() else {
+            alertMessage = "HealthKit 不可用"
+            showingSaveAlert = true
+            completion(false)
+            return
+        }
+        
+        let systolicType = HKObjectType.quantityType(forIdentifier: .bloodPressureSystolic)!
+        let diastolicType = HKObjectType.quantityType(forIdentifier: .bloodPressureDiastolic)!
+        let pressureUnit = HKUnit.millimeterOfMercury()
+        
+        var metadata: [String: Any] = [:]
+        if !healthData.syncIdentifier.isEmpty {
+            metadata[HKMetadataKeySyncIdentifier] = healthData.syncIdentifier
+        }
+        if !healthData.syncVersion.isEmpty {
+            if let versionNumber = Int(healthData.syncVersion) {
+                metadata[HKMetadataKeySyncVersion] = NSNumber(value: versionNumber)
+            }
+        }
+        
+        // 創建收縮壓樣本
+        let systolicQuantity = HKQuantity(unit: pressureUnit, doubleValue: systolic)
+        let systolicSample = HKQuantitySample(type: systolicType,
+                                            quantity: systolicQuantity,
+                                            start: healthData.date,
+                                            end: healthData.date,
+                                            metadata: metadata)
+        
+        // 創建舒張壓樣本
+        let diastolicQuantity = HKQuantity(unit: pressureUnit, doubleValue: diastolic)
+        let diastolicSample = HKQuantitySample(type: diastolicType,
+                                         quantity: diastolicQuantity,
+                                         start: healthData.date,
+                                         end: healthData.date,
+                                         metadata: metadata)
+        
+        // 創建血壓關聯
+        let bloodPressureType = HKCorrelationType.correlationType(forIdentifier: .bloodPressure)!
+        let correlation = HKCorrelation(type: bloodPressureType,
+                                  start: healthData.date,
+                                  end: healthData.date,
+                                  objects: Set([systolicSample, diastolicSample]),
+                                  metadata: metadata)
+        
+        // 保存血壓關聯
+        healthStore.save(correlation) { (success, error) in
+            DispatchQueue.main.async {
+                if !success {
+                    alertMessage = "血壓保存失敗: \(error?.localizedDescription ?? "未知錯誤")"
+                    showingSaveAlert = true
+                }
+                completion(success)
+            }
+        }
+    }
+    
+    private func saveHeartRate(_ value: Double, completion: @escaping (Bool) -> Void) {
+        guard HKHealthStore.isHealthDataAvailable() else {
+            alertMessage = "HealthKit 不可用"
+            showingSaveAlert = true
+            completion(false)
+            return
+        }
+        
+        let heartRateType = HKObjectType.quantityType(forIdentifier: .heartRate)!
+        let heartRateUnit = HKUnit.count().unitDivided(by: .minute())
+        
+        var metadata: [String: Any] = [:]
+        if !healthData.syncIdentifier.isEmpty {
+            metadata[HKMetadataKeySyncIdentifier] = healthData.syncIdentifier
+        }
+        if !healthData.syncVersion.isEmpty {
+            if let versionNumber = Int(healthData.syncVersion) {
+                metadata[HKMetadataKeySyncVersion] = NSNumber(value: versionNumber)
+            }
+        }
+        
+        let heartRateQuantity = HKQuantity(unit: heartRateUnit, doubleValue: value)
+        let heartRateSample = HKQuantitySample(type: heartRateType,
+                                         quantity: heartRateQuantity,
+                                         start: healthData.date,
+                                         end: healthData.date,
+                                         metadata: metadata)
+        
+        healthStore.save(heartRateSample) { (success, error) in
+            DispatchQueue.main.async {
+                if !success {
+                    alertMessage = "心跳保存失敗: \(error?.localizedDescription ?? "未知錯誤")"
+                    showingSaveAlert = true
+                }
+                completion(success)
+            }
+        }
+    }
+    
+    private func checkSaveCompletion(bloodPressureSaved: Bool, heartRateSaved: Bool) {
+        if bloodPressureSaved && heartRateSaved {
+            alertMessage = "數據保存成功"
+            showingSaveAlert = true
+        }
     }
 }
 
@@ -307,4 +494,5 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
+
 
