@@ -46,10 +46,15 @@ struct KeyboardAdaptive: ViewModifier {
 struct ContentView: View {
     @State private var healthDataList: [HealthData] = [
         HealthData(type: "血糖", value: "", value2: nil, date: Date(), syncIdentifier: "", syncVersion: ""),
+        HealthData(type: "匯入三十天內的血糖資料", value: "", value2: nil, date: Date(), syncIdentifier: "", syncVersion: ""),
         HealthData(type: "血壓", value: "", value2: "", date: Date(), syncIdentifier: "", syncVersion: ""),
+        HealthData(type: "匯入三十天內的血壓資料", value: "", value2: "", date: Date(), syncIdentifier: "", syncVersion: ""),
         HealthData(type: "心跳", value: "", value2: nil, date: Date(), syncIdentifier: "", syncVersion: ""),
+        HealthData(type: "匯入三十天內的心跳資料", value: "", value2: nil, date: Date(), syncIdentifier: "", syncVersion: ""),
         HealthData(type: "體重", value: "", value2: nil, date: Date(), syncIdentifier: "", syncVersion: ""),
-        HealthData(type: "體脂", value: "", value2: nil, date: Date(), syncIdentifier: "", syncVersion: "")
+        HealthData(type: "匯入三十天內的體重資料", value: "", value2: nil, date: Date(), syncIdentifier: "", syncVersion: ""),
+        HealthData(type: "體脂", value: "", value2: nil, date: Date(), syncIdentifier: "", syncVersion: ""),
+        HealthData(type: "匯入三十天內的體脂資料", value: "", value2: nil, date: Date(), syncIdentifier: "", syncVersion: "")
     ]
     
     init() {
@@ -72,24 +77,43 @@ struct ContentView: View {
     
     var body: some View {
         NavigationView {
-            List(healthDataList) { data in
-                NavigationLink(destination: HealthDataEditView(healthData: binding(for: data))) {
-                    HStack {
-                        Text(data.type)
-                        Spacer()
-                        if !data.value.isEmpty {
-                            if data.type == "血壓" {
-                                Text("\(data.value)/\(data.value2 ?? "")")
-                                    .foregroundColor(.gray)
-                            } else {
-                                Text(data.value)
-                                    .foregroundColor(.gray)
+            List {
+                ForEach(healthDataList) { data in
+                    NavigationLink(destination: destinationView(for: data)) {
+                        HStack {
+                            Text(data.type)
+                            Spacer()
+                            if !data.value.isEmpty {
+                                if data.type.contains("血壓") {
+                                    Text("\(data.value)/\(data.value2 ?? "")")
+                                        .foregroundColor(.gray)
+                                } else {
+                                    Text(data.value)
+                                        .foregroundColor(.gray)
+                                }
                             }
                         }
                     }
                 }
             }
             .navigationTitle("健康數據")
+        }
+    }
+    
+    private func destinationView(for data: HealthData) -> some View {
+        switch data.type {
+        case "匯入三十天內的血糖資料":
+            return AnyView(HealthDataEditView(healthData: binding(for: data)))
+        case "匯入三十天內的血壓資料":
+            return AnyView(HealthDataEditView(healthData: binding(for: data)))
+        case "匯入三十天內的心跳資料":
+            return AnyView(HealthDataEditView(healthData: binding(for: data)))
+        case "匯入三十天內的體重資料":
+            return AnyView(HealthDataEditView(healthData: binding(for: data)))
+        case "匯入三十天內的體脂資料":
+            return AnyView(HealthDataEditView(healthData: binding(for: data)))
+        default:
+            return AnyView(HealthDataEditView(healthData: binding(for: data)))
         }
     }
     
@@ -124,7 +148,7 @@ struct HealthDataEditView: View {
     var body: some View {
         List {
             Group {
-                if healthData.type == "血壓" {
+                if healthData.type.contains("血壓") {
                     VStack(spacing: 10) {
                         HStack {
                             Text("收縮壓:")
@@ -198,7 +222,8 @@ struct HealthDataEditView: View {
     }
     
     private func saveToHealthKit() {
-        if healthData.type == "血壓" {
+        switch healthData.type {
+        case "血壓", "匯入三十天內的血壓資料":
             // 檢查血壓數值
             let hasSystolic = !healthData.value.isEmpty
             let hasDiastolic = !(healthData.value2 ?? "").isEmpty
@@ -212,7 +237,7 @@ struct HealthDataEditView: View {
             if hasSystolic && hasDiastolic {
                 if let systolic = Double(healthData.value),
                    let diastolic = Double(healthData.value2 ?? "") {
-                    saveBloodPressure(systolic, diastolic: diastolic) { success in
+                    saveBloodPressure(systolic, diastolic: diastolic, isImport30day: healthData.type == "匯入三十天內的血壓資料", completion: { success in
                         DispatchQueue.main.async {
                             if success {
                                 alertMessage = "血壓數據保存成功"
@@ -221,15 +246,15 @@ struct HealthDataEditView: View {
                             }
                             showingSaveAlert = true
                         }
-                    }
+                    })
                 } else {
                     alertMessage = "請輸入有效的血壓數值"
                     showingSaveAlert = true
                 }
             }
-        } else if healthData.type == "心跳" {
+        case "心跳", "匯入三十天內的心跳資料":
             if let heartRateValue = Double(healthData.value) {
-                saveHeartRate(heartRateValue) { success in
+                saveHeartRate(heartRateValue, isImport30day: healthData.type == "匯入三十天內的心跳資料", completion: { success in
                     DispatchQueue.main.async {
                         if success {
                             alertMessage = "心跳數據保存成功"
@@ -238,32 +263,61 @@ struct HealthDataEditView: View {
                         }
                         showingSaveAlert = true
                     }
-                }
+                })
             } else {
                 alertMessage = "請輸入有效的心跳數值"
                 showingSaveAlert = true
             }
-        } else if healthData.type == "血糖" {
+        case "血糖", "匯入三十天內的血糖資料":
             if let value = Double(healthData.value) {
-                saveBloodGlucose(value)
+                saveBloodGlucose(value, isImport30day: healthData.type == "匯入三十天內的血糖資料") { success in
+                    DispatchQueue.main.async {
+                        if success {
+                            alertMessage = "血糖數據保存成功"
+                        } else {
+                            alertMessage = "血糖數據保存失敗"
+                        }
+                        showingSaveAlert = true
+                    }
+                }
             } else {
                 alertMessage = "請輸入有效的數值"
                 showingSaveAlert = true
             }
-        } else if healthData.type == "體重" {
+        case "體重", "匯入三十天內的體重資料":
             if let value = Double(healthData.value) {
-                saveWeight(value)
+                saveWeight(value, isImport30day: healthData.type == "匯入三十天內的體重資料") { success in
+                    DispatchQueue.main.async {
+                        if success {
+                            alertMessage = "體重數據保存成功"
+                        } else {
+                            alertMessage = "體重數據保存失敗"
+                        }
+                        showingSaveAlert = true
+                    }
+                }
             } else {
                 alertMessage = "請輸入有效的數值"
                 showingSaveAlert = true
             }
-        } else if healthData.type == "體脂" {
+        case "體脂", "匯入三十天內的體脂資料":
             if let value = Double(healthData.value) {
-                saveBodyFat(value)
+                saveBodyFat(value, isImport30day: healthData.type == "匯入三十天內的體脂資料") { success in
+                    DispatchQueue.main.async {
+                        if success {
+                            alertMessage = "體脂數據保存成功"
+                        } else {
+                            alertMessage = "體脂數據保存失敗"
+                        }
+                        showingSaveAlert = true
+                    }
+                }
             } else {
                 alertMessage = "請輸入有效的數值"
                 showingSaveAlert = true
             }
+        default:
+            break
         }
     }
     
@@ -273,7 +327,7 @@ struct HealthDataEditView: View {
         return calendar.date(from: components) ?? date
     }
     
-    private func saveBloodPressure(_ systolic: Double, diastolic: Double, completion: @escaping (Bool) -> Void) {
+    private func saveBloodPressure(_ systolic: Double, diastolic: Double, isImport30day: Bool, completion: @escaping (Bool) -> Void) {
         guard HKHealthStore.isHealthDataAvailable() else {
             alertMessage = "HealthKit 不可用"
             showingSaveAlert = true
@@ -295,45 +349,80 @@ struct HealthDataEditView: View {
             }
         }
         
-        let normalizedDate = normalizeDate(healthData.date)
-        
-        // 創建收縮壓樣本
-        let systolicQuantity = HKQuantity(unit: pressureUnit, doubleValue: systolic)
-        let systolicSample = HKQuantitySample(type: systolicType,
-                                            quantity: systolicQuantity,
+        if isImport30day {
+            for dayOffset in 0..<30 {
+                let dateToSave = Calendar.current.date(byAdding: .day, value: -dayOffset, to: Date()) ?? Date()
+                let normalizedDate = normalizeDate(dateToSave)
+                
+                // 創建收縮壓樣本
+                let systolicQuantity = HKQuantity(unit: pressureUnit, doubleValue: systolic)
+                let systolicSample = HKQuantitySample(type: systolicType,
+                                                      quantity: systolicQuantity,
+                                                      start: normalizedDate,
+                                                      end: normalizedDate,
+                                                      metadata: metadata)
+                
+                // 創建舒張壓樣本
+                let diastolicQuantity = HKQuantity(unit: pressureUnit, doubleValue: diastolic)
+                let diastolicSample = HKQuantitySample(type: diastolicType,
+                                                       quantity: diastolicQuantity,
+                                                       start: normalizedDate,
+                                                       end: normalizedDate,
+                                                       metadata: metadata)
+                
+                // 創建血壓關聯
+                let bloodPressureType = HKCorrelationType.correlationType(forIdentifier: .bloodPressure)!
+                let correlation = HKCorrelation(type: bloodPressureType,
+                                                start: normalizedDate,
+                                                end: normalizedDate,
+                                                objects: Set([systolicSample, diastolicSample]),
+                                                metadata: metadata)
+                
+                // 保存血壓關聯
+                healthStore.save(correlation) { (success, error) in
+                    DispatchQueue.main.async {
+                        completion(true)
+                    }
+                }
+            }
+        } else {
+            // 处理非匯入三十天內的資料的情况
+            let normalizedDate = normalizeDate(healthData.date)
+            
+            // 創建收縮壓樣本
+            let systolicQuantity = HKQuantity(unit: pressureUnit, doubleValue: systolic)
+            let systolicSample = HKQuantitySample(type: systolicType,
+                                                  quantity: systolicQuantity,
+                                                  start: normalizedDate,
+                                                  end: normalizedDate,
+                                                  metadata: metadata)
+            
+            // 創建舒張壓樣本
+            let diastolicQuantity = HKQuantity(unit: pressureUnit, doubleValue: diastolic)
+            let diastolicSample = HKQuantitySample(type: diastolicType,
+                                                   quantity: diastolicQuantity,
+                                                   start: normalizedDate,
+                                                   end: normalizedDate,
+                                                   metadata: metadata)
+            
+            // 創建血壓關聯
+            let bloodPressureType = HKCorrelationType.correlationType(forIdentifier: .bloodPressure)!
+            let correlation = HKCorrelation(type: bloodPressureType,
                                             start: normalizedDate,
                                             end: normalizedDate,
+                                            objects: Set([systolicSample, diastolicSample]),
                                             metadata: metadata)
-        
-        // 創建舒張壓樣本
-        let diastolicQuantity = HKQuantity(unit: pressureUnit, doubleValue: diastolic)
-        let diastolicSample = HKQuantitySample(type: diastolicType,
-                                         quantity: diastolicQuantity,
-                                         start: normalizedDate,
-                                         end: normalizedDate,
-                                         metadata: metadata)
-        
-        // 創建血壓關聯
-        let bloodPressureType = HKCorrelationType.correlationType(forIdentifier: .bloodPressure)!
-        let correlation = HKCorrelation(type: bloodPressureType,
-                                  start: normalizedDate,
-                                  end: normalizedDate,
-                                  objects: Set([systolicSample, diastolicSample]),
-                                  metadata: metadata)
-        
-        // 保存血壓關聯
-        healthStore.save(correlation) { (success, error) in
-            DispatchQueue.main.async {
-                if !success {
-                    alertMessage = "血壓保存失敗: \(error?.localizedDescription ?? "未知錯誤")"
-                    showingSaveAlert = true
+            
+            // 保存血壓關聯
+            healthStore.save(correlation) { (success, error) in
+                DispatchQueue.main.async {
+                    completion(true)
                 }
-                completion(success)
             }
         }
     }
     
-    private func saveHeartRate(_ value: Double, completion: @escaping (Bool) -> Void) {
+    private func saveHeartRate(_ value: Double, isImport30day: Bool, completion: @escaping (Bool) -> Void) {
         guard HKHealthStore.isHealthDataAvailable() else {
             alertMessage = "HealthKit 不可用"
             showingSaveAlert = true
@@ -354,26 +443,41 @@ struct HealthDataEditView: View {
             }
         }
         
-        let normalizedDate = normalizeDate(healthData.date)
-        let heartRateQuantity = HKQuantity(unit: heartRateUnit, doubleValue: value)
-        let heartRateSample = HKQuantitySample(type: heartRateType,
-                                         quantity: heartRateQuantity,
-                                         start: normalizedDate,
-                                         end: normalizedDate,
-                                         metadata: metadata)
-        
-        healthStore.save(heartRateSample) { (success, error) in
-            DispatchQueue.main.async {
-                if !success {
-                    alertMessage = "心跳保存失敗: \(error?.localizedDescription ?? "未知錯誤")"
-                    showingSaveAlert = true
+        if isImport30day {
+            for dayOffset in 0..<30 {
+                let dateToSave = Calendar.current.date(byAdding: .day, value: -dayOffset, to: Date()) ?? Date()
+                let normalizedDate = normalizeDate(dateToSave)
+                let heartRateQuantity = HKQuantity(unit: heartRateUnit, doubleValue: value)
+                let heartRateSample = HKQuantitySample(type: heartRateType,
+                                                       quantity: heartRateQuantity,
+                                                       start: normalizedDate,
+                                                       end: normalizedDate,
+                                                       metadata: metadata)
+                
+                healthStore.save(heartRateSample) { (success, error) in
+                    DispatchQueue.main.async {
+                        completion(true)
+                    }
                 }
-                completion(success)
+            }
+        } else {
+            let normalizedDate = normalizeDate(healthData.date)
+            let heartRateQuantity = HKQuantity(unit: heartRateUnit, doubleValue: value)
+            let heartRateSample = HKQuantitySample(type: heartRateType,
+                                                   quantity: heartRateQuantity,
+                                                   start: normalizedDate,
+                                                   end: normalizedDate,
+                                                   metadata: metadata)
+            
+            healthStore.save(heartRateSample) { (success, error) in
+                DispatchQueue.main.async {
+                    completion(true)
+                }
             }
         }
     }
     
-    private func saveBloodGlucose(_ value: Double) {
+    private func saveBloodGlucose(_ value: Double, isImport30day: Bool, completion: @escaping (Bool) -> Void) {
         guard HKHealthStore.isHealthDataAvailable() else {
             alertMessage = "HealthKit 不可用"
             showingSaveAlert = true
@@ -393,27 +497,41 @@ struct HealthDataEditView: View {
             }
         }
         
-        let normalizedDate = normalizeDate(healthData.date)
-        let glucoseQuantity = HKQuantity(unit: glucoseUnit, doubleValue: value)
-        let glucoseSample = HKQuantitySample(type: glucoseType,
-                                           quantity: glucoseQuantity,
-                                           start: normalizedDate,
-                                           end: normalizedDate,
-                                           metadata: metadata)
-        
-        healthStore.save(glucoseSample) { (success, error) in
-            DispatchQueue.main.async {
-                if success {
-                    alertMessage = "血糖數據保存成功"
-                } else {
-                    alertMessage = "血糖保存失敗: \(error?.localizedDescription ?? "未知錯誤")"
+        if isImport30day {
+            for dayOffset in 0..<30 {
+                let dateToSave = Calendar.current.date(byAdding: .day, value: -dayOffset, to: Date()) ?? Date()
+                let normalizedDate = normalizeDate(dateToSave)
+                let glucoseQuantity = HKQuantity(unit: glucoseUnit, doubleValue: value)
+                let glucoseSample = HKQuantitySample(type: glucoseType,
+                                                     quantity: glucoseQuantity,
+                                                     start: normalizedDate,
+                                                     end: normalizedDate,
+                                                     metadata: metadata)
+                
+                healthStore.save(glucoseSample) { (success, error) in
+                    DispatchQueue.main.async {
+                        completion(true)
+                    }
                 }
-                showingSaveAlert = true
+            }
+        } else {
+            let normalizedDate = normalizeDate(healthData.date)
+            let glucoseQuantity = HKQuantity(unit: glucoseUnit, doubleValue: value)
+            let glucoseSample = HKQuantitySample(type: glucoseType,
+                                                 quantity: glucoseQuantity,
+                                                 start: normalizedDate,
+                                                 end: normalizedDate,
+                                                 metadata: metadata)
+            
+            healthStore.save(glucoseSample) { (success, error) in
+                DispatchQueue.main.async {
+                    completion(true)
+                }
             }
         }
     }
     
-    private func saveWeight(_ value: Double) {
+    private func saveWeight(_ value: Double, isImport30day: Bool, completion: @escaping (Bool) -> Void) {
         guard HKHealthStore.isHealthDataAvailable() else {
             alertMessage = "HealthKit 不可用"
             showingSaveAlert = true
@@ -422,7 +540,6 @@ struct HealthDataEditView: View {
         
         let weightType = HKObjectType.quantityType(forIdentifier: .bodyMass)!
         let weightUnit = HKUnit.gramUnit(with: .kilo)
-        let weightQuantity = HKQuantity(unit: weightUnit, doubleValue: value)
         
         var metadata: [String: Any] = [:]
         if !healthData.syncIdentifier.isEmpty {
@@ -434,26 +551,41 @@ struct HealthDataEditView: View {
             }
         }
         
-        let normalizedDate = normalizeDate(healthData.date)
-        let weightSample = HKQuantitySample(type: weightType,
-                                          quantity: weightQuantity,
-                                          start: normalizedDate,
-                                          end: normalizedDate,
-                                          metadata: metadata)
-        
-        healthStore.save(weightSample) { (success, error) in
-            DispatchQueue.main.async {
-                if success {
-                    alertMessage = "體重數據保存成功"
-                } else {
-                    alertMessage = "保存失敗: \(error?.localizedDescription ?? "未知錯誤")"
+        if isImport30day {
+            for dayOffset in 0..<30 {
+                let dateToSave = Calendar.current.date(byAdding: .day, value: -dayOffset, to: Date()) ?? Date()
+                let normalizedDate = normalizeDate(dateToSave)
+                let weightQuantity = HKQuantity(unit: weightUnit, doubleValue: value)
+                let weightSample = HKQuantitySample(type: weightType,
+                                                    quantity: weightQuantity,
+                                                    start: normalizedDate,
+                                                    end: normalizedDate,
+                                                    metadata: metadata)
+                
+                healthStore.save(weightSample) { (success, error) in
+                    DispatchQueue.main.async {
+                        completion(true)
+                    }
                 }
-                showingSaveAlert = true
+            }
+        } else {
+            let normalizedDate = normalizeDate(healthData.date)
+            let weightQuantity = HKQuantity(unit: weightUnit, doubleValue: value)
+            let weightSample = HKQuantitySample(type: weightType,
+                                                quantity: weightQuantity,
+                                                start: normalizedDate,
+                                                end: normalizedDate,
+                                                metadata: metadata)
+            
+            healthStore.save(weightSample) { (success, error) in
+                DispatchQueue.main.async {
+                    completion(true)
+                }
             }
         }
     }
     
-    private func saveBodyFat(_ value: Double) {
+    private func saveBodyFat(_ value: Double, isImport30day: Bool, completion: @escaping (Bool) -> Void) {
         guard HKHealthStore.isHealthDataAvailable() else {
             alertMessage = "HealthKit 不可用"
             showingSaveAlert = true
@@ -462,7 +594,6 @@ struct HealthDataEditView: View {
         
         let bodyFatType = HKObjectType.quantityType(forIdentifier: .bodyFatPercentage)!
         let bodyFatUnit = HKUnit.percent()
-        let bodyFatQuantity = HKQuantity(unit: bodyFatUnit, doubleValue: value / 100.0)
         
         var metadata: [String: Any] = [:]
         if !healthData.syncIdentifier.isEmpty {
@@ -474,21 +605,36 @@ struct HealthDataEditView: View {
             }
         }
         
-        let normalizedDate = normalizeDate(healthData.date)
-        let bodyFatSample = HKQuantitySample(type: bodyFatType,
-                                           quantity: bodyFatQuantity,
-                                           start: normalizedDate,
-                                           end: normalizedDate,
-                                           metadata: metadata)
-        
-        healthStore.save(bodyFatSample) { (success, error) in
-            DispatchQueue.main.async {
-                if success {
-                    alertMessage = "體脂數據保存成功"
-                } else {
-                    alertMessage = "保存失敗: \(error?.localizedDescription ?? "未知錯誤")"
+        if isImport30day {
+            for dayOffset in 0..<30 {
+                let dateToSave = Calendar.current.date(byAdding: .day, value: -dayOffset, to: Date()) ?? Date()
+                let normalizedDate = normalizeDate(dateToSave)
+                let bodyFatQuantity = HKQuantity(unit: bodyFatUnit, doubleValue: value / 100.0)
+                let bodyFatSample = HKQuantitySample(type: bodyFatType,
+                                                     quantity: bodyFatQuantity,
+                                                     start: normalizedDate,
+                                                     end: normalizedDate,
+                                                     metadata: metadata)
+                
+                healthStore.save(bodyFatSample) { (success, error) in
+                    DispatchQueue.main.async {
+                        completion(true)
+                    }
                 }
-                showingSaveAlert = true
+            }
+        } else {
+            let normalizedDate = normalizeDate(healthData.date)
+            let bodyFatQuantity = HKQuantity(unit: bodyFatUnit, doubleValue: value / 100.0)
+            let bodyFatSample = HKQuantitySample(type: bodyFatType,
+                                                 quantity: bodyFatQuantity,
+                                                 start: normalizedDate,
+                                                 end: normalizedDate,
+                                                 metadata: metadata)
+            
+            healthStore.save(bodyFatSample) { (success, error) in
+                DispatchQueue.main.async {
+                    completion(true)
+                }
             }
         }
     }
