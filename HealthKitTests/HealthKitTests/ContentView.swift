@@ -351,7 +351,7 @@ struct HealthDataEditView: View {
         
         if isImport30day {
             for dayOffset in 0..<30 {
-                let dateToSave = Calendar.current.date(byAdding: .day, value: -dayOffset, to: Date()) ?? Date()
+                let dateToSave = Calendar.current.date(byAdding: .day, value: -dayOffset, to: healthData.date) ?? Date()
                 let normalizedDate = normalizeDate(dateToSave)
                 
                 // 創建收縮壓樣本
@@ -445,7 +445,7 @@ struct HealthDataEditView: View {
         
         if isImport30day {
             for dayOffset in 0..<30 {
-                let dateToSave = Calendar.current.date(byAdding: .day, value: -dayOffset, to: Date()) ?? Date()
+                let dateToSave = Calendar.current.date(byAdding: .day, value: -dayOffset, to: healthData.date) ?? Date()
                 let normalizedDate = normalizeDate(dateToSave)
                 let heartRateQuantity = HKQuantity(unit: heartRateUnit, doubleValue: value)
                 let heartRateSample = HKQuantitySample(type: heartRateType,
@@ -499,7 +499,7 @@ struct HealthDataEditView: View {
         
         if isImport30day {
             for dayOffset in 0..<30 {
-                let dateToSave = Calendar.current.date(byAdding: .day, value: -dayOffset, to: Date()) ?? Date()
+                let dateToSave = Calendar.current.date(byAdding: .day, value: -dayOffset, to: healthData.date) ?? Date()
                 let normalizedDate = normalizeDate(dateToSave)
                 let glucoseQuantity = HKQuantity(unit: glucoseUnit, doubleValue: value)
                 let glucoseSample = HKQuantitySample(type: glucoseType,
@@ -553,7 +553,7 @@ struct HealthDataEditView: View {
         
         if isImport30day {
             for dayOffset in 0..<30 {
-                let dateToSave = Calendar.current.date(byAdding: .day, value: -dayOffset, to: Date()) ?? Date()
+                let dateToSave = Calendar.current.date(byAdding: .day, value: -dayOffset, to: healthData.date) ?? Date()
                 let normalizedDate = normalizeDate(dateToSave)
                 let weightQuantity = HKQuantity(unit: weightUnit, doubleValue: value)
                 let weightSample = HKQuantitySample(type: weightType,
@@ -607,7 +607,7 @@ struct HealthDataEditView: View {
         
         if isImport30day {
             for dayOffset in 0..<30 {
-                let dateToSave = Calendar.current.date(byAdding: .day, value: -dayOffset, to: Date()) ?? Date()
+                let dateToSave = Calendar.current.date(byAdding: .day, value: -dayOffset, to: healthData.date) ?? Date()
                 let normalizedDate = normalizeDate(dateToSave)
                 let bodyFatQuantity = HKQuantity(unit: bodyFatUnit, doubleValue: value / 100.0)
                 let bodyFatSample = HKQuantitySample(type: bodyFatType,
