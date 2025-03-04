@@ -54,7 +54,9 @@ struct ContentView: View {
         HealthData(type: "體重", value: "", value2: nil, date: Date(), syncIdentifier: "", syncVersion: ""),
         HealthData(type: "匯入三十天內的體重資料", value: "", value2: nil, date: Date(), syncIdentifier: "", syncVersion: ""),
         HealthData(type: "體脂", value: "", value2: nil, date: Date(), syncIdentifier: "", syncVersion: ""),
-        HealthData(type: "匯入三十天內的體脂資料", value: "", value2: nil, date: Date(), syncIdentifier: "", syncVersion: "")
+        HealthData(type: "匯入三十天內的體脂資料", value: "", value2: nil, date: Date(), syncIdentifier: "", syncVersion: ""),
+        HealthData(type: "運動", value: "", value2: "", date: Date(), syncIdentifier: "", syncVersion: ""),
+        HealthData(type: "匯入三十天內的運動資料", value: "", value2: "", date: Date(), syncIdentifier: "", syncVersion: "")
     ]
     
     init() {
@@ -65,7 +67,9 @@ struct ContentView: View {
             HKObjectType.quantityType(forIdentifier: .bloodPressureDiastolic)!,
             HKObjectType.quantityType(forIdentifier: .heartRate)!,
             HKObjectType.quantityType(forIdentifier: .bodyMass)!,
-            HKObjectType.quantityType(forIdentifier: .bodyFatPercentage)!
+            HKObjectType.quantityType(forIdentifier: .bodyFatPercentage)!,
+            HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!,
+            HKWorkoutType.workoutType()
         ]
         
         healthStore.requestAuthorization(toShare: typesToShare, read: typesToShare) { (success, error) in
@@ -112,6 +116,8 @@ struct ContentView: View {
             return AnyView(HealthDataEditView(healthData: binding(for: data)))
         case "匯入三十天內的體脂資料":
             return AnyView(HealthDataEditView(healthData: binding(for: data)))
+        case "匯入三十天內的運動資料":
+            return AnyView(HealthDataEditView(healthData: binding(for: data)))
         default:
             return AnyView(HealthDataEditView(healthData: binding(for: data)))
         }
@@ -148,7 +154,20 @@ struct HealthDataEditView: View {
     var body: some View {
         List {
             Group {
-                if healthData.type.contains("血壓") {
+                if healthData.type.contains("運動") {
+                    VStack(spacing: 10) {
+                        TextField("運動名稱", text: $healthData.value)
+                        HStack {
+                            Text("消耗能量:")
+                            TextField("卡路里", text: Binding(
+                                get: { healthData.value2 ?? "" },
+                                set: { healthData.value2 = $0 }
+                            ))
+                            .keyboardType(.decimalPad)
+                            Text("kcal")
+                        }
+                    }
+                } else if healthData.type.contains("血壓") {
                     VStack(spacing: 10) {
                         HStack {
                             Text("收縮壓:")
@@ -223,6 +242,25 @@ struct HealthDataEditView: View {
     
     private func saveToHealthKit() {
         switch healthData.type {
+        case "運動", "匯入三十天內的運動資料":
+            if !healthData.value.isEmpty && !(healthData.value2 ?? "").isEmpty,
+               let energyBurned = Double(healthData.value2 ?? "") {
+                saveWorkout(name: healthData.value, 
+                          energyBurned: energyBurned,
+                          isImport30day: healthData.type == "匯入三十天內的運動資料") { success in
+                    DispatchQueue.main.async {
+                        if success {
+                            alertMessage = "運動數據保存成功"
+                        } else {
+                            alertMessage = "運動數據保存失敗"
+                        }
+                        showingSaveAlert = true
+                    }
+                }
+            } else {
+                alertMessage = "請輸入運動名稱和消耗能量"
+                showingSaveAlert = true
+            }
         case "血壓", "匯入三十天內的血壓資料":
             // 檢查血壓數值
             let hasSystolic = !healthData.value.isEmpty
@@ -632,6 +670,65 @@ struct HealthDataEditView: View {
                                                  metadata: metadata)
             
             healthStore.save(bodyFatSample) { (success, error) in
+                DispatchQueue.main.async {
+                    completion(true)
+                }
+            }
+        }
+    }
+    
+    private func saveWorkout(name: String, energyBurned: Double, isImport30day: Bool, completion: @escaping (Bool) -> Void) {
+        guard HKHealthStore.isHealthDataAvailable() else {
+            alertMessage = "HealthKit 不可用"
+            showingSaveAlert = true
+            return
+        }
+        
+        var metadata: [String: Any] = [:]
+        if !healthData.syncIdentifier.isEmpty {
+            metadata[HKMetadataKeySyncIdentifier] = healthData.syncIdentifier
+        }
+        if !healthData.syncVersion.isEmpty {
+            if let versionNumber = Int(healthData.syncVersion) {
+                metadata[HKMetadataKeySyncVersion] = NSNumber(value: versionNumber)
+            }
+        }
+        
+        let energyUnit = HKUnit.kilocalorie()
+        
+        if isImport30day {
+            for dayOffset in 0..<30 {
+                let dateToSave = Calendar.current.date(byAdding: .day, value: -dayOffset, to: healthData.date) ?? Date()
+                let normalizedDate = normalizeDate(dateToSave)
+                let endDate = normalizedDate.addingTimeInterval(3600) // 假設運動持續1小時
+                
+                let workout = HKWorkout(activityType: .other,
+                                      start: normalizedDate,
+                                      end: endDate,
+                                      duration: 3600,
+                                      totalEnergyBurned: HKQuantity(unit: energyUnit, doubleValue: energyBurned),
+                                      totalDistance: nil,
+                                      metadata: metadata)
+                
+                healthStore.save(workout) { (success, error) in
+                    DispatchQueue.main.async {
+                        completion(true)
+                    }
+                }
+            }
+        } else {
+            let normalizedDate = normalizeDate(healthData.date)
+            let endDate = normalizedDate.addingTimeInterval(3600) // 假設運動持續1小時
+            
+            let workout = HKWorkout(activityType: .other,
+                                  start: normalizedDate,
+                                  end: endDate,
+                                  duration: 3600,
+                                  totalEnergyBurned: HKQuantity(unit: energyUnit, doubleValue: energyBurned),
+                                  totalDistance: nil,
+                                  metadata: metadata)
+            
+            healthStore.save(workout) { (success, error) in
                 DispatchQueue.main.async {
                     completion(true)
                 }
