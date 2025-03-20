@@ -684,6 +684,27 @@ struct HealthDataEditView: View {
             return
         }
         
+        // 创建包含10种运动类型的数组
+        let workoutTypes: [HKWorkoutActivityType] = [
+            .americanFootball,
+            .archery,
+            .australianFootball,
+            .badminton,
+            .baseball,
+            .basketball,
+            .bowling,
+            .boxing,
+            .climbing,
+            .cricket
+        ]
+        
+        // 随机选择一个运动类型
+        let randomWorkoutType = workoutTypes.randomElement() ?? .other
+        
+        // 生成10分钟到1小时之间的随机持续时间（以10分钟为间隔）
+        let possibleDurations = [600.0, 1200.0, 1800.0, 2400.0, 3000.0, 3600.0] // 秒数：10分钟到1小时
+        let randomDuration = possibleDurations.randomElement() ?? 3600.0
+        
         var metadata: [String: Any] = [:]
         if !healthData.syncIdentifier.isEmpty {
             metadata[HKMetadataKeySyncIdentifier] = healthData.syncIdentifier
@@ -700,12 +721,12 @@ struct HealthDataEditView: View {
             for dayOffset in 0..<30 {
                 let dateToSave = Calendar.current.date(byAdding: .day, value: -dayOffset, to: healthData.date) ?? Date()
                 let normalizedDate = normalizeDate(dateToSave)
-                let endDate = normalizedDate.addingTimeInterval(3600) // 假設運動持續1小時
+                let endDate = normalizedDate.addingTimeInterval(randomDuration)
                 
-                let workout = HKWorkout(activityType: .other,
+                let workout = HKWorkout(activityType: randomWorkoutType,
                                       start: normalizedDate,
                                       end: endDate,
-                                      duration: 3600,
+                                      duration: randomDuration,  // 使用随机持续时间
                                       totalEnergyBurned: HKQuantity(unit: energyUnit, doubleValue: energyBurned),
                                       totalDistance: nil,
                                       metadata: metadata)
@@ -718,12 +739,12 @@ struct HealthDataEditView: View {
             }
         } else {
             let normalizedDate = normalizeDate(healthData.date)
-            let endDate = normalizedDate.addingTimeInterval(3600) // 假設運動持續1小時
+            let endDate = normalizedDate.addingTimeInterval(randomDuration)
             
-            let workout = HKWorkout(activityType: .other,
+            let workout = HKWorkout(activityType: randomWorkoutType,
                                   start: normalizedDate,
                                   end: endDate,
-                                  duration: 3600,
+                                  duration: randomDuration,  // 使用随机持续时间
                                   totalEnergyBurned: HKQuantity(unit: energyUnit, doubleValue: energyBurned),
                                   totalDistance: nil,
                                   metadata: metadata)
