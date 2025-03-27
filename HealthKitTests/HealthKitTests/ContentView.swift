@@ -149,14 +149,42 @@ struct HealthDataEditView: View {
     @Binding var healthData: HealthData
     @State private var showingSaveAlert = false
     @State private var alertMessage = ""
-    @State private var heartRate: String = ""  // 新增心跳數值
+    @State private var selectedWorkoutType: HKWorkoutActivityType = .americanFootball
+    @State private var selectedDuration: Int = 30  // 默認30分鐘
+    
+    // 運動類型選項
+    let workoutTypes: [(type: HKWorkoutActivityType, name: String)] = [
+        (.americanFootball, "美式足球"),
+        (.archery, "射箭"),
+        (.australianFootball, "澳式足球"),
+        (.badminton, "羽毛球"),
+        (.baseball, "棒球"),
+        (.basketball, "籃球"),
+        (.bowling, "保齡球"),
+        (.boxing, "拳擊"),
+        (.climbing, "攀岩"),
+        (.cricket, "板球")
+    ]
     
     var body: some View {
         List {
             Group {
                 if healthData.type.contains("運動") {
                     VStack(spacing: 10) {
-                        TextField("運動名稱", text: $healthData.value)
+                        // 運動類型選擇器
+                        Picker("運動類型", selection: $selectedWorkoutType) {
+                            ForEach(workoutTypes, id: \.type) { workoutType in
+                                Text(workoutType.name).tag(workoutType.type)
+                            }
+                        }
+                        
+                        // 持續時間選擇器
+                        Picker("持續時間", selection: $selectedDuration) {
+                            ForEach(1...60, id: \.self) { minute in
+                                Text("\(minute) 分鐘").tag(minute)
+                            }
+                        }
+                        
                         HStack {
                             Text("消耗能量:")
                             TextField("卡路里", text: Binding(
@@ -243,11 +271,27 @@ struct HealthDataEditView: View {
     private func saveToHealthKit() {
         switch healthData.type {
         case "運動", "匯入三十天內的運動資料":
-            if !healthData.value.isEmpty && !(healthData.value2 ?? "").isEmpty,
-               let energyBurned = Double(healthData.value2 ?? "") {
-                saveWorkout(name: healthData.value, 
+            if healthData.type == "匯入三十天內的運動資料" {
+                // 30天模式直接使用預設值進行隨機生成
+                saveWorkout(name: "運動",  
+                          energyBurned: 300.0, // 使用預設值300卡路里作為基準進行隨機化
+                          isImport30day: true) { success in
+                    DispatchQueue.main.async {
+                        if success {
+                            alertMessage = "運動數據保存成功"
+                        } else {
+                            alertMessage = "運動數據保存失敗"
+                        }
+                        showingSaveAlert = true
+                    }
+                }
+            } else if !(healthData.value2 ?? "").isEmpty,
+                      let energyBurned = Double(healthData.value2 ?? "") {
+                // 單筆運動記錄仍需要輸入熱量
+                let workoutName = workoutTypes.first { $0.type == selectedWorkoutType }?.name ?? "其他運動"
+                saveWorkout(name: workoutName,
                           energyBurned: energyBurned,
-                          isImport30day: healthData.type == "匯入三十天內的運動資料") { success in
+                          isImport30day: false) { success in
                     DispatchQueue.main.async {
                         if success {
                             alertMessage = "運動數據保存成功"
@@ -258,7 +302,7 @@ struct HealthDataEditView: View {
                     }
                 }
             } else {
-                alertMessage = "請輸入運動名稱和消耗能量"
+                alertMessage = "請輸入消耗能量"
                 showingSaveAlert = true
             }
         case "血壓", "匯入三十天內的血壓資料":
@@ -684,23 +728,6 @@ struct HealthDataEditView: View {
             return
         }
         
-        // 创建包含10种运动类型的数组
-        let workoutTypes: [HKWorkoutActivityType] = [
-            .americanFootball,
-            .archery,
-            .australianFootball,
-            .badminton,
-            .baseball,
-            .basketball,
-            .bowling,
-            .boxing,
-            .climbing,
-            .cricket
-        ]
-        
-        // 可能的持续时间（10分钟到1小时，间隔10分钟）
-        let possibleDurations = [600.0, 1200.0, 1800.0, 2400.0, 3000.0, 3600.0]
-        
         var metadata: [String: Any] = [:]
         if !healthData.syncIdentifier.isEmpty {
             metadata[HKMetadataKeySyncIdentifier] = healthData.syncIdentifier
@@ -715,14 +742,10 @@ struct HealthDataEditView: View {
         
         if isImport30day {
             for dayOffset in 0..<30 {
-                // 每天随机生成新的运动类型
-                let randomWorkoutType = workoutTypes.randomElement() ?? .other
-                
-                // 每天随机生成新的持续时间
-                let randomDuration = possibleDurations.randomElement() ?? 3600.0
-                
-                // 每天随机生成新的能量消耗（原始值的50%到150%之间）
-                let randomEnergyBurned = Double.random(in: energyBurned * 0.5...energyBurned * 1.5)
+                // 在30天模式下
+                let randomWorkoutType = workoutTypes.randomElement()?.type ?? .other  // 隨機運動類型
+                let randomDuration = Double.random(in: 300.0...3600.0)  // 隨機時間
+                let randomEnergyBurned = Double.random(in: energyBurned * 0.5...energyBurned * 1.5)  // 隨機能量消耗
                 
                 let dateToSave = Calendar.current.date(byAdding: .day, value: -dayOffset, to: healthData.date) ?? Date()
                 let normalizedDate = normalizeDate(dateToSave)
@@ -743,17 +766,14 @@ struct HealthDataEditView: View {
                 }
             }
         } else {
-            // 单次保存时也使用随机值
-            let randomWorkoutType = workoutTypes.randomElement() ?? .other
-            let randomDuration = possibleDurations.randomElement() ?? 3600.0
-            
             let normalizedDate = normalizeDate(healthData.date)
-            let endDate = normalizedDate.addingTimeInterval(randomDuration)
+            let duration = Double(selectedDuration * 60) // 使用picker選擇的時間
+            let endDate = normalizedDate.addingTimeInterval(duration)
             
-            let workout = HKWorkout(activityType: randomWorkoutType,
+            let workout = HKWorkout(activityType: selectedWorkoutType,
                                   start: normalizedDate,
                                   end: endDate,
-                                  duration: randomDuration,
+                                  duration: duration,
                                   totalEnergyBurned: HKQuantity(unit: energyUnit, doubleValue: energyBurned),
                                   totalDistance: nil,
                                   metadata: metadata)
