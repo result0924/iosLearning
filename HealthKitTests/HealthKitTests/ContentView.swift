@@ -56,7 +56,8 @@ struct ContentView: View {
         HealthData(type: "體脂", value: "", value2: nil, date: Date(), syncIdentifier: "", syncVersion: ""),
         HealthData(type: "匯入三十天內的體脂資料", value: "", value2: nil, date: Date(), syncIdentifier: "", syncVersion: ""),
         HealthData(type: "運動", value: "", value2: "", date: Date(), syncIdentifier: "", syncVersion: ""),
-        HealthData(type: "匯入三十天內的運動資料", value: "", value2: "", date: Date(), syncIdentifier: "", syncVersion: "")
+        HealthData(type: "匯入三十天內的運動資料", value: "", value2: "", date: Date(), syncIdentifier: "", syncVersion: ""),
+        HealthData(type: "鐵人三項", value: "", value2: "", date: Date(), syncIdentifier: "", syncVersion: "")
     ]
     
     init() {
@@ -270,6 +271,22 @@ struct HealthDataEditView: View {
     
     private func saveToHealthKit() {
         switch healthData.type {
+        case "鐵人三項":
+            if #available(iOS 16.0, *) {
+                saveTriathlon { success in
+                    DispatchQueue.main.async {
+                        if success {
+                            alertMessage = "鐵人三項數據保存成功"
+                        } else {
+                            alertMessage = "鐵人三項數據保存失敗"
+                        }
+                        showingSaveAlert = true
+                    }
+                }
+            } else {
+                alertMessage = "鐵人三項功能需要 iOS 16.0 或更新版本"
+                showingSaveAlert = true
+            }
         case "運動", "匯入三十天內的運動資料":
             if healthData.type == "匯入三十天內的運動資料" {
                 // 30天模式直接使用預設值進行隨機生成
@@ -783,6 +800,131 @@ struct HealthDataEditView: View {
                     completion(true)
                 }
             }
+        }
+    }
+
+    @available(iOS 16.0, *)
+    private func saveTriathlon(completion: @escaping (Bool) -> Void) {
+        let normalizedDate = normalizeDate(healthData.date)
+        
+        // 建立元數據
+        var metadata: [String: Any] = [:]
+        if !healthData.syncIdentifier.isEmpty {
+            metadata[HKMetadataKeySyncIdentifier] = healthData.syncIdentifier
+        }
+        if !healthData.syncVersion.isEmpty {
+            if let versionNumber = Int(healthData.syncVersion) {
+                metadata[HKMetadataKeySyncVersion] = NSNumber(value: versionNumber)
+            }
+        }
+        
+        // 建立鐵人三項配置
+        let workoutConfig = HKWorkoutConfiguration()
+        workoutConfig.activityType = .swimBikeRun
+        
+        // 建立 workout builder
+        let builder = HKWorkoutBuilder(healthStore: healthStore, configuration: workoutConfig, device: nil)
+        
+        // 設定各項運動的隨機時間和數據
+        let activities: [(type: HKWorkoutActivityType, duration: ClosedRange<TimeInterval>, distance: ClosedRange<Double>, config: (HKWorkoutConfiguration) -> Void)] = [
+            (.swimming, 1200...2400, 500...2000, { config in
+                config.activityType = .swimming
+                config.swimmingLocationType = .pool  // 指定為泳池游泳
+                config.lapLength = HKQuantity(unit: .meter(), doubleValue: 50)  // 設定泳池長度為50米
+            }),
+            (.cycling, 3600...5400, 20000...40000, { config in
+                config.activityType = .cycling
+            }),
+            (.running, 1800...3600, 5000...10000, { config in
+                config.activityType = .running
+            })
+        ]
+        
+        builder.beginCollection(withStart: normalizedDate) { success, error in
+            if let error = error {
+                DispatchQueue.main.async {
+                    completion(false)
+                }
+                return
+            }
+            
+            guard success else {
+                DispatchQueue.main.async {
+                    completion(false)
+                }
+                return
+            }
+            
+            // 建立並加入各種 workoutActivities
+            var addedActivities = 0
+            var currentDate = normalizedDate
+            
+            func addNextActivity() {
+                guard addedActivities < activities.count else {
+                    // 所有活動都添加完成，結束整個 workout
+                    builder.endCollection(withEnd: currentDate) { success, error in
+                        if let error = error {
+                            DispatchQueue.main.async {
+                                completion(false)
+                            }
+                            return
+                        }
+                        
+                        builder.finishWorkout { workout, error in
+                            if let error = error {
+                                DispatchQueue.main.async {
+                                    completion(false)
+                                }
+                                return
+                            }
+                            
+                            DispatchQueue.main.async {
+                                completion(workout != nil)
+                            }
+                        }
+                    }
+                    return
+                }
+                
+                let (activityType, durationRange, distanceRange, configureActivity) = activities[addedActivities]
+                let duration = TimeInterval.random(in: durationRange)
+                let distance = Double.random(in: distanceRange)
+                
+                let activityConfig = HKWorkoutConfiguration()
+                configureActivity(activityConfig)
+                
+                var activityMetadata = metadata
+                activityMetadata["distance"] = distance
+                
+                let activity = HKWorkoutActivity(
+                    workoutConfiguration: activityConfig,
+                    start: currentDate,
+                    end: currentDate.addingTimeInterval(duration),
+                    metadata: activityMetadata
+                )
+                
+                builder.addWorkoutActivity(activity) { success, error in
+                    if let error = error {
+                        DispatchQueue.main.async {
+                            completion(false)
+                        }
+                        return
+                    }
+                    
+                    if success {
+                        currentDate = currentDate.addingTimeInterval(duration)
+                        addedActivities += 1
+                        addNextActivity()
+                    } else {
+                        DispatchQueue.main.async {
+                            completion(false)
+                        }
+                    }
+                }
+            }
+            
+            // 開始添加第一個活動
+            addNextActivity()
         }
     }
 }
