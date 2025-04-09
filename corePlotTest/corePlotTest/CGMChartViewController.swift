@@ -18,6 +18,7 @@ class CGMChartViewController: UIViewController, CPTAxisDelegate {
     @IBOutlet weak var plotView: UIView!
     
     var hostView: CPTGraphHostingView!
+    var imageView: UIImageView!
     var dataArray: [CGMDataModel] = []
     var startInterval: TimeInterval = 0
     let xAxisCount: CGFloat = 5
@@ -76,6 +77,7 @@ class CGMChartViewController: UIViewController, CPTAxisDelegate {
         }
         
         initPlot()
+        setupImageView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -88,11 +90,11 @@ class CGMChartViewController: UIViewController, CPTAxisDelegate {
         
         reloadSymbolAnnotation()
         reloadCharts()
+        updateImageView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
         
     }
     
@@ -337,6 +339,39 @@ class CGMChartViewController: UIViewController, CPTAxisDelegate {
         }
     }
     
+    private func convertHostViewToImage() -> UIImage? {
+        UIGraphicsBeginImageContextWithOptions(hostView.bounds.size, false, UIScreen.main.scale)
+        guard let context = UIGraphicsGetCurrentContext() else {
+            print("Failed to get graphics context.")
+            return nil
+        }
+        
+        hostView.layer.render(in: context)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return image
+    }
+    
+    private func setupImageView() {
+        imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        view.addSubview(imageView)
+        
+        NSLayoutConstraint.activate([
+            imageView.topAnchor.constraint(equalTo: plotView.bottomAnchor, constant: 20),
+            imageView.leadingAnchor.constraint(equalTo: plotView.leadingAnchor),
+            imageView.trailingAnchor.constraint(equalTo: plotView.trailingAnchor),
+            imageView.heightAnchor.constraint(equalTo: plotView.heightAnchor)
+        ])
+    }
+    
+    private func updateImageView() {
+        Task { @MainActor in
+            self.imageView.image = self.convertHostViewToImage()
+        }
+    }
 }
 
 extension CGMChartViewController: CPTPlotDataSource {
