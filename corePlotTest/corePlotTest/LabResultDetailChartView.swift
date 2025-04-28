@@ -152,6 +152,11 @@ class LabResultDetailChartView: UIView {
             xAxis.majorGridLineStyle = xAxisDashLineStyle
             xAxis.axisLineStyle = axisLineStyle
             xAxis.labelingPolicy = .none
+            
+            // Add X-axis title
+            xAxis.title = "Time"
+            xAxis.titleOffset = 25.0  // Adjust this value to position the title
+            xAxis.titleTextStyle = textStyle
         }
 
         // configure y-axis
@@ -162,6 +167,12 @@ class LabResultDetailChartView: UIView {
             yAxis.majorGridLineStyle = axisLineStyle
             yAxis.labelingPolicy = .none
             yAxis.majorTickLength = 0
+            
+            // Add Y-axis title
+            yAxis.title = "Lab result detail"
+            yAxis.titleOffset = 35.0  // Adjust this value to position the title
+            yAxis.titleRotation = CGFloat.pi / 2  // Rotate title 90 degrees
+            yAxis.titleTextStyle = textStyle
         }
 
         graph.axisSet?.axes = [axisSet.xAxis, axisSet.yAxis] as? [CPTAxis]
