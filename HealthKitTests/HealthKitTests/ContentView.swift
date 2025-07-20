@@ -57,7 +57,9 @@ struct ContentView: View {
         HealthData(type: "匯入三十天內的體脂資料", value: "", value2: nil, date: Date(), syncIdentifier: "", syncVersion: ""),
         HealthData(type: "運動", value: "", value2: "", date: Date(), syncIdentifier: "", syncVersion: ""),
         HealthData(type: "匯入三十天內的運動資料", value: "", value2: "", date: Date(), syncIdentifier: "", syncVersion: ""),
-        HealthData(type: "鐵人三項", value: "", value2: "", date: Date(), syncIdentifier: "", syncVersion: "")
+        HealthData(type: "鐵人三項", value: "", value2: "", date: Date(), syncIdentifier: "", syncVersion: ""),
+        HealthData(type: "步數", value: "", value2: nil, date: Date(), syncIdentifier: "", syncVersion: ""),
+        HealthData(type: "匯入三十天內的步數資料", value: "", value2: nil, date: Date(), syncIdentifier: "", syncVersion: "")
     ]
     
     init() {
@@ -70,6 +72,7 @@ struct ContentView: View {
             HKObjectType.quantityType(forIdentifier: .bodyMass)!,
             HKObjectType.quantityType(forIdentifier: .bodyFatPercentage)!,
             HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!,
+            HKObjectType.quantityType(forIdentifier: .stepCount)!,
             HKWorkoutType.workoutType()
         ]
         
@@ -118,6 +121,8 @@ struct ContentView: View {
         case "匯入三十天內的體脂資料":
             return AnyView(HealthDataEditView(healthData: binding(for: data)))
         case "匯入三十天內的運動資料":
+            return AnyView(HealthDataEditView(healthData: binding(for: data)))
+        case "步數", "匯入三十天內的步數資料":
             return AnyView(HealthDataEditView(healthData: binding(for: data)))
         default:
             return AnyView(HealthDataEditView(healthData: binding(for: data)))
@@ -223,6 +228,14 @@ struct HealthDataEditView: View {
                         TextField("心跳數值", text: $healthData.value)
                             .keyboardType(.decimalPad)
                         Text("次/分")
+                    }
+                } else if healthData.type == "步數" || healthData.type == "匯入三十天內的步數資料" {
+                    HStack {
+                        Text("步數:")
+                            .frame(width: 60, alignment: .leading)
+                        TextField("步數", text: $healthData.value)
+                            .keyboardType(.numberPad)
+                        Text("步")
                     }
                 } else {
                     TextField("輸入\(healthData.type)數值", text: $healthData.value)
@@ -413,6 +426,22 @@ struct HealthDataEditView: View {
                 }
             } else {
                 alertMessage = "請輸入有效的數值"
+                showingSaveAlert = true
+            }
+        case "步數", "匯入三十天內的步數資料":
+            if let stepCount = Int(healthData.value) {
+                saveStepCount(stepCount, isImport30day: healthData.type == "匯入三十天內的步數資料") { success in
+                    DispatchQueue.main.async {
+                        if success {
+                            alertMessage = "步數數據保存成功"
+                        } else {
+                            alertMessage = "步數數據保存失敗"
+                        }
+                        showingSaveAlert = true
+                    }
+                }
+            } else {
+                alertMessage = "請輸入有效的步數"
                 showingSaveAlert = true
             }
         default:
@@ -796,6 +825,65 @@ struct HealthDataEditView: View {
                                   metadata: metadata)
             
             healthStore.save(workout) { (success, error) in
+                DispatchQueue.main.async {
+                    completion(true)
+                }
+            }
+        }
+    }
+    
+    private func saveStepCount(_ stepCount: Int, isImport30day: Bool, completion: @escaping (Bool) -> Void) {
+        guard HKHealthStore.isHealthDataAvailable() else {
+            alertMessage = "HealthKit 不可用"
+            showingSaveAlert = true
+            completion(false)
+            return
+        }
+        
+        let stepCountType = HKObjectType.quantityType(forIdentifier: .stepCount)!
+        let stepCountUnit = HKUnit.count()
+        
+        var metadata: [String: Any] = [:]
+        if !healthData.syncIdentifier.isEmpty {
+            metadata[HKMetadataKeySyncIdentifier] = healthData.syncIdentifier
+        }
+        if !healthData.syncVersion.isEmpty {
+            if let versionNumber = Int(healthData.syncVersion) {
+                metadata[HKMetadataKeySyncVersion] = NSNumber(value: versionNumber)
+            }
+        }
+        
+        if isImport30day {
+            for dayOffset in 0..<30 {
+                let dateToSave = Calendar.current.date(byAdding: .day, value: -dayOffset, to: healthData.date) ?? Date()
+                let normalizedDate = normalizeDate(dateToSave)
+                
+                // 為30天模式生成隨機步數（基於輸入值進行變化）
+                let randomStepCount = Int.random(in: max(1, stepCount - 1000)...(stepCount + 1000))
+                
+                let stepCountQuantity = HKQuantity(unit: stepCountUnit, doubleValue: Double(randomStepCount))
+                let stepCountSample = HKQuantitySample(type: stepCountType,
+                                                      quantity: stepCountQuantity,
+                                                      start: normalizedDate,
+                                                      end: normalizedDate,
+                                                      metadata: metadata)
+                
+                healthStore.save(stepCountSample) { (success, error) in
+                    DispatchQueue.main.async {
+                        completion(true)
+                    }
+                }
+            }
+        } else {
+            let normalizedDate = normalizeDate(healthData.date)
+            let stepCountQuantity = HKQuantity(unit: stepCountUnit, doubleValue: Double(stepCount))
+            let stepCountSample = HKQuantitySample(type: stepCountType,
+                                                  quantity: stepCountQuantity,
+                                                  start: normalizedDate,
+                                                  end: normalizedDate,
+                                                  metadata: metadata)
+            
+            healthStore.save(stepCountSample) { (success, error) in
                 DispatchQueue.main.async {
                     completion(true)
                 }
