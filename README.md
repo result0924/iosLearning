@@ -68,3 +68,4 @@ source ~/.zshrc
 
 ### tools
 - [Diagram] (https://app.diagrams.net/)
+- [GrandPerspective](https://grandperspectiv.sourceforge.net)硬碟管理工具
